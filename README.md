@@ -22,68 +22,68 @@
 
 ## 项目简介
 
-<details id="功能" oepn>
+<details id="功能" open>
 <summary>功能</summary>
 
 </details>
 
-<details id="作者" oepn>
+<details id="作者" open>
 <summary>作者</summary>
 
 </details>
 
-<details id="视频教程" oepn>
+<details id="视频教程" open>
 <summary>视频教程</summary>
 
 </details>
 
 ## GlobalHotKey类
 
-<details id="方法表GHK" oepn>
+<details id="方法表GHK" open>
 <summary>方法表</summary>
 
 </details>
 
-<details id="参数表GHK" oepn>
+<details id="参数表GHK" open>
 <summary>参数表</summary>
 
 </details>
 
-<details id="使用示例GHK" oepn>
+<details id="使用示例GHK" open>
 <summary>使用示例</summary>
 
 </details>
 
 ## BindingRef类
 
-<details id="方法表BR" oepn>
+<details id="方法表BR" open>
 <summary>方法表</summary>
 
 </details>
 
-<details id="方法表BR" oepn>
+<details id="方法表BR" open>
 <summary>参数表</summary>
 
 </details>
 
-<details id="方法表BR" oepn>
+<details id="方法表BR" open>
 <summary>使用示例</summary>
 
 </details>
 
 ## RegisterInfo类
 
-<details id="方法表RI" oepn>
+<details id="方法表RI" open>
 <summary>方法表</summary>
 
 </details>
 
-<details id="参数表RI" oepn>
+<details id="参数表RI" open>
 <summary>参数表</summary>
 
 </details>
 
-<details id="使用示例RI" oepn>
+<details id="使用示例RI" open>
 <summary>使用示例</summary>
 
 </details>
