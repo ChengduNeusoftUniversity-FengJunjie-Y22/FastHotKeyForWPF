@@ -22,17 +22,17 @@
 
 ## 项目简介
 
-<details>
+<details id="功能">
 <summary>功能</summary>
 
 </details>
 
-<details>
+<details id="作者">
 <summary>作者</summary>
 
 </details>
 
-<details>
+<details id="视频教程">
 <summary>视频教程</summary>
 
 </details>
