@@ -108,8 +108,11 @@
 <details id="方法表RI">
 <summary>方法表</summary>
 
-| 方法名       | 参数                   | 描述               |
-|--------------|------------------------|--------------------|
+| 方法名              | 参数                                                                 | 描述               |
+|---------------------|----------------------------------------------------------------------|--------------------|
+|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |初始化构造函数      |
+|SuccessRegistration  | void                                                                 |在注册成功时调用，返回注册消息string      |
+|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        |在注册失败时调用，返回注册消息string      |
 
 </details>
 
