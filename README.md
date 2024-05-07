@@ -60,13 +60,13 @@
 <details id="方法表GHK">
 <summary>方法表</summary>
 
-| 方法名             | 参数                                                                             | 返回值            | 描述               |
-|--------------------|----------------------------------------------------------------------------------|-------------------|--------------------|
-| Awake              |                                                                                  |                   | 激活        |
-| Destroy            |                                                                                  |                   | 销毁   |
-| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   | ( bool , string ) | 注册热键，它的处理函数是无参、无返回值的         |
-| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )                   |                   | 注册热键，它的处理函数是无参、有返回值的         |
-| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   |                   | 注册热键，它的处理函数是无参、有返回值的         |
+| 方法名             | 参数                                                                             | 返回值                 | 描述               |
+|--------------------|----------------------------------------------------------------------------------|------------------------|--------------------|
+| Awake              |                                                                                  |                        | 激活               |
+| Destroy            |                                                                                  |                        | 销毁               |
+| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   | Tuple( bool , string ) | 注册热键，它的处理函数是无参、无返回值的         |
+| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )                   |                        | 依据组合键查找对应的处理函数，并替换为新的处理函数         |
+| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   |                        | 依据现有处理函数，查找能触发它的组合键，并替换为新的组合键 |
 
 </details>
 
@@ -85,12 +85,11 @@
 <details id="方法表BR">
 <summary>方法表</summary>
 
-| 方法名       | 参数                   | 返回值    | 描述               |
-|--------------|------------------------|-----------|--------------------|
-| Awake        |                        |           | 激活        |
-| Destroy      |                        |           | 销毁   |
-| Binding      | KeyInvoke_Void         |           | 要求传递一个无参、无返回值的函数签名，任何无参、无返回值的热键处理函数触发时，自动调用此函数           |
-| Binding      | KeyInvoke_Return       |           | 要求传递一个无参、有返回值object的函数签名，接收到任何热键处理函数返回的object时，自动调用此函数             |
+| 方法名       | 参数                                 | 返回值    | 描述               |
+|--------------|--------------------------------------|-----------|--------------------|
+| Awake        |                                      |           | 激活   |
+| Destroy      |                                      |           | 销毁   |
+| Binding      | KeyInvoke_Void / KeyInvoke_Return    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
 
 </details>
 
@@ -112,8 +111,8 @@
 | 方法名              | 参数                                                                 | 返回值    | 描述               |
 |---------------------|----------------------------------------------------------------------|-----------|--------------------|
 |RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           |初始化构造函数      |
-|SuccessRegistration  |                                                                      | string    |在注册成功时调用，返回注册消息string      |
-|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    |在注册失败时调用，返回注册消息string      |
+|SuccessRegistration  |                                                                      | string    |在注册成功时调用注册信息    |
+|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    |在注册失败时调用注册信息    |
 
 </details>
 
