@@ -104,24 +104,33 @@
 </details>
 
 ## RegisterInfo类
-
+### 用于存储注册信息的类型
 <details id="方法表RI">
 <summary>方法表</summary>
 
-| 方法名              | 参数                                                                 | 返回值    | 描述               |
-|---------------------|----------------------------------------------------------------------|-----------|--------------------|
-|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           |初始化构造函数      |
+| 方法名              | 参数                                                                 | 返回值    | 描述                       |
+|---------------------|----------------------------------------------------------------------|-----------|----------------------------|
+|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           |初始化构造函数              |
 |SuccessRegistration  |                                                                      | string    |在注册成功时调用注册信息    |
 |LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    |在注册失败时调用注册信息    |
-
 </details>
 
 <details id="参数表RI">
-<summary>参数表</summary>
+<summary>属性表</summary>
 
+| 属性名              | 类型                                                                 | 权限            | 描述               |
+|---------------------|----------------------------------------------------------------------|-----------------|--------------------|
+| RegisterID          | int                                                                  | public readonly | 注册编号           |
+| Model               | enum:uint ModelKeys                                                  | public readonly | 修饰键             |
+| Normal              | enum:uint NormalKeys                                                 | public readonly | 一般键             |
+| FunctionType        | enum:uint FunctionTypes                                              | public readonly | 处理函数类型       |
+| Name                | string                                                               | public readonly | 处理函数的函数名   |
+| FunctionVoid        | delegate KeyInvoke_Void                                              | public          | 存放处理函数       |
+| FunctionReturn      | delegate KeyInvoke_Return                                            | public          | 存放处理函数       |
 </details>
 
 <details id="使用示例RI">
-<summary>使用示例</summary>
+<summary>注意</summary>
 
+### 一般来说，不会直接使用RegisterInfo对象的方法，它的存在是为了便于在 GlobalHotKey中管理热键信息的登记、查询、修改。具体而言,当GlobalHotKey激活后，可以使用它的静态方法HotKeyInfo获取当前注册在列的所有热键消息的集合List,然后去访问这个集合中的RegisterInfo对象的属性。
 </details>
