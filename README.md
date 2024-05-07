@@ -7,7 +7,7 @@
 
 - [GlobalHotKey类](#GlobalHotKey类)
   - [方法表](#方法表GHK)
-  - [参数表](#参数表GHK)
+  - [可选项](#参数表GHK)
   - [使用示例](#使用示例GHK)
 
 - [BindingRef类](#BindingRef类)
@@ -74,12 +74,90 @@
 </details>
 
 <details id="参数表GHK">
-<summary>参数表</summary>
+<summary>可选项</summary>
 
+| 属性名              | 类型                           | 默认                                 | 权限            | 描述                                                             |
+|---------------------|--------------------------------|--------------------------------------|-----------------|------------------------------------------------------------------|
+| IsDeBug             | bool                           | false                                | public static   | 是否进入调试模式（部分过程将使用MessageBox输出过程值）           |
+| IsUpdate            | bool                           | true                                 | public static   | 是否实时监测返回值                                               |
+| HOTKEY_ID           | int                            | 2004                                 | public static   | 第一个热键的注册编号                                             |
 </details>
 
 <details id="使用示例GHK">
 <summary>使用示例</summary>
+
+#### Ⅰ GlobalHotKey的激活与销毁示例
+```csharp
+using FastHotKeyForWPF;
+
+namespace TestForHotKeyDll
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            GlobalHotKey.Awake();//激活
+            base.OnSourceInitialized(e);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            GlobalHotKey.Destroy();//销毁
+            base.OnClosed(e);
+        }
+    }
+}
+```
+
+#### Ⅱ 热键注册、修改的代码示例
+```csharp
+using System.Windows;
+using FastHotKeyForWPF;
+
+namespace TestForHotKeyDll
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            GlobalHotKey.Awake();
+
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, Test1);
+            //注册 => CTRL+F1 => Test1()
+
+            GlobalHotKey.EditHotKey_Keys(Test1, ModelKeys.ALT, NormalKeys.E);
+            //保留Test1(),修改 => CTRL+F1 => ALT+E
+            GlobalHotKey.EditHotKey_Function(ModelKeys.ALT, NormalKeys.E, Test2);
+            //保留ALT+E,修改 => Test1() => Test2()
+
+            //于是，最初注册的[CTRL+F1 => Test1]经过两次修改变成了[ALT+E => Test2]
+
+            base.OnSourceInitialized(e);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            GlobalHotKey.Destroy();
+            base.OnClosed(e);
+        }
+        private void Test1()
+        {
+            MessageBox.Show("1");
+        }
+        private object Test2()
+        {
+            return "2";
+        }
+
+    }
+}
+```
 
 </details>
 
