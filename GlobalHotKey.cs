@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 public enum NormalKeys : uint
@@ -345,6 +346,7 @@ namespace FastHotKeyForWPF
         {
             int id = HOTKEY_ID + Counter;
             RemoveExistRegisterByID(id);
+            RemoveExistRegisterByKeys(mode, key);
             bool result;
             result = RegisterHotKey(WindowhWnd, id, (uint)mode, (uint)key);
             if (result)
@@ -369,6 +371,7 @@ namespace FastHotKeyForWPF
         {
             int id = HOTKEY_ID + Counter;
             RemoveExistRegisterByID(id);
+            RemoveExistRegisterByKeys(mode, key);
             bool result;
             result = RegisterHotKey(WindowhWnd, id, (uint)mode, (uint)key);
             if (result)
@@ -498,6 +501,19 @@ namespace FastHotKeyForWPF
                 }
                 if (target != null) RegisterList.Remove(target);
             }
+        }
+
+        private int RemoveExistRegisterByKeys(ModelKeys mode, NormalKeys key)
+        {
+            foreach (RegisterInfo info in RegisterList)
+            {
+                if (info.Model == mode && info.Normal == key)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    return info.RegisterID;
+                }
+            }
+            return -1;
         }
         #endregion
     }
