@@ -52,5 +52,35 @@
 <details>
 <summary>使用示例</summary>
 
+## BindingRef类
+
+<details>
+<summary>方法表</summary>
+
+</details>
+
+<details>
+<summary>参数表</summary>
+
+</details>
+
+<details>
+<summary>使用示例</summary>
+
+## RegisterInfo类
+
+<details>
+<summary>方法表</summary>
+
+</details>
+
+<details>
+<summary>参数表</summary>
+
+</details>
+
+<details>
+<summary>使用示例</summary>
+
 ```csharp
 // 示例代码待填充
