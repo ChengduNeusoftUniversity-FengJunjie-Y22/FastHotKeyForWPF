@@ -2,28 +2,88 @@
 
 <details>
 <summary>项目简介</summary>
+<details>
+<summary>功能</summary>
 
-## WPF类库项目，旨在简化WPF开发中，全局热键注册、修改、删除功能实现
 
+
+</details>
+<details>
+<summary>作者</summary>
+
+
+
+</details>
+<details>
+<summary>视频教程</summary>
+
+
+
+</details>
 </details>
 
 <details>
 <summary>GlobalHotKey类</summary>
+<details>
+<summary>方法表</summary>
 
-## 热键相关的功能
 
+
+</details>
+<details>
+<summary>参数表</summary>
+
+
+
+</details>
+<details>
+<summary>使用示例</summary>
+
+
+
+</details>
 </details>
 
 <details>
 <summary>BindingRef类</summary>
+<details>
+<summary>方法表</summary>
 
-## 数据绑定
 
+
+</details>
+<details>
+<summary>参数表</summary>
+
+
+
+</details>
+<details>
+<summary>使用示例</summary>
+
+
+
+</details>
 </details>
 
 <details>
 <summary>RegisterInfo类</summary>
+<details>
+<summary>方法表</summary>
 
-## 注册消息
 
+
+</details>
+<details>
+<summary>参数表</summary>
+
+
+
+</details>
+<details>
+<summary>使用示例</summary>
+
+
+
+</details>
 </details>
