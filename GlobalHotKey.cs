@@ -76,42 +76,12 @@ public enum FunctionTypes
     Return
 }
 
-public delegate void KeyInvoke_Void(); //用于接收处理函数
+public delegate void KeyInvoke_Void(); //处理函数，无参数，无返回值
 
-public delegate object KeyInvoke_Return(); //用于接收处理函数
+public delegate object KeyInvoke_Return(); //处理函数，无参数，有返回值
 
 namespace FastHotKeyForWPF
 {
-    /// <summary>
-    /// 【全局热键】使用说明:
-    /// <para>⚠注意:需要在Application.Current.MainWindow中管理热键功能的激活和销毁</para>
-    /// <para>Ⅰ 按以下方式激活热键功能</para>
-    /// <para>protected override void OnSourceInitialized(EventArgs e)</para>
-    /// <para>{</para>       
-    /// <para>GlobalHotKey.Awake();</para>
-    /// <para>base.OnSourceInitialized(e);</para>    
-    /// <para>}</para>
-    /// <para>Ⅱ 按以下方式销毁热键功能</para>
-    /// <para>protected override void OnClosed(EventArgs e)</para>
-    /// <para>{</para>       
-    /// <para>GlobalHotKey.Destroy();</para>
-    /// <para>base.OnClosed(e);</para>
-    /// <para>}</para>
-    /// <para>Ⅲ 函数表</para>
-    /// <para>Awake() 激活热键功能，在主窗口的句柄已存在时调用</para>
-    /// <para>Destroy() 销毁热键功能</para>
-    /// <para>Add() 注册快捷键。将自定义的、无参数的【void函数】/【返回值类型为object的函数】的【函数签名】作为参数，这就是此快捷键触发后要做的事情。函数返回（bool,string）元组，表示是否注册成功、注册消息</para>
-    /// <para>DeleteById() 删除指定编号的快捷键</para>
-    /// <para>Binding() 在外部定义一个object属性并传入此函数中，即可实时向这个属性传入【返回值类型为object的函数】的返回结果</para>
-    /// <para>Clear() 清除所有注册的快捷键</para>
-    /// <para>HotKeyInfo() 获取一个包括当前所有在册热键的信息合集，它是一个RegisterInfo对象的集合</para>
-    /// <para>EditHotKey_Function() 查找并替换组合键对应的处理函数</para>
-    /// <para>EditHotKey_Keys() 查找并替换处理函数对应的组合键</para>
-    /// <para>Ⅳ 参数调试</para>
-    /// <para>(int) HOTKEY_ID 热键的注册编号，建议只修改一次，且修改操作位于你第一个注册快捷键操作之前</para>
-    /// <para>(bool) IsDeBug 调试模式开关，默认关闭(false)，若打开，则部分过程会打印值(MessageBox)</para>
-    /// <para>(bool) IsUpdate 绑定传递开关，默认打开(true)，若关闭，则不会实时更新绑定的内容(object)</para>
-    /// </summary>
     public class GlobalHotKey
     {
         private static GlobalHotKey? Instance;
@@ -164,7 +134,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static void Awake()
+        public static void Awake()//激活
         {
             if (Instance == null)
             {
@@ -187,7 +157,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static void Destroy()
+        public static void Destroy()//销毁
         {
             if (Instance != null)
             {
@@ -197,7 +167,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static (bool, string) Add(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)
+        public static (bool, string) Add(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)//注册
         {
             if (Instance != null)
             {
@@ -205,7 +175,7 @@ namespace FastHotKeyForWPF
             }
             return (false, "热键功能尚未激活，请参考文档注释。");
         }
-        public static (bool, string) Add(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)
+        public static (bool, string) Add(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)//注册
         {
             if (Instance != null)
             {
@@ -214,7 +184,7 @@ namespace FastHotKeyForWPF
             return (false, "热键功能尚未激活，请参考文档注释。");
         }
 
-        public static void DeleteById(int id)
+        public static void DeleteById(int id)//删除指定编号的热键
         {
             if (Instance != null)
             {
@@ -222,7 +192,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static void Clear()
+        public static void Clear()//清空热键，但不卸载钩子
         {
             if (Instance != null)
             {
@@ -230,27 +200,27 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static List<RegisterInfo> HotKeyInfo()
+        public static List<RegisterInfo> HotKeyInfo()//获取在册热键的信息集合
         {
             if (Instance != null)
             {
                 return Instance.RegisterList;
             }
-            if (IsDeBug)//调试模式下不允许在未激活此类型时读取注册列表
+            if (IsDeBug)//调试模式下，尝试读取注册信息会抛出异常
             {
-                throw new Exception("不可以");
+                throw new Exception("你无法在未激活的状态下读取注册信息！");
             }
-            return new List<RegisterInfo>();
+            return new List<RegisterInfo>();//非调试模式下，将尽可能避免程序退出
         }
 
-        public static void EditHotKey_Function(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)
+        public static void EditHotKey_Function(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)//修改触发函数
         {
             if (Instance != null)
             {
                 Instance.EditHotKey_NewFunctionVoid(mode, key, work);
             }
         }
-        public static void EditHotKey_Function(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)
+        public static void EditHotKey_Function(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)//修改触发函数
         {
             if (Instance != null)
             {
@@ -258,14 +228,14 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static void EditHotKey_Keys(KeyInvoke_Void work, ModelKeys mode, NormalKeys key)
+        public static void EditHotKey_Keys(KeyInvoke_Void work, ModelKeys mode, NormalKeys key)//修改快捷键
         {
             if (Instance != null)
             {
                 Instance.EditHotKey_NewKeysVoid(work, mode, key);
             }
         }
-        public static void EditHotKey_Keys(KeyInvoke_Return work, ModelKeys mode, NormalKeys key)
+        public static void EditHotKey_Keys(KeyInvoke_Return work, ModelKeys mode, NormalKeys key)//修改快捷键
         {
             if (Instance != null)
             {
@@ -280,14 +250,14 @@ namespace FastHotKeyForWPF
 
         private int Counter = 0; //计数器，表示历史中一共注册过多少个热键
 
-        private Dictionary<int, KeyInvoke_Void> Trigger_Void = new Dictionary<int, KeyInvoke_Void>();
+        private Dictionary<int, KeyInvoke_Void> Trigger_Void = new Dictionary<int, KeyInvoke_Void>();//处理函数映射表
 
-        private Dictionary<int, KeyInvoke_Return> Trigger_Return = new Dictionary<int, KeyInvoke_Return>();
+        private Dictionary<int, KeyInvoke_Return> Trigger_Return = new Dictionary<int, KeyInvoke_Return>();//处理函数映射表
 
         private List<RegisterInfo> RegisterList = new List<RegisterInfo>();//注册在列的热键
 
         /// <summary>
-        /// 快捷事件处理函数
+        /// 系统消息处理函数
         /// </summary>
         /// <param name="hwnd">主窗口的句柄</param>
         /// <param name="msg">系统发送的消息</param>
@@ -503,7 +473,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        private int RemoveExistRegisterByKeys(ModelKeys mode, NormalKeys key)
+        private int RemoveExistRegisterByKeys(ModelKeys mode, NormalKeys key)//依据组合键，删除热键
         {
             foreach (RegisterInfo info in RegisterList)
             {
