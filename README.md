@@ -60,12 +60,13 @@
 <details id="方法表GHK">
 <summary>方法表</summary>
 
-| 方法名       | 参数          | 描述               |
-|--------------|---------------|--------------------|
-| Awake        | void          | 激活        |
-| Destroy      | void          | 销毁   |
-| Add          | ( ModelKeys , NormalKeys , KeyInvoke_Void )       | 注册热键，它的处理函数是无参、无返回值的         |
-| Add          | ( ModelKeys , NormalKeys , KeyInvoke_Return )     | 注册热键，它的处理函数是无参、有返回值的         |
+| 方法名             | 参数                                                                             | 返回值            | 描述               |
+|--------------------|----------------------------------------------------------------------------------|-------------------|--------------------|
+| Awake              |                                                                                  |                   | 激活        |
+| Destroy            |                                                                                  |                   | 销毁   |
+| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   | ( bool , string ) | 注册热键，它的处理函数是无参、无返回值的         |
+| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )                   |                   | 注册热键，它的处理函数是无参、有返回值的         |
+| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   |                   | 注册热键，它的处理函数是无参、有返回值的         |
 
 </details>
 
@@ -84,12 +85,12 @@
 <details id="方法表BR">
 <summary>方法表</summary>
 
-| 方法名       | 参数                   | 描述               |
-|--------------|------------------------|--------------------|
-| Awake        | void                   | 激活        |
-| Destroy      | void                   | 销毁   |
-| Binding      | KeyInvoke_Void         | 要求传递一个无参、无返回值的函数签名，任何无参、无返回值的热键处理函数触发时，自动调用此函数           |
-| Binding      | KeyInvoke_Return       | 要求传递一个无参、有返回值object的函数签名，接收到任何热键处理函数返回的object时，自动调用此函数             |
+| 方法名       | 参数                   | 返回值    | 描述               |
+|--------------|------------------------|-----------|--------------------|
+| Awake        |                        |           | 激活        |
+| Destroy      |                        |           | 销毁   |
+| Binding      | KeyInvoke_Void         |           | 要求传递一个无参、无返回值的函数签名，任何无参、无返回值的热键处理函数触发时，自动调用此函数           |
+| Binding      | KeyInvoke_Return       |           | 要求传递一个无参、有返回值object的函数签名，接收到任何热键处理函数返回的object时，自动调用此函数             |
 
 </details>
 
@@ -108,11 +109,11 @@
 <details id="方法表RI">
 <summary>方法表</summary>
 
-| 方法名              | 参数                                                                 | 描述               |
-|---------------------|----------------------------------------------------------------------|--------------------|
-|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |初始化构造函数      |
-|SuccessRegistration  | void                                                                 |在注册成功时调用，返回注册消息string      |
-|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        |在注册失败时调用，返回注册消息string      |
+| 方法名              | 参数                                                                 | 返回值    | 描述               |
+|---------------------|----------------------------------------------------------------------|-----------|--------------------|
+|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           |初始化构造函数      |
+|SuccessRegistration  |                                                                      | string    |在注册成功时调用，返回注册消息string      |
+|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    |在注册失败时调用，返回注册消息string      |
 
 </details>
 
