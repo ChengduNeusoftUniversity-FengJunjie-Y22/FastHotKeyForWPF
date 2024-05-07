@@ -6,19 +6,19 @@
   - [视频教程](#视频教程)
 
 - [GlobalHotKey类](#GlobalHotKey类)
-  - [方法表](#方法表)
-  - [参数表](#参数表)
-  - [使用示例](#使用示例)
+  - [方法表](#方法表GHK)
+  - [参数表](#参数表GHK)
+  - [使用示例](#使用示例GHK)
 
 - [BindingRef类](#BindingRef类)
-  - [方法表](#方法表)
-  - [参数表](#参数表)
-  - [使用示例](#使用示例)
+  - [方法表](#方法表BR)
+  - [参数表](#参数表BR)
+  - [使用示例](#使用示例BR)
 
 - [RegisterInfo类](#RegisterInfo类)
-  - [方法表](#方法表)
-  - [参数表](#参数表)
-  - [使用示例](#使用示例)
+  - [方法表](#方法表RI)
+  - [参数表](#参数表RI)
+  - [使用示例](#使用示例RI)
 
 ## 项目简介
 
@@ -39,48 +39,47 @@
 
 ## GlobalHotKey类
 
-<details>
+<details id="方法表GHK">
 <summary>方法表</summary>
 
 </details>
 
-<details>
+<details id="参数表GHK">
 <summary>参数表</summary>
 
 </details>
 
-<details>
+<details id="使用示例GHK">
 <summary>使用示例</summary>
 
 ## BindingRef类
 
-<details>
+<details id="方法表BR">
 <summary>方法表</summary>
 
 </details>
 
-<details>
+<details id="方法表BR">
 <summary>参数表</summary>
 
 </details>
 
-<details>
+<details id="方法表BR">
 <summary>使用示例</summary>
 
 ## RegisterInfo类
 
-<details>
+<details id="方法表RI">
 <summary>方法表</summary>
 
 </details>
 
-<details>
+<details id="参数表RI">
 <summary>参数表</summary>
 
 </details>
 
-<details>
+<details id="使用示例RI">
 <summary>使用示例</summary>
 
-```csharp
-// 示例代码待填充
+</details>
