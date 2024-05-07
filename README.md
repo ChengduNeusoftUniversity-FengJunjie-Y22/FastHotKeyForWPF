@@ -12,8 +12,8 @@
 
 - [BindingRef类](#BindingRef类)
   - [方法表](#方法表BR)
-  - [参数表](#参数表BR)
-  - [使用示例](#使用示例BR)
+  - [属性表](#参数表BR)
+  - [其它](#使用示例BR)
 
 - [RegisterInfo类](#RegisterInfo类)
   - [方法表](#方法表RI)
@@ -176,12 +176,15 @@ namespace TestForHotKeyDll
 </details>
 
 <details id="参数表BR">
-<summary>参数表</summary>
+<summary>属性表</summary>
 
+| 属性名              | 类型                                                                 | 权限            | 描述               |
+|---------------------|----------------------------------------------------------------------|-----------------|--------------------|
+| Value               | object?                                                              | public          | 监测到的最新值     |
 </details>
 
 <details id="使用示例BR">
-<summary>使用示例</summary>
+<summary>其它</summary>
 
 </details>
 
