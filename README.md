@@ -1,21 +1,21 @@
 # FastHotKeyForWPF文档
-
-- [项目简介](#项目简介)
+## 目录
+- [项目简介](##项目简介)
   - [功能](#功能)
   - [作者](#作者)
   - [视频教程](#视频教程)
 
-- [GlobalHotKey类](#GlobalHotKey类)
+- [GlobalHotKey类](##GlobalHotKey类)
   - [方法表](#方法表)
   - [参数表](#参数表)
   - [使用示例](#使用示例)
 
-- [BindingRef类](#BindingRef类)
+- [BindingRef类](##BindingRef类)
   - [方法表](#方法表)
   - [参数表](#参数表)
   - [使用示例](#使用示例)
 
-- [RegisterInfo类](#RegisterInfo类)
+- [RegisterInfo类](##RegisterInfo类)
   - [方法表](#方法表)
   - [参数表](#参数表)
   - [使用示例](#使用示例)
