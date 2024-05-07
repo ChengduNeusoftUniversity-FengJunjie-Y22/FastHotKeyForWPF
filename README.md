@@ -88,7 +88,7 @@
 |--------------|------------------------|--------------------|
 | Awake        | void                   | 激活        |
 | Destroy      | void                   | 销毁   |
-| Binding      | KeyInvoke_Void         | 要求传递一个无参、无返回值object的函数签名，任何无参、无返回值的热键处理函数触发时，自动调用此函数           |
+| Binding      | KeyInvoke_Void         | 要求传递一个无参、无返回值的函数签名，任何无参、无返回值的热键处理函数触发时，自动调用此函数           |
 | Binding      | KeyInvoke_Return       | 要求传递一个无参、有返回值object的函数签名，接收到任何热键处理函数返回的object时，自动调用此函数             |
 
 </details>
