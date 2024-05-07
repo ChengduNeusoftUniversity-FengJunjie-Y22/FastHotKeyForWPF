@@ -52,6 +52,8 @@
 <details id="使用示例GHK">
 <summary>使用示例</summary>
 
+</details>
+
 ## BindingRef类
 
 <details id="方法表BR">
@@ -66,6 +68,8 @@
 
 <details id="方法表BR">
 <summary>使用示例</summary>
+
+</details>
 
 ## RegisterInfo类
 
