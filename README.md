@@ -61,13 +61,15 @@
 <details id="方法表GHK">
 <summary>方法表</summary>
 
-| 方法名             | 参数                                                                             | 返回值                 | 描述               |
-|--------------------|----------------------------------------------------------------------------------|------------------------|--------------------|
-| Awake              |                                                                                  |                        | 激活               |
-| Destroy            |                                                                                  |                        | 销毁               |
-| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   | Tuple( bool , string ) | 注册热键，它的处理函数是无参、无返回值的         |
-| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )                   |                        | 依据组合键查找对应的处理函数，并替换为新的处理函数         |
-| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )                   |                        | 依据现有处理函数，查找能触发它的组合键，并替换为新的组合键 |
+| 方法名             | 参数                                                          | 返回值                 | 权限            | 描述                                                       |
+|--------------------|---------------------------------------------------------------|------------------------|-----------------|------------------------------------------------------------|
+| Awake              |                                                               |                        | public static   | 激活                                                       |
+| Destroy            |                                                               |                        | public static   | 销毁                                                       |
+| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )| Tuple( bool , string ) | public static   | 注册热键，它的处理函数是无参、无返回值的                   |
+| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )|                        | public static   | 依据组合键查找对应的处理函数，并替换为新的处理函数         |
+| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )|                        | public static   | 依据现有处理函数，查找能触发它的组合键，并替换为新的组合键 |
+| Clear              |                                                               |                        | public static   | 清空热键，但不解除钩子                                     |
+| DeleteById         | int                                                           |                        | public static   | 依据注册编号来删除注册的热键                               |
 
 </details>
 
@@ -87,12 +89,12 @@
 <details id="方法表BR">
 <summary>方法表</summary>
 
-| 方法名       | 参数                                 | 返回值    | 描述                                                                                                  |
-|--------------|--------------------------------------|-----------|-------------------------------------------------------------------------------------------------------|
-| Awake        |                                      |           | 激活，当你使用GlobalHotKey.Awake()时，会自动激活一次                                                  |
-| Destroy      |                                      |           | 销毁                                                                                                  |
-| Binding      | KeyInvoke_Void / KeyInvoke_Return    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
-
+| 方法名       | 参数              | 返回值    | 权限            | 描述                                                                                                  |
+|--------------|-------------------|-----------|-----------------|-------------------------------------------------------------------------------------------------------|
+| Awake        |                   |           | public static   | 激活，当你使用GlobalHotKey.Awake()时，会自动激活一次                                                  |
+| Destroy      |                   |           | public static   | 销毁                                                                                                  |
+| BindingEvent | KeyInvoke_Void    |           | public static   | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
+| Update       | object?           |           | private         | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
 </details>
 
 <details id="参数表BR">
@@ -110,11 +112,11 @@
 <details id="方法表RI">
 <summary>方法表</summary>
 
-| 方法名              | 参数                                                                 | 返回值    | 描述                       |
-|---------------------|----------------------------------------------------------------------|-----------|----------------------------|
-|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           |初始化构造函数              |
-|SuccessRegistration  |                                                                      | string    |在注册成功时调用注册信息    |
-|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    |在注册失败时调用注册信息    |
+| 方法名              | 参数                                                                 | 返回值    | 权限            | 描述                       |
+|---------------------|----------------------------------------------------------------------|-----------|-----------------|----------------------------|
+|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           | public          |初始化构造函数              |
+|SuccessRegistration  |                                                                      | string    | public          |在注册成功时调用注册信息    |
+|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    | public static   |在注册失败时调用注册信息    |
 </details>
 
 <details id="参数表RI">
@@ -127,8 +129,8 @@
 | Normal              | enum:uint NormalKeys                                                 | public readonly | 一般键             |
 | FunctionType        | enum:uint FunctionTypes                                              | public readonly | 处理函数类型       |
 | Name                | string                                                               | public readonly | 处理函数的函数名   |
-| FunctionVoid        | delegate KeyInvoke_Void                                              | public          | 存放处理函数       |
-| FunctionReturn      | delegate KeyInvoke_Return                                            | public          | 存放处理函数       |
+| FunctionVoid        | delegate KeyInvoke_Void                                              | public          | 处理函数           |
+| FunctionReturn      | delegate KeyInvoke_Return                                            | public          | 处理函数           |
 </details>
 
 <details id="使用示例RI">
