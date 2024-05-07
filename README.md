@@ -22,7 +22,7 @@
 
 ## 项目简介
 
-<details id="功能" open>
+<details id="功能">
 <summary>功能</summary>
 
 ### 这是一款WPF类库项目，旨在提供更便捷的方式来管理全局热键
@@ -33,7 +33,7 @@
 
 </details>
 
-<details id="作者" open>
+<details id="作者">
 <summary>作者</summary>
 
 ### 关于作者本人
@@ -45,7 +45,7 @@
 
 </details>
 
-<details id="获取此类库" open>
+<details id="获取此类库">
 <summary>获取此类库</summary>
 
 ### NuGet
@@ -57,60 +57,58 @@
 
 ## GlobalHotKey类
 
-<details id="方法表GHK" open>
+<details id="方法表GHK">
 <summary>方法表</summary>
 
-| 类名         | 方法名       | 参数          | 描述          |
-|--------------|--------------|---------------|---------------|
-| GlobalHotKey | Register     | int id        | 注册全局热键   |
-| GlobalHotKey | Unregister   | int id        | 取消注册全局热键 |
-| BindingRef   | Bind         | Key key       | 绑定按键       |
-| BindingRef   | Unbind       | Key key       | 解绑按键       |
-| RegisterInfo | GetModifiers |               | 获取修改键列表  |
-| RegisterInfo | GetKeys      |               | 获取绑定的按键列表 |
+| 方法名       | 参数          | 描述               |
+|--------------|---------------|--------------------|
+| Awake        | void          | 激活        |
+| Destroy      | void          | 销毁   |
+| Add         | ( ModelKeys , NormalKeys , KeyInvoke_Void )       | 注册热键，它的处理函数是无参、无返回值的           |
+| Add       | ( ModelKeys , NormalKeys , KeyInvoke_Return )       | 注册热键，它的处理函数是无参、有返回值的           |
 
 </details>
 
-<details id="参数表GHK" open>
+<details id="参数表GHK">
 <summary>参数表</summary>
 
 </details>
 
-<details id="使用示例GHK" open>
+<details id="使用示例GHK">
 <summary>使用示例</summary>
 
 </details>
 
 ## BindingRef类
 
-<details id="方法表BR" open>
+<details id="方法表BR">
 <summary>方法表</summary>
 
 </details>
 
-<details id="参数表BR" open>
+<details id="参数表BR">
 <summary>参数表</summary>
 
 </details>
 
-<details id="使用示例BR" open>
+<details id="使用示例BR">
 <summary>使用示例</summary>
 
 </details>
 
 ## RegisterInfo类
 
-<details id="方法表RI" open>
+<details id="方法表RI">
 <summary>方法表</summary>
 
 </details>
 
-<details id="参数表RI" open>
+<details id="参数表RI">
 <summary>参数表</summary>
 
 </details>
 
-<details id="使用示例RI" open>
+<details id="使用示例RI">
 <summary>使用示例</summary>
 
 </details>
