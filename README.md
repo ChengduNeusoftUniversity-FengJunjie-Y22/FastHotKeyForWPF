@@ -1,5 +1,10 @@
-# FastHotKeyForWPF文档
-## 目录
+# FastHotKeyForWPF
+[github][1]。
+[gitee][2]。
+
+[1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22
+[2]: https://gitee.com/CNU-FJj-Y22
+### 目录
 - [项目简介](#项目简介)
   - [功能](#功能)
   - [作者](#作者)
@@ -80,7 +85,7 @@
 |---------------------|--------------------------------|--------------------------------------|-----------------|------------------------------------------------------------------|
 | IsDeBug             | bool                           | false                                | public static   | 是否进入调试模式（部分过程将使用MessageBox输出过程值）           |
 | IsUpdate            | bool                           | true                                 | public static   | 是否实时监测返回值                                               |
-| HOTKEY_ID           | int                            | 2004                                 | public static   | 第一个热键的注册编号                                             |
+| HOTKEY_ID           | int                            | 2004                                 | public static   | 第一个热键的注册编号，只建议在所有注册操作开始前修改一次         |
 </details>
 
 <details id="使用示例GHK">
