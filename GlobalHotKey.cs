@@ -243,14 +243,14 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public static void RemoveExistRegisterByFunction(KeyInvoke_Void work)//清除一个函数的所有触发快捷键
+        public static void DeleteByFunction(KeyInvoke_Void work)//清除一个函数的所有触发快捷键
         {
             if (Instance != null)
             {
                 Instance.RemoveExistRegisterByFunction_Void(work);
             }
         }
-        public static void RemoveExistRegisterByFunction(KeyInvoke_Return work)//清除一个函数的所有触发快捷键
+        public static void DeleteByFunction(KeyInvoke_Return work)//清除一个函数的所有触发快捷键
         {
             if (Instance != null)
             {

@@ -75,6 +75,7 @@
 | EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )|                        | public static   | 依据现有处理函数，查找能触发它的组合键，并替换为新的组合键 |
 | Clear              |                                                               |                        | public static   | 清空热键，但不解除钩子                                     |
 | DeleteById         | int                                                           |                        | public static   | 依据注册编号来删除注册的热键                               |
+| DeleteByFunction   | KeyInvoke_Void / KeyInvoke_Return                             |                        | public static   | 一个函数允许由多个热键触发，调用该函数可清除一个函数的所有触发组合键 |
 
 </details>
 
