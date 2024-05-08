@@ -128,7 +128,9 @@ namespace TestForHotKeyDll
 ```
 
 #### Ⅱ 以下代码演示了如何使用Add()注册热键、如何使用EditHotKey_Keys()与EditHotKey_Function()修改热键
-##### 最终，按下Alt+E可以触发自定义的Test2()函数
+##### 注意:
+##### (1)在你使用Add()函数注册热键时，若这个按键组合已经注册过了，则新的会覆盖旧的，且注册ID不同于旧的。
+##### (2)一个处理函数可以注册多个热键，但一个按键组合只能注册一个热键，EditHotKey_Keys()本质上是先根据函数名找到第一个对应的按键组合，然后调用Add()去重新注册 
 ```csharp
 using System.Windows;
 using FastHotKeyForWPF;
@@ -175,8 +177,7 @@ namespace TestForHotKeyDll
 }
 ```
 
-#### Ⅲ 以下代码演示了如何根据函数签名，删除所有与之对应的热键
-##### 也是刚好说一下，实际开发中，不会允许一个热键与多个处理函数绑定，但是允许多个热键指向同一个处理函数，所以才需要这种删除机制。在你使用Add()函数注册热键时，若这个按键组合已经注册过了，则新的会覆盖旧的，且注册ID不同于旧的。
+#### Ⅲ 以下代码演示了如何使用DeleteByFunction()销毁有关于一个函数的所有热键
 ```csharp
 using System.Windows;
 using FastHotKeyForWPF;
