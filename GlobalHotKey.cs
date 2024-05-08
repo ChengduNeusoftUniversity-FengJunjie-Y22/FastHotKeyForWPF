@@ -243,6 +243,20 @@ namespace FastHotKeyForWPF
             }
         }
 
+        public static void RemoveExistRegisterByFunction(KeyInvoke_Void work)//清除一个函数的所有触发快捷键
+        {
+            if (Instance != null)
+            {
+                Instance.RemoveExistRegisterByFunction_Void(work);
+            }
+        }
+        public static void RemoveExistRegisterByFunction(KeyInvoke_Return work)//清除一个函数的所有触发快捷键
+        {
+            if (Instance != null)
+            {
+                Instance.RemoveExistRegisterByFunction_Return(work);
+            }
+        }
 
 
         #region 动态资源
@@ -484,6 +498,38 @@ namespace FastHotKeyForWPF
                 }
             }
             return -1;
+        }
+
+        public void RemoveExistRegisterByFunction_Void(KeyInvoke_Void work)//依据函数清除所有组合键
+        {
+            List<int> target = new List<int>();
+            foreach (RegisterInfo info in RegisterList)
+            {
+                if (info.FunctionVoid == work)
+                {
+                    target.Add(info.RegisterID);
+                }
+            }
+            foreach (int id in target)
+            {
+                RemoveExistRegisterByID(id);
+            }
+        }
+
+        public void RemoveExistRegisterByFunction_Return(KeyInvoke_Return work)//依据函数清除所有组合键
+        {
+            List<int> target = new List<int>();
+            foreach (RegisterInfo info in RegisterList)
+            {
+                if (info.FunctionReturn == work)
+                {
+                    target.Add(info.RegisterID);
+                }
+            }
+            foreach (int id in target)
+            {
+                RemoveExistRegisterByID(id);
+            }
         }
         #endregion
     }
