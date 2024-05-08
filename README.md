@@ -31,23 +31,23 @@
 <details id="功能">
 <summary>功能</summary>
 
-#### 这是一款WPF类库项目，旨在提供更便捷的方式来管理全局热键
+#### 这是一款WPF类库项目，旨在用一种更优雅的方式管理WPF全局热键
 #### 特点
-##### 一句话式的功能实现
-##### 可将函数签名直接注册进快捷键
-##### 自带一套数据绑定，同样可以将一个函数签名绑定上去，以便在数据发生更新时自动调用绑定的函数
+##### (1)功能函数的使用方式非常简便
+##### (2)热键的处理函数可高度自定义
+##### (3)具备实时监测机制
 
 </details>
 
 <details id="作者">
 <summary>作者</summary>
 
-#### 关于作者本人
-##### 写这个项目的时候作者在上大二，一般都是兴致来了就维护一下项目，正常来说会泡在二游里
-#### 联系方式
-##### Bilibili:"真的不来一杯嘛"
-##### QQ:2789083329
-##### WeChat:WeC_FZJSOP4996
+##### 关于作者本人
+###### 写这个项目的时候作者在上大二，一般都是兴致来了就维护一下项目，正常来说会泡在二游里
+##### 联系方式
+###### Bilibili: "真的不来一杯嘛"
+###### QQ: 2789083329
+###### WeChat: WeC_FZJSOP4996
 
 </details>
 
@@ -55,14 +55,13 @@
 <summary>获取此类库</summary>
 
 #### NuGet
-##### 目前已经可以直接搜索到了，但此方法获取到的库无法查看XML注释文档，鼠标放在类名上是不会有提示词的，不过你可以照着这个文档用
+##### 解决方案资源管理器 => 右键项目 => 管理NuGet程序包 => 搜索FastHotKeyForWPF => 安装最新版 （需要修改项目的目标框架属性为.NET 8.0）
 #### Github & Gitee
-##### 下载完整项目，并将此类库项目添加到需要使用此类库的项目中，然后在解决方案资源管理器中引用你添加的类库项目
+##### 下载Zip => 解压 => 将本项目与WPF项目放在同一个解决方案下 => 右键引用本项目
 
 </details>
 
 ## 前置定义
-#### 提前了解这些定义可以帮助你更快上手
 ##### Ⅰ 【enum ModelKeys : uint】 快捷键的修饰部分，目前支持以Ctrl\Alt作为修饰
 ##### Ⅱ 【enum NormalKeys : uint】 [Model+Normal]构成一个热键,目前支持【A-Z】【F1-F12】【0-9】【Up\Down\Left\Right】【Space】
 ##### Ⅲ 【enum FunctionTypes】 函数的返回值类型，Void\Return(有\无返回值)
@@ -101,7 +100,7 @@
 <summary>示例</summary>
 
 #### Ⅰ 以下代码演示了如何使用Awake()与Destroy()管理GlobalHotKey的激活与销毁
-##### 当然，你也可以在其它地方使用这两个方法，但是需要注意 : Awake()函数需要在MainWindow的句柄已经存在时，才去调用。这里重写OnSourceInitialized与OnClosed是作者比较推荐的方案
+##### 当然，你也可以在其它地方使用这两个方法，但是需要注意 : Awake()函数需要在MainWindow的句柄已经存在时，才去调用。这里重写OnSourceInitialized与OnClosed是比较推荐的方案
 ```csharp
 using FastHotKeyForWPF;
 
@@ -350,5 +349,5 @@ namespace TestForHotKeyDll
 <details id="使用示例RI">
 <summary>注意</summary>
 
-##### 一般来说，不会直接使用RegisterInfo对象的方法，它的存在是为了便于在 GlobalHotKey中管理热键信息的登记、查询、修改。具体而言,当GlobalHotKey激活后，可以使用它的静态方法HotKeyInfo获取当前注册在列的所有热键消息的集合List,然后去访问这个集合中的RegisterInfo对象的属性。
+##### 一般来说，不会直接使用RegisterInfo的方法(无论是否为public static)，它的存在是为了便于在 GlobalHotKey中管理热键信息的登记、查询、修改。具体而言,当GlobalHotKey激活后，可以使用GlobalHotKey的静态方法HotKeyInfo()获取当前注册在列的所有热键消息的集合List,然后去访问这个集合中的RegisterInfo对象的属性。
 </details>
