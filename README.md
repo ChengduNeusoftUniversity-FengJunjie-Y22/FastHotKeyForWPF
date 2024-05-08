@@ -1,7 +1,7 @@
 # FastHotKeyForWPF
 #### Select a link to view the full repository and documentation
--[github][1]
--[gitee][2]
+- [github][1]
+- [gitee][2]
 
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22
 [2]: https://gitee.com/CNU-FJj-Y22
