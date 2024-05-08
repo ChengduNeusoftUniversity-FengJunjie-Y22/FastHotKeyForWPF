@@ -61,13 +61,13 @@
 
 </details>
 
-## 前置定义项
-#### 关于enum\delegate等内容的定义说明
-##### Ⅰ enum ModelKeys : uint 快捷键的修饰部分，目前支持以Ctrl\Alt作为修饰
-##### Ⅱ enum NormalKeys : uint 【Model+Normal】构成一个热键,目前支持【A-Z】【F1-F12】【0-9】【Up\Down\Left\Right】【Space】
-##### Ⅲ enum FunctionTypes 函数的返回值类型，Void\Return(有\无返回值)
-##### Ⅳ delegate void KeyInvoke_Void() 支持将无参、无返回值的函数的签名作为参数，注册为热键的处理函数
-##### Ⅴ delegate object KeyInvoke_Return() 支持将无参、返回一个object的函数的签名作为参数，注册为热键的处理函数
+## 前置定义
+#### 提前了解这些定义可以帮助你更快上手
+##### Ⅰ 【enum ModelKeys : uint】 快捷键的修饰部分，目前支持以Ctrl\Alt作为修饰
+##### Ⅱ 【enum NormalKeys : uint】 [Model+Normal]构成一个热键,目前支持【A-Z】【F1-F12】【0-9】【Up\Down\Left\Right】【Space】
+##### Ⅲ 【enum FunctionTypes】 函数的返回值类型，Void\Return(有\无返回值)
+##### Ⅳ 【delegate void KeyInvoke_Void()】 支持将无参、无返回值的函数的签名作为参数，注册为热键的处理函数
+##### Ⅴ 【delegate object KeyInvoke_Return()】 支持将无参、返回一个object的函数的签名作为参数，注册为热键的处理函数
 
 ## GlobalHotKey类
 #### 全局热键注册、修改、查询、销毁的主要实现
@@ -169,6 +169,68 @@ namespace TestForHotKeyDll
         private object Test2()
         {
             return "2";
+        }
+
+    }
+}
+```
+
+#### Ⅲ 以下代码演示了如何根据函数签名，删除所有与之对应的热键
+##### 也是刚好说一下，实际开发中，不会允许一个热键与多个处理函数绑定，但是允许多个热键指向同一个处理函数，所以才需要这种删除机制。在你使用Add()函数注册热键时，若这个按键组合已经注册过了，则新的会覆盖旧的，且注册ID不同于旧的。
+```csharp
+using System.Windows;
+using FastHotKeyForWPF;
+
+namespace TestForHotKeyDll
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            GlobalHotKey.Awake();
+
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, Test1);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F2, Test1);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F3, Test1);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F4, Test1);
+            //允许多个热键触发同一函数
+
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F5, Test2);
+            //这是Test1的对照组
+
+            BindingRef.BindingEvent(WhileUpdate);
+
+            GlobalHotKey.DeleteByFunction(Test1);
+            //删除指定函数名下所有的热键，这一步操作执行完，就只剩下CTRL+F5 => Test2() 了
+
+            base.OnSourceInitialized(e);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            GlobalHotKey.Destroy();
+            base.OnClosed(e);
+        }
+        private object Test1()
+        {
+            return "测试1";
+        }
+
+        private object Test2()
+        {
+            return "测试2";
+        }
+
+        private void WhileUpdate()
+        {
+            foreach (var info in GlobalHotKey.HotKeyInfo())
+            {
+                MessageBox.Show(info.SuccessRegistration());
+                //最后只会存在CTRL+F5 => Test2() ,Test1()相关的全部热键均被清除
+            }
         }
 
     }
