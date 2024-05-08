@@ -3,8 +3,8 @@
 - [github][1]
 - [gitee][2]
 
-[1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22
-[2]: https://gitee.com/CNU-FJj-Y22
+[1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
+[2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 ### 目录
 - [项目简介](#项目简介)
   - [功能](#功能)
