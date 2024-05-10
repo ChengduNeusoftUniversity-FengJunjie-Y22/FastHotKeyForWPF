@@ -6,8 +6,12 @@ namespace FastHotKeyForWPF
     {
         public static T GetComponent<T>() where T : class, new()
         {
-            T component = new T();
-            return component;
+            return new T();
+        }
+
+        public static T GetComponent<T>(SizeInfo info) where T : class, new()
+        {
+            return new T();
         }
 
         public class KeySelectBox : TextBox
