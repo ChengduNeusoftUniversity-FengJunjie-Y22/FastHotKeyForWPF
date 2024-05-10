@@ -351,3 +351,10 @@ namespace TestForHotKeyDll
 
 ##### 一般来说，不会直接使用RegisterInfo的方法(无论是否为public static)，它的存在是为了便于在 GlobalHotKey中管理热键信息的登记、查询、修改。具体而言,当GlobalHotKey激活后，可以使用GlobalHotKey的静态方法HotKeyInfo()获取当前注册在列的所有热键消息的集合List,然后去访问这个集合中的RegisterInfo对象的属性。
 </details>
+
+## PrefabComponent类 ( 测试ing，Nuget暂未更新 ) 
+#### 如果你想迅速制作一个页面用于设置快捷方式，那么你可以使用此类型提供的预制组件，这可能会提高这部分的开发效率
+###### 这些组件之间可以互相绑定成一对，并且可以与GlobalHotKey实时、自动地通信
+
+## ComponentInfo类 （ 测试ing，Nuget暂未更新 ）
+#### 存储一个预制组件的基础信息，一般来说，你可以在程序中先定义 ComponentInfo对象，随后使用这个对象来批量构成PrefabComponent对象
