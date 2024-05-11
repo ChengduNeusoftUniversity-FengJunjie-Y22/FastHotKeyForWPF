@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 
 namespace FastHotKeyForWPF
 {
-    /// <summary>
-    /// 【注册消息】使用说明:
-    /// <para></para>
-    /// </summary>
     public class RegisterInfo
     {
         public RegisterInfo(int id, ModelKeys model, NormalKeys key, KeyInvoke_Void work)
