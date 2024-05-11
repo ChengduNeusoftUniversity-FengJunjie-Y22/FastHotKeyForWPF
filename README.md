@@ -1,45 +1,40 @@
 # FastHotKeyForWPF
-#### Select a link to view the full repository and documentation
+#### NuGet文档已停止更新，请前往github或gitee查看
 - [github][1]
 - [gitee][2]
 
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
-### 目录
+### 目录 （带 ☆ 的类型通常提供了大部分的核心功能，较为常用）
 - [项目简介](#项目简介)
-  - [功能](#功能)
-  - [作者](#作者)
-  - [获取此类库](#获取此类库)
 
-- [GlobalHotKey类](#GlobalHotKey类)
-  - [方法表](#方法表GHK)
-  - [可选项](#参数表GHK)
-  - [示例](#使用示例GHK)
+- [☆ GlobalHotKey类](#GlobalHotKey类)
 
-- [BindingRef类](#BindingRef类)
-  - [方法表](#方法表BR)
-  - [属性表](#参数表BR)
-  - [示例](#使用示例BR)
+- [☆ BindingRef类](#BindingRef类)
+
+- [☆ PrefabComponent类](#PrefabComponent类)
 
 - [RegisterInfo类](#RegisterInfo类)
-  - [方法表](#方法表RI)
-  - [属性表](#参数表RI)
-  - [注意](#使用示例RI)
+
+- [ComponentInfo类](#ComponentInfo类)
+
+- [KeySelectBox类](#KeySelectBox类)
 
 ## 项目简介
 
-<details id="功能">
+<details>
 <summary>功能</summary>
 
 #### 这是一款WPF类库项目，旨在用一种更优雅的方式管理WPF全局热键
 #### 特点
-##### (1)功能函数的使用方式非常简便
-##### (2)热键的处理函数可高度自定义
-##### (3)具备实时监测机制
+##### (1)功能函数简洁易用
+##### (2)热键处理函数可高度自定义
+##### (3)可自动监测热键处理函数的返回值
+##### (4)提供预制的【组件】，可用于快速构建快捷键的设置界面
 
 </details>
 
-<details id="作者">
+<details>
 <summary>作者</summary>
 
 ##### 关于作者本人
@@ -51,7 +46,7 @@
 
 </details>
 
-<details id="获取此类库">
+<details>
 <summary>获取此类库</summary>
 
 #### NuGet
@@ -70,7 +65,7 @@
 
 ## GlobalHotKey类
 #### 全局热键注册、修改、查询、销毁的主要实现
-<details id="方法表GHK">
+<details>
 <summary>方法表</summary>
 
 | 方法名             | 参数                                                          | 返回值                 | 权限            | 描述                                                       |
@@ -86,7 +81,7 @@
 
 </details>
 
-<details id="参数表GHK">
+<details>
 <summary>可选项</summary>
 
 | 属性名              | 类型                           | 默认                                 | 权限            | 描述                                                             |
@@ -96,7 +91,7 @@
 | HOTKEY_ID           | int                            | 2004                                 | public static   | 第一个热键的注册编号，只建议在所有注册操作开始前修改一次         |
 </details>
 
-<details id="使用示例GHK">
+<details>
 <summary>示例</summary>
 
 #### Ⅰ 以下代码演示了如何使用Awake()与Destroy()管理GlobalHotKey的激活与销毁
@@ -241,7 +236,7 @@ namespace TestForHotKeyDll
 
 ## BindingRef类
 #### 实时更新机制
-<details id="方法表BR">
+<details>
 <summary>方法表</summary>
 
 | 方法名       | 参数              | 返回值    | 权限            | 描述                                                                                                  |
@@ -252,7 +247,7 @@ namespace TestForHotKeyDll
 | Update       | object?           |           | private         | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
 </details>
 
-<details id="参数表BR">
+<details>
 <summary>属性表</summary>
 
 | 属性名              | 类型                                                                 | 权限            | 描述               |
@@ -260,7 +255,7 @@ namespace TestForHotKeyDll
 | Value               | object?                                                              | public static   | 监测到的最新值     |
 </details>
 
-<details id="使用示例BR">
+<details>
 <summary>示例</summary>
 
 #### 以下代码演示了实时更新机制的运用
@@ -320,9 +315,12 @@ namespace TestForHotKeyDll
 
 </details>
 
+## PrefabComponent类
+#### 如果你想迅速制作一个页面用于设置快捷方式，那么你可以使用此类型提供的预制组件
+
 ## RegisterInfo类
 #### 用于表示注册信息
-<details id="方法表RI">
+<details>
 <summary>方法表</summary>
 
 | 方法名              | 参数                                                                 | 返回值    | 权限            | 描述                       |
@@ -332,7 +330,7 @@ namespace TestForHotKeyDll
 |LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    | public static   |在注册失败时调用注册信息    |
 </details>
 
-<details id="参数表RI">
+<details>
 <summary>属性表</summary>
 
 | 属性名              | 类型                                                                 | 权限            | 描述               |
@@ -346,15 +344,14 @@ namespace TestForHotKeyDll
 | FunctionReturn      | delegate KeyInvoke_Return                                            | public          | 处理函数           |
 </details>
 
-<details id="使用示例RI">
+<details>
 <summary>注意</summary>
 
 ##### 一般来说，不会直接使用RegisterInfo的方法(无论是否为public static)，它的存在是为了便于在 GlobalHotKey中管理热键信息的登记、查询、修改。具体而言,当GlobalHotKey激活后，可以使用GlobalHotKey的静态方法HotKeyInfo()获取当前注册在列的所有热键消息的集合List,然后去访问这个集合中的RegisterInfo对象的属性。
 </details>
 
-## PrefabComponent类 ( 测试ing，Nuget暂未更新 ) 
-#### 如果你想迅速制作一个页面用于设置快捷方式，那么你可以使用此类型提供的预制组件，这可能会提高这部分的开发效率
-###### 这些组件之间可以互相绑定成一对，并且可以与GlobalHotKey实时、自动地通信
+## ComponentInfo类
+#### 一个预制组件的基本信息
 
-## ComponentInfo类 （ 测试ing，Nuget暂未更新 ）
-#### 存储一个预制组件的基础信息，一般来说，你可以在程序中先定义 ComponentInfo对象，随后使用这个对象来批量构成PrefabComponent对象
+## KeySelectBox类
+#### 继承自WPF的TextBox类,是PrefabComponent支持的组件类型之一
