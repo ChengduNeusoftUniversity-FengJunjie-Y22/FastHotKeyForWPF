@@ -1,5 +1,5 @@
 # FastHotKeyForWPF
-#### NuGet文档已停止更新，请前往github或gitee查看
+## ☆ NuGet documentation is no longer updated, please check out github or gitee
 - [github][1]
 - [gitee][2]
 
@@ -66,29 +66,30 @@
 ## GlobalHotKey类
 #### 全局热键注册、修改、查询、销毁的主要实现
 <details>
-<summary>方法表</summary>
+<summary>方法</summary>
 
-| 方法名             | 参数                                                          | 返回值                 | 权限            | 描述                                                       |
-|--------------------|---------------------------------------------------------------|------------------------|-----------------|------------------------------------------------------------|
-| Awake              |                                                               |                        | public static   | 激活                                                       |
-| Destroy            |                                                               |                        | public static   | 销毁                                                       |
-| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )| Tuple( bool , string ) | public static   | 注册热键，它的处理函数是无参、无返回值的                   |
-| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )|                        | public static   | 依据组合键查找对应的处理函数，并替换为新的处理函数         |
-| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )|                        | public static   | 依据现有处理函数，查找能触发它的组合键，并替换为新的组合键 |
-| Clear              |                                                               |                        | public static   | 清空热键，但不解除钩子                                     |
-| DeleteById         | int                                                           |                        | public static   | 依据注册编号来删除注册的热键                               |
-| DeleteByFunction   | KeyInvoke_Void / KeyInvoke_Return                             |                        | public static   | 一个函数允许由多个热键触发，调用该函数可清除一个函数的所有触发组合键 |
+| 方法名             | 参数                                                          | 返回值                 | 描述                                                       |
+|--------------------|---------------------------------------------------------------|------------------------|------------------------------------------------------------|
+| Awake              |                                                               |                        | 激活                                                       |
+| Destroy            |                                                               |                        | 销毁                                                       |
+| Add                | ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )| Tuple( bool , string ) | 注册热键，它的处理函数是无参、无返回值的                   |
+| EditHotKey_Keys    | ( KeyInvoke_Void / KeyInvoke_Return , ModelKeys , NormalKeys )|                        | 依据组合键查找对应的处理函数，并替换为新的处理函数         |
+| EditHotKey_Function| ( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )|                        | 依据现有处理函数，查找能触发它的组合键，并替换为新的组合键 |
+| Clear              |                                                               |                        | 清空热键，但不解除钩子                                     |
+| DeleteById         | int                                                           |                        | 依据注册编号来清除注册的热键                               |
+| DeleteByFunction   | KeyInvoke_Void / KeyInvoke_Return                             |                        | 依据函数签名来清除注册的热键 |
+| DeleteByKeys       | ( enum ModelKeys , enum NormalKeys )                          |                        | 依据热键组合来清除注册的热键 |
 
 </details>
 
 <details>
 <summary>可选项</summary>
 
-| 属性名              | 类型                           | 默认                                 | 权限            | 描述                                                             |
-|---------------------|--------------------------------|--------------------------------------|-----------------|------------------------------------------------------------------|
-| IsDeBug             | bool                           | false                                | public static   | 是否进入调试模式（部分过程将使用MessageBox输出过程值）           |
-| IsUpdate            | bool                           | true                                 | public static   | 是否实时监测返回值                                               |
-| HOTKEY_ID           | int                            | 2004                                 | public static   | 第一个热键的注册编号，只建议在所有注册操作开始前修改一次         |
+| 属性名              | 类型                           | 默认                                 | 描述                                                             |
+|---------------------|--------------------------------|--------------------------------------|------------------------------------------------------------------|
+| IsDeBug             | bool                           | false                                | 是否进入调试模式（部分过程将使用MessageBox输出过程值）           |
+| IsUpdate            | bool                           | true                                 | 是否实时监测返回值                                               |
+| HOTKEY_ID           | int                            | 2004                                 | 第一个热键的注册编号，只建议在所有注册操作开始前修改一次         |
 </details>
 
 <details>
@@ -237,22 +238,22 @@ namespace TestForHotKeyDll
 ## BindingRef类
 #### 实时更新机制
 <details>
-<summary>方法表</summary>
+<summary>方法</summary>
 
-| 方法名       | 参数              | 返回值    | 权限            | 描述                                                                                                  |
-|--------------|-------------------|-----------|-----------------|-------------------------------------------------------------------------------------------------------|
-| Awake        |                   |           | public static   | 激活，当你使用GlobalHotKey.Awake()时，会自动激活一次                                                  |
-| Destroy      |                   |           | public static   | 销毁                                                                                                  |
-| BindingEvent | KeyInvoke_Void    |           | public static   | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
-| Update       | object?           |           | private         | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
+| 方法名       | 参数              | 返回值    | 描述                                                                                                  |
+|--------------|-------------------|-----------|-------------------------------------------------------------------------------------------------------|
+| Awake        |                   |           | 激活，当你使用GlobalHotKey.Awake()时，会自动激活一次                                                  |
+| Destroy      |                   |           | 销毁                                                                                                  |
+| BindingEvent | KeyInvoke_Void    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
+| Update       | object?           |           | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
 </details>
 
 <details>
-<summary>属性表</summary>
+<summary>属性</summary>
 
-| 属性名              | 类型                                                                 | 权限            | 描述               |
-|---------------------|----------------------------------------------------------------------|-----------------|--------------------|
-| Value               | object?                                                              | public static   | 监测到的最新值     |
+| 属性名              | 类型                                                                 | 描述               |
+|---------------------|----------------------------------------------------------------------|--------------------|
+| Value               | object?                                                              | 监测到的最新值     |
 </details>
 
 <details>
@@ -317,31 +318,105 @@ namespace TestForHotKeyDll
 
 ## PrefabComponent类
 #### 如果你想迅速制作一个页面用于设置快捷方式，那么你可以使用此类型提供的预制组件
+<details>
+<summary>方法表</summary>
+
+###### 目前只提供了KeySelectBox组件
+
+| 方法名              | 参数                                                                 | 返回值    | 约束            | 描述                                               |
+|---------------------|----------------------------------------------------------------------|-----------|-----------------|----------------------------------------------------|
+|GetComponent         | < T >( )                                                             | T         | class , new()   |获取组件--默认的组件信息                            |
+|GetComponent         | < T >( ComponentInfo )                                               | T         | class , new()   |获取组件--指定字体大小颜色；指定背景色；指定Margin  |
+</details>
+
+<details>
+<summary>示例</summary>
+
+#### 以下代码演示了如何使用预制的组件来快速构成快捷键设置功能
+##### 最终你的页面中会出现两个KeySelectBox组件，它们自动完成了系列快捷键的管理工作
+
+```csharp
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using FastHotKeyForWPF;
+
+namespace TestDemo
+{
+    public partial class MainWindow : Window
+    {
+        private static KeySelectBox HotKey_1 = PrefabComponent.GetComponent<KeySelectBox>(new ComponentInfo(20, Brushes.Black, Brushes.Wheat, new Thickness()));
+        private static KeySelectBox HotKey_2 = PrefabComponent.GetComponent<KeySelectBox>(new ComponentInfo(20, Brushes.Black, Brushes.Wheat, new Thickness()));
+        //这是类库提供的组件，一般成对获取，用于接收快捷键组合
+
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            GlobalHotKey.Awake();
+
+            HotKey_1.UseFatherSize<StackPanel>();
+            HotKey_2.UseFatherSize<StackPanel>();
+            //应用父级容器的大小
+            //这里已经使用XAML定义了两个StackPanel容器，你也可以使用其它容器，但请确保这里填入正确的容器类型
+
+            HotKeyA.Children.Add(HotKey_1);
+            HotKeyB.Children.Add(HotKey_2);
+            //将组件加入容器HotKeyA与HotKeyB中
+
+            BindingRef.Connect(HotKey_1, HotKey_2, Test);
+            //建立连接，则这两个组件会自动注册、更新指向自定义Test函数的热键
+
+            BindingRef.DisConnect(HotKey_1);
+            //销毁连接，则注册的热键被销毁，自动注册、更新功能关闭
+            //对于连接双方，只需对其中一个组件使用销毁即可
+
+            base.OnSourceInitialized(e);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            GlobalHotKey.Destroy();
+            base.OnClosed(e);
+        }
+
+        private void Test()
+        {
+            MessageBox.Show("连接成功！");
+        }
+    }
+}
+```
+
+</details>
 
 ## RegisterInfo类
 #### 用于表示注册信息
 <details>
-<summary>方法表</summary>
+<summary>方法</summary>
 
-| 方法名              | 参数                                                                 | 返回值    | 权限            | 描述                       |
-|---------------------|----------------------------------------------------------------------|-----------|-----------------|----------------------------|
-|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           | public          |初始化构造函数              |
-|SuccessRegistration  |                                                                      | string    | public          |在注册成功时调用注册信息    |
-|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    | public static   |在注册失败时调用注册信息    |
+| 方法名              | 参数                                                                 | 返回值    | 描述                        |
+|---------------------|----------------------------------------------------------------------|-----------|-----------------------------|
+|RegisterInfo         |( int , ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )  |           | 初始化构造函数              |
+|SuccessRegistration  |                                                                      | string    | 在注册成功时调用注册信息    |
+|LoseRegistration     |( ModelKeys , NormalKeys , KeyInvoke_Void / KeyInvoke_Return )        | string    | 在注册失败时调用注册信息    |
 </details>
 
 <details>
-<summary>属性表</summary>
+<summary>属性</summary>
 
-| 属性名              | 类型                                                                 | 权限            | 描述               |
-|---------------------|----------------------------------------------------------------------|-----------------|--------------------|
-| RegisterID          | int                                                                  | public readonly | 注册编号           |
-| Model               | enum:uint ModelKeys                                                  | public readonly | 修饰键             |
-| Normal              | enum:uint NormalKeys                                                 | public readonly | 一般键             |
-| FunctionType        | enum:uint FunctionTypes                                              | public readonly | 处理函数类型       |
-| Name                | string                                                               | public readonly | 处理函数的函数名   |
-| FunctionVoid        | delegate KeyInvoke_Void                                              | public          | 处理函数           |
-| FunctionReturn      | delegate KeyInvoke_Return                                            | public          | 处理函数           |
+| 属性名              | 类型                                                                 | 描述               |
+|---------------------|----------------------------------------------------------------------|--------------------|
+| RegisterID          | int                                                                  | 注册编号           |
+| Model               | enum:uint ModelKeys                                                  | 修饰键             |
+| Normal              | enum:uint NormalKeys                                                 | 一般键             |
+| FunctionType        | enum:uint FunctionTypes                                              | 处理函数类型       |
+| Name                | string                                                               | 处理函数的函数名   |
+| FunctionVoid        | delegate KeyInvoke_Void                                              | 处理函数           |
+| FunctionReturn      | delegate KeyInvoke_Return                                            | 处理函数           |
 </details>
 
 <details>
@@ -352,6 +427,24 @@ namespace TestForHotKeyDll
 
 ## ComponentInfo类
 #### 一个预制组件的基本信息
+<details>
+<summary>方法</summary>
+
+| 方法名              | 类型                                                                 | 描述               |
+|---------------------|----------------------------------------------------------------------|--------------------|
+| ComponentInfo       |                                                                      | 实例化             |
+| ComponentInfo       | ( double , SolidColorBrush , SolidColorBrush , Thickness )           | 实例化（字体大小、字体颜色、背景色、Margin）             |
+</details>
+
+<details>
+<summary>属性</summary>
+
+| 属性名              | 类型                                                                 | 描述               |
+|---------------------|----------------------------------------------------------------------|--------------------|
+| Foreground          | SolidColorBrush                                                      | 字体大小           |
+| Background          | SolidColorBrush                                                      | 字体颜色           |
+| Margin              | Thickness                                                            | 相对位置           |
+</details>
 
 ## KeySelectBox类
 #### 继承自WPF的TextBox类,是PrefabComponent支持的组件类型之一
