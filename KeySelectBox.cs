@@ -219,7 +219,12 @@ namespace FastHotKeyForWPF
 
         public void UseStyle(string stylename)
         {
-            Style? style = (Style)FindResource(stylename);
+            Style? style = null;
+            try
+            {
+                style = (Style)FindResource(stylename);
+            }
+            catch { }
             if (style == null) return;
             Style = style;
             NewStyle = true;
