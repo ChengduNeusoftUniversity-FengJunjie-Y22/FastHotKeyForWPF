@@ -257,6 +257,13 @@ namespace FastHotKeyForWPF
                 Instance.RemoveExistRegisterByFunction_Return(work);
             }
         }
+        public static void DeleteByKeys(ModelKeys modelKeys, NormalKeys normalKeys)//依据组合键移除热键
+        {
+            if (Instance != null)
+            {
+                Instance.RemoveExistRegisterByKeys(modelKeys, normalKeys);
+            }
+        }
 
 
         #region 动态资源
