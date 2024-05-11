@@ -57,11 +57,21 @@
 </details>
 
 ## 前置定义
+
+<details>
+<summary>枚举</summary>
+
 ##### Ⅰ 【enum ModelKeys : uint】 快捷键的修饰部分，目前支持以Ctrl\Alt作为修饰
 ##### Ⅱ 【enum NormalKeys : uint】 [Model+Normal]构成一个热键,目前支持【A-Z】【F1-F12】【0-9】【Up\Down\Left\Right】【Space】
-##### Ⅲ 【enum FunctionTypes】 函数的返回值类型，Void\Return(有\无返回值)
-##### Ⅳ 【delegate void KeyInvoke_Void()】 支持将无参、无返回值的函数的签名作为参数，注册为热键的处理函数
-##### Ⅴ 【delegate object KeyInvoke_Return()】 支持将无参、返回一个object的函数的签名作为参数，注册为热键的处理函数
+##### Ⅲ 【enum FunctionTypes】 函数的返回值类型，Void\Return(无\有返回值)
+</details>
+
+<details>
+<summary>委托</summary>
+
+##### Ⅰ 【delegate void KeyInvoke_Void()】 支持将无参、无返回值的函数的签名作为参数，注册为热键的处理函数
+##### Ⅱ 【delegate object KeyInvoke_Return()】 支持将无参、返回一个object的函数的签名作为参数，注册为热键的处理函数
+</details>
 
 ## GlobalHotKey类
 #### 全局热键注册、修改、查询、销毁的主要实现
@@ -336,7 +346,7 @@ namespace TestForHotKeyDll
 <summary>示例</summary>
 
 #### 以下代码演示了如何使用预制的组件来快速构成快捷键设置功能
-##### 最终你的页面中会出现两个KeySelectBox组件，它们自动完成了系列快捷键的管理工作
+##### 最终你的页面中会出现两个KeySelectBox组件，它们自动完成快捷键的注册、变动
 
 ```csharp
 using System.Windows;
