@@ -119,6 +119,7 @@ namespace FastHotKeyForWPF
 
             private void WhileKeyDown(object sender, KeyEventArgs e)
             {
+                if (!KeyToUint.ContainsKey(e.Key)) { if (GlobalHotKey.IsDeBug) throw new Exception($"【{e.Key}】不是字典中的Key");return; }
                 CurrentKey = e.Key;
                 Text = e.Key.ToString();
             }
