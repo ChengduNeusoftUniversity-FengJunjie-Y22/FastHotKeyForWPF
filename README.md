@@ -246,6 +246,9 @@ namespace TestForHotKeyDll
 | Destroy      |                   |           | 销毁                                                                                                  |
 | BindingEvent | KeyInvoke_Void    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
 | Update       | object?           |           | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
+| Connect      | ( KeySelectBox , KeySelectBox , KeyInvoke_Void / KeyInvoke_Return  )           |           | 将两个组件、它们负责管理的处理函数相互连接，启用自动注册、更新机制 |
+| DisConnect   | KeySelectBox      |           | 取消组件之间的连接                                                      |
+| GetKeysFromConnection| KeySelectBox | Tuple( enum ModelKeys? , enum NormalKeys? )|尝试获取两个预制组件连接后构成的键盘组合|
 </details>
 
 <details>
