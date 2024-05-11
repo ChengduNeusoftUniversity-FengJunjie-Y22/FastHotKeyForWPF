@@ -23,7 +23,7 @@ namespace FastHotKeyForWPF
             Foreground = PrefabComponent.TempInfo.Foreground;
             Background = PrefabComponent.TempInfo.Background;
             Margin = PrefabComponent.TempInfo.Margin;
-            KeyDown += WhileKeyDown;
+            KeyUp += WhileKeyUp;
         }
 
         public T? GetKey<T>() where T : class
@@ -47,12 +47,13 @@ namespace FastHotKeyForWPF
             return null;
         }
 
-        private void WhileKeyDown(object sender, KeyEventArgs e)
+        private void WhileKeyUp(object sender, KeyEventArgs e)
         {
-            if (!PrefabComponent.KeyToUint.ContainsKey(e.Key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{e.Key}】"); return; }
-            CurrentKey = e.Key;
-            Text = e.Key.ToString();
-            if (GlobalHotKey.IsDeBug) { MessageBox.Show($"已更新为【{e.Key}】"); }
+            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
+            if (!PrefabComponent.KeyToUint.ContainsKey(key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{key}】"); return; }
+            CurrentKey = key;
+            Text = key.ToString();
+            if (GlobalHotKey.IsDeBug) { MessageBox.Show($"已更新为【{key}】"); }
             e.Handled = true;
         }
     }

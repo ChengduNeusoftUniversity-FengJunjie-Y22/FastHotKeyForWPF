@@ -63,6 +63,16 @@ namespace FastHotKeyForWPF
 
         { Key.F1, (uint)NormalKeys.F1 },
         { Key.F2, (uint)NormalKeys.F2 },
+        { Key.F3, (uint)NormalKeys.F3 },
+        { Key.F4, (uint)NormalKeys.F4 },
+        { Key.F5, (uint)NormalKeys.F5 },
+        { Key.F6, (uint)NormalKeys.F6 },
+        { Key.F7, (uint)NormalKeys.F7 },
+        { Key.F8, (uint)NormalKeys.F8 },
+        { Key.F9, (uint)NormalKeys.F9 },
+        { Key.F10, (uint)NormalKeys.F10 },
+        { Key.F11, (uint)NormalKeys.F11 },
+        { Key.F12, (uint)NormalKeys.F12 },
 
         };
 
