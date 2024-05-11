@@ -29,7 +29,7 @@ namespace FastHotKeyForWPF
         { Key.G, (uint)NormalKeys.G },
 
         { Key.H, (uint)NormalKeys.H },
-        { Key.Y, (uint)NormalKeys.Y },
+        { Key.I, (uint)NormalKeys.I },
         { Key.J, (uint)NormalKeys.J },
         { Key.K, (uint)NormalKeys.K },
         { Key.L, (uint)NormalKeys.L },

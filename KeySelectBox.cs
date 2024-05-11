@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace FastHotKeyForWPF
 {
@@ -48,9 +49,11 @@ namespace FastHotKeyForWPF
 
         private void WhileKeyDown(object sender, KeyEventArgs e)
         {
-            if (!PrefabComponent.KeyToUint.ContainsKey(e.Key)) { if (GlobalHotKey.IsDeBug) throw new Exception($"【{e.Key}】不是字典中的Key"); return; }
+            if (!PrefabComponent.KeyToUint.ContainsKey(e.Key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{e.Key}】"); return; }
             CurrentKey = e.Key;
             Text = e.Key.ToString();
+            if (GlobalHotKey.IsDeBug) { MessageBox.Show($"已更新为【{e.Key}】"); }
+            e.Handled = true;
         }
     }
 }
