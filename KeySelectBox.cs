@@ -13,7 +13,7 @@ public enum KeyTypes
 
 namespace FastHotKeyForWPF
 {
-    public class KeySelectBox : TextBox
+    public class KeySelectBox : TextBox, Component
     {
         public static Dictionary<Key, NormalKeys> KeyToNormalKeys = new Dictionary<Key, NormalKeys>()
         {
@@ -143,7 +143,7 @@ namespace FastHotKeyForWPF
             Foreground = PrefabComponent.TempInfo.Foreground;
             Background = PrefabComponent.TempInfo.Background;
             Margin = PrefabComponent.TempInfo.Margin;
-            KeyUp += WhileKeyUp;
+            KeyDown += WhileKeyDown;
             MouseEnter += WhileMouseEnter;
             MouseLeave += WhileMouseLeave;
         }
@@ -169,7 +169,7 @@ namespace FastHotKeyForWPF
             return null;
         }
 
-        private void WhileKeyUp(object sender, KeyEventArgs e)
+        private void WhileKeyDown(object sender, KeyEventArgs e)
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
             if (!PrefabComponent.KeyToUint.ContainsKey(key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{key}】"); return; }

@@ -76,12 +76,12 @@ namespace FastHotKeyForWPF
 
         };
 
-        public static T GetComponent<T>() where T : class, new()
+        public static T GetComponent<T>() where T : Component, new()
         {
             return new T();
         }
 
-        public static T GetComponent<T>(ComponentInfo info) where T : class, new()
+        public static T GetComponent<T>(ComponentInfo info) where T : Component, new()
         {
             TempInfo = info;
 
