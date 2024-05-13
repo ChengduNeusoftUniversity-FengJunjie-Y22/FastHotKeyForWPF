@@ -131,7 +131,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public KeySelectBox()
+        internal KeySelectBox()
         {
             if (PrefabComponent.TempInfo == null) { return; }
             Width = 100;

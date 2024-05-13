@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Reflection;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace FastHotKeyForWPF
@@ -76,16 +77,29 @@ namespace FastHotKeyForWPF
 
         };
 
-        public static T GetComponent<T>() where T : Component, new()
+        public static T GetComponent<T>() where T : Component
         {
-            return new T();
+            TempInfo = new ComponentInfo();
+
+            ConstructorInfo? constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
+
+            if (constructor == null) { throw new InvalidOperationException($"您尝试获取的{typeof(T).Name}组件不存在构造函数！"); }
+
+            T result = (T)constructor.Invoke(null);
+
+            TempInfo = null;
+            return result;
         }
 
-        public static T GetComponent<T>(ComponentInfo info) where T : Component, new()
+        public static T GetComponent<T>(ComponentInfo info) where T : Component
         {
             TempInfo = info;
 
-            T result = new T();
+            ConstructorInfo? constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
+
+            if (constructor == null) { throw new InvalidOperationException($"您尝试获取的{typeof(T).Name}组件不存在构造函数！"); }
+
+            T result = (T)constructor.Invoke(null);
 
             TempInfo = null;
             return result;
