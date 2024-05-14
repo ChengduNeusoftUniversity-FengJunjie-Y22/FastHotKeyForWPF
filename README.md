@@ -83,7 +83,7 @@
 ##### Ⅱ 【delegate object KeyInvoke_Return()】 支持将无参、返回一个object的函数的签名作为参数，注册为热键的处理函数
 </details>
 
-## GlobalHotKey类
+## ★ GlobalHotKey类
 #### 全局热键注册、修改、查询、销毁的主要实现
 <details>
 <summary>方法</summary>
@@ -255,7 +255,7 @@ namespace TestForHotKeyDll
 
 </details>
 
-## BindingRef类
+## ★ BindingRef类
 #### 实时更新机制
 <details>
 <summary>方法</summary>
@@ -339,7 +339,7 @@ namespace TestForHotKeyDll
 
 </details>
 
-## PrefabComponent类
+## ★ PrefabComponent类
 #### 如果你想迅速制作一个页面用于设置快捷方式，那么你可以使用此类型提供的预制组件
 <details>
 <summary>方法表</summary>
