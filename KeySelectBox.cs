@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Reflection;
 using System.Windows.Media;
+using System.Runtime.CompilerServices;
 
 public enum KeyTypes
 {
@@ -166,6 +167,7 @@ namespace FastHotKeyForWPF
             KeyDown += WhileKeyDown;
             MouseEnter += WhileMouseEnter;
             MouseLeave += WhileMouseLeave;
+            keySelectBoxes.Add(this);
         }
 
         private void WhileKeyDown(object sender, KeyEventArgs e)
@@ -332,6 +334,10 @@ namespace FastHotKeyForWPF
         public static void UnProtectAll()
         {
             IsKeySelectProtected = false;
+            foreach (KeySelectBox box in keySelectBoxes)
+            {
+                box.Protected = false;
+            }
         }
     }
 }
