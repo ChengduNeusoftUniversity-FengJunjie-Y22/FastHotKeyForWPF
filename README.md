@@ -5,8 +5,11 @@
 
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
-### 目录 （带 ☆ 的类型通常提供了大部分的核心功能，较为常用）
+### 目录
 - [项目简介](#项目简介)
+
+<details>
+<summary>☆ 核心功能函数（从这里开始，可以快速了解如何使用它）</summary>
 
 - [☆ GlobalHotKey类](#GlobalHotKey类)
 
@@ -14,11 +17,18 @@
 
 - [☆ PrefabComponent类](#PrefabComponent类)
 
+</details>
+
+<details>
+<summary>■ 核心实现（帮助你了解此类库的实现思路）</summary>
+
 - [RegisterInfo类](#RegisterInfo类)
 
 - [ComponentInfo类](#ComponentInfo类)
 
 - [KeySelectBox类](#KeySelectBox类)
+
+</details>
 
 ## 项目简介
 
