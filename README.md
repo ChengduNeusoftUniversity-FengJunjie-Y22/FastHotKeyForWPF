@@ -6,6 +6,7 @@
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 ## 目录
+###### 目前只有核心功能函数比较全，还在补文档（一个人写真的很难，见谅）
 - [项目简介](#项目简介)
 
 <details>
@@ -266,9 +267,11 @@ namespace TestForHotKeyDll
 | Destroy      |                   |           | 销毁                                                                                                  |
 | BindingEvent | KeyInvoke_Void    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
 | Update       | object?           |           | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
-| Connect      | ( KeySelectBox , KeySelectBox , KeyInvoke_Void / KeyInvoke_Return  )           |           | 将两个组件、它们负责管理的处理函数相互连接，启用自动注册、更新机制 |
-| DisConnect   | KeySelectBox      |           | 取消组件之间的连接                                                      |
-| GetKeysFromConnection| KeySelectBox | Tuple( enum ModelKeys? , enum NormalKeys? )|尝试获取两个预制组件连接后构成的键盘组合|
+| Connect      | ( KeySelectBox , KeySelectBox , KeyInvoke_Void / KeyInvoke_Return  )           |           | 将两个组件、它们负责管理的处理函数相互连接，并接管 |
+| Connect      | ( KeysSelectBox , KeyInvoke_Void / KeyInvoke_Return )           |           | 为KeysSelectBox指定一个处理函数，并接管 |
+| DisConnect   | KeySelectBox      |           | 取消组件之间的连接以及它们接管的函数                                                  |
+| DisConnect   | KeysSelectBox      |           | 取消KeysSelectBox接管的处理函数                                                  |
+| GetKeysFromConnection| KeySelectBox | Tuple( enum ModelKeys? , enum NormalKeys? )|获取两个预制组件连接后构成的键盘组合|
 </details>
 
 <details>
@@ -346,31 +349,40 @@ namespace TestForHotKeyDll
 
 ###### 目前只提供了KeySelectBox组件
 
-| 方法名              | 参数                                                                 | 返回值    | 约束            | 描述                                               |
-|---------------------|----------------------------------------------------------------------|-----------|-----------------|----------------------------------------------------|
-|GetComponent         | < T >( )                                                             | T         | class , new()   |获取组件--默认的组件信息                            |
-|GetComponent         | < T >( ComponentInfo )                                               | T         | class , new()   |获取组件--指定字体大小颜色；指定背景色；指定Margin  |
+| 方法名              | 参数                                        | 返回值    | 约束            | 描述                                               |
+|---------------------|---------------------------------------------|-----------|-----------------|----------------------------------------------------|
+|GetComponent         | < T >( )                                    | T         | Component接口   |获取组件--默认的组件信息                            |
+|GetComponent         | < T >( ComponentInfo )                      | T         | Component接口   |获取组件--指定字体大小颜色；指定背景色；指定Margin  |
+|ProtectSelectBox     | < T >( )                                    |           | KeyBox抽象类    |令指定类型的键盘盒子被锁定，不再接收用户按下的键    |
+|UnProtectSelectBox   | < T >( )                                    |           | KeyBox抽象类    |解除保护状态                                        |
 </details>
 
 <details>
 <summary>示例</summary>
 
 #### 以下代码演示了如何使用预制的组件来快速构成快捷键设置功能
-##### 最终你的页面中会出现两个KeySelectBox组件，它们自动完成快捷键的注册、变动
+##### 最终你的页面中会出现两个KeySelectBox组件，一个KeysSelectBox组件，它们将完全接管热键的注册、变动、销毁！
+###### 后端如下:
 
 ```csharp
+using FastHotKeyForWPF;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using FastHotKeyForWPF;
 
 namespace TestDemo
 {
     public partial class MainWindow : Window
     {
-        private static KeySelectBox HotKey_1 = PrefabComponent.GetComponent<KeySelectBox>(new ComponentInfo(20, Brushes.Black, Brushes.Wheat, new Thickness()));
-        private static KeySelectBox HotKey_2 = PrefabComponent.GetComponent<KeySelectBox>(new ComponentInfo(20, Brushes.Black, Brushes.Wheat, new Thickness()));
-        //这是类库提供的组件，一般成对获取，用于接收快捷键组合
+        static ComponentInfo Info = new ComponentInfo(25, Brushes.Cyan, Brushes.Wheat, new Thickness());
+        //盒子共用一个尺寸信息
+
+        KeySelectBox keySelectBox1 = PrefabComponent.GetComponent<KeySelectBox>(Info);
+        KeySelectBox keySelectBox2 = PrefabComponent.GetComponent<KeySelectBox>(Info);
+        //两个单键盒子
+
+        KeysSelectBox keySelectBox3 = PrefabComponent.GetComponent<KeysSelectBox>(Info);
+        //一个双键盒子
 
         public MainWindow()
         {
@@ -381,21 +393,30 @@ namespace TestDemo
         {
             GlobalHotKey.Awake();
 
-            HotKey_1.UseFatherSize<StackPanel>();
-            HotKey_2.UseFatherSize<StackPanel>();
-            //应用父级容器的大小
-            //这里已经使用XAML定义了两个StackPanel容器，你也可以使用其它容器，但请确保这里填入正确的容器类型
+            Box1.Child = keySelectBox1;
+            Box2.Child = keySelectBox2;
+            Box3.Child = keySelectBox3;
+            //三个Border容器用于填装这些预制组件
 
-            HotKeyA.Children.Add(HotKey_1);
-            HotKeyB.Children.Add(HotKey_2);
-            //将组件加入容器HotKeyA与HotKeyB中
+            keySelectBox1.UseFatherSize<Border>();
+            keySelectBox2.UseFatherSize<Border>();
+            keySelectBox3.UseFatherSize<Border>();
+            //自适应父级容器的大小
 
-            BindingRef.Connect(HotKey_1, HotKey_2, Test);
-            //建立连接，则这两个组件会自动注册、更新指向自定义Test函数的热键
+            keySelectBox1.UseStyleProperty("MyBox1");
+            keySelectBox2.UseStyleProperty("MyBox1");
+            keySelectBox3.UseStyleProperty("MyBox1",new string[] {"Background"});
+            //应用样式中的属性(两种模式）
 
-            BindingRef.DisConnect(HotKey_1);
-            //销毁连接，则注册的热键被销毁，自动注册、更新功能关闭
-            //对于连接双方，只需对其中一个组件使用销毁即可
+            keySelectBox1.UseFocusTrigger(WhileEnter, WhileLeave);
+            keySelectBox2.UseFocusTrigger(WhileEnter, WhileLeave);
+            keySelectBox3.UseFocusTrigger(WhileEnter, WhileLeave);
+            //设置鼠标进出事件
+
+            BindingRef.Connect(keySelectBox1, keySelectBox2, Test1);
+            BindingRef.Connect(keySelectBox3, Test2);
+            BindingRef.BindingAutoEvent(WhileReceiveValue);
+            //BindingRef类提供方法以建立联系，到这里，热键的管理全权由组件接管
 
             base.OnSourceInitialized(e);
         }
@@ -406,12 +427,61 @@ namespace TestDemo
             base.OnClosed(e);
         }
 
-        private void Test()
+        private static void WhileEnter(TextBox box)
         {
-            MessageBox.Show("连接成功！");
+            box.Background = Brushes.Black;
+            box.Foreground = Brushes.Cyan;
+        }
+
+        private static void WhileLeave(TextBox box)
+        {
+            box.Background = Brushes.Wheat;
+            box.Foreground = Brushes.Black;
+        }
+
+        private void Test1()
+        {
+            MessageBox.Show("测试A");
+        }
+
+        private object Test2()
+        {
+            return "测试B";
+        }
+
+        private void WhileReceiveValue()
+        {
+            MessageBox.Show(BindingRef.Value.ToString());
         }
     }
 }
+```
+
+```xaml
+<Window x:Class="TestDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestDemo"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="470" Width="800">
+    <Window.Resources>
+        <Style x:Key="MyBox1" TargetType="TextBox">
+            <Setter Property="Background" Value="Wheat"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Red"/>
+        </Style>
+    </Window.Resources>
+    <Viewbox>
+        <Grid Height="450" Width="800">
+            <Border x:Name="Box1" Margin="37,120,540,280" Height="50"/>
+            <Border x:Name="Box2" Margin="297,120,280,280" Height="50"/>
+            <Border x:Name="Box3" Margin="37,284,280,116" Height="50"/>
+        </Grid>
+    </Viewbox>
+</Window>
 ```
 
 </details>
