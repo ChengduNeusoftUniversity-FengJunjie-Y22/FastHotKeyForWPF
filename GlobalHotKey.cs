@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -73,12 +74,26 @@ public enum ModelKeys : uint
 public enum FunctionTypes
 {
     Void,
-    Return
+    Return,
+    Focus
 }
 
-public delegate void KeyInvoke_Void(); //处理函数，无参数，无返回值
+/// <summary>
+/// 热键处理函数类型一
+/// </summary>
+public delegate void KeyInvoke_Void();
 
-public delegate object KeyInvoke_Return(); //处理函数，无参数，有返回值
+/// <summary>
+/// 热键处理函数类型二
+/// </summary>
+/// <returns>object实例对象，你可以自定义不同的类型，接着，通过typeof(BindingRef.Value)来知晓监测到了何种返回值，然后做进一步处理</returns>
+public delegate object KeyInvoke_Return();
+
+/// <summary>
+/// TextBox焦点变色事件
+/// </summary>
+/// <param name="box">需要做出变动的TextBox,一般指继承自它的其它Box</param>
+public delegate void TextBoxFocusChange(TextBox box);
 
 namespace FastHotKeyForWPF
 {

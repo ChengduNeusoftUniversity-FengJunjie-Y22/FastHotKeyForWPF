@@ -77,6 +77,12 @@ namespace FastHotKeyForWPF
 
         };
 
+        /// <summary>
+        /// 得到默认的组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>new T（）</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static T GetComponent<T>() where T : Component
         {
             TempInfo = new ComponentInfo();
@@ -91,6 +97,13 @@ namespace FastHotKeyForWPF
             return result;
         }
 
+        /// <summary>
+        /// 得到指定字体大小、字体颜色、背景色、Margin的组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="info">组件的基本信息</param>
+        /// <returns>new T（）</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static T GetComponent<T>(ComponentInfo info) where T : Component
         {
             TempInfo = info;

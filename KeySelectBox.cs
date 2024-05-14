@@ -13,7 +13,7 @@ public enum KeyTypes
 
 namespace FastHotKeyForWPF
 {
-    public class KeySelectBox : TextBox, Component
+    public class KeySelectBox : PrefabTextBox
     {
         public static Dictionary<Key, NormalKeys> KeyToNormalKeys = new Dictionary<Key, NormalKeys>()
         {
@@ -86,6 +86,9 @@ namespace FastHotKeyForWPF
         };
 
         private Key _currentkey;
+        /// <summary>
+        /// 当前获取到的用户按键
+        /// </summary>
         public Key CurrentKey
         {
             get { return _currentkey; }
@@ -100,7 +103,15 @@ namespace FastHotKeyForWPF
                 UpdateHotKey();
             }
         }
-        private bool NewStyle = false;
+
+        /// <summary>
+        /// 是否启用默认变色效果
+        /// </summary>
+        public bool IsDefaultColorChange = true;
+
+        /// <summary>
+        /// 是否处于连接状态
+        /// </summary>
         public bool IsConnected
         {
             get
@@ -111,10 +122,19 @@ namespace FastHotKeyForWPF
                 return false;
             }
         }
+
+        public bool Protected = false;
+
         public KeySelectBox? LinkBox;
         public KeyInvoke_Void? Event_void;
         public KeyInvoke_Return? Event_return;
 
+        public event TextBoxFocusChange? Focused;
+        public event TextBoxFocusChange? UnFocused;
+
+        /// <summary>
+        /// 当前按键的类型
+        /// </summary>
         public KeyTypes KeyType
         {
             get
@@ -150,6 +170,7 @@ namespace FastHotKeyForWPF
 
         private void WhileKeyDown(object sender, KeyEventArgs e)
         {
+            if (IsKeySelectProtected || Protected) { return; }
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
             if (!PrefabComponent.KeyToUint.ContainsKey(key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{key}】"); return; }
             CurrentKey = key;
@@ -161,42 +182,82 @@ namespace FastHotKeyForWPF
         private void WhileMouseEnter(object sender, MouseEventArgs e)
         {
             Focus();
-            if (!NewStyle)
+            if (IsDefaultColorChange)
             {
                 Background = Brushes.Black;
                 Foreground = Brushes.Cyan;
+            }
+            else
+            {
+                if (Focused != null) Focused.Invoke(this);
             }
         }
 
         private void WhileMouseLeave(object sender, MouseEventArgs e)
         {
             Keyboard.ClearFocus();
-            if (!NewStyle)
+            if (IsDefaultColorChange)
             {
                 Background = Brushes.Wheat;
                 Foreground = Brushes.Black;
             }
+            else
+            {
+                if (UnFocused != null) UnFocused.Invoke(this);
+            }
         }
 
+        /// <summary>
+        /// 应用父容器的尺寸，并自动调节字体大小
+        /// </summary>
+        /// <typeparam name="T">父容器类型</typeparam>
         public void UseFatherSize<T>() where T : UIElement
         {
             T? father = Parent as T;
             if (father == null) { return; }
 
             PropertyInfo? widthProperty = typeof(T).GetProperty("Width");
-            if (widthProperty == null) { return; }
-            object? width = widthProperty.GetValue(father);
-            if (width == null) { return; }
-            Width = (double)width;
-
             PropertyInfo? heightProperty = typeof(T).GetProperty("Height");
+            if (widthProperty == null) { return; }
             if (heightProperty == null) { return; }
+
+            object? width = widthProperty.GetValue(father);
             object? height = heightProperty.GetValue(father);
+            if (width == null) { return; }
             if (height == null) { return; }
+
+            Width = (double)width;
             Height = (double)height;
+            FontSize = (double)height * 0.8;
         }
 
-        public void UseStyle(string styleName, string[] targetProperties)
+        /// <summary>
+        /// 应用资源样式中的全部属性
+        /// </summary>
+        /// <param name="styleName">资源样式的Key</param>
+        public void UseStyleProperty(string styleName)
+        {
+            Style? style = (Style)TryFindResource(styleName);
+            if (style == null) return;
+
+            if (style.TargetType == typeof(TextBox))
+            {
+                foreach (SetterBase setterBase in style.Setters)
+                {
+                    if (setterBase is Setter setter)
+                    {
+                        SetValue(setter.Property, setter.Value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 应用资源样式中，指定名称的属性
+        /// </summary>
+        /// <param name="styleName">资源样式的Key</param>
+        /// <param name="targetProperties">属性名</param>
+        public void UseStyleProperty(string styleName, string[] targetProperties)
         {
             Style? style = (Style)TryFindResource(styleName);
             if (style == null) return;
@@ -208,16 +269,30 @@ namespace FastHotKeyForWPF
                     Setter? targetSetter = style.Setters.FirstOrDefault(s => ((Setter)s).Property.Name == target) as Setter;
                     if (targetSetter != null)
                     {
-                        // 在这里使用目标属性的值
-                        // 例如，如果目标属性是 Background，则可以通过 targetSetter.Value 获取其值
-                        SetValue(targetSetter.Property, targetSetter);
+                        SetValue(targetSetter.Property, targetSetter.Value);
                     }
                 }
-
-                NewStyle = true;
             }
         }
 
+        /// <summary>
+        /// 使用你自定义的焦点变色函数，这些函数必须带有一个TextBox参数定义
+        /// </summary>
+        /// <param name="enter">获取焦点时</param>
+        /// <param name="leave">失去焦点时</param>
+        public void UseFocusTrigger(TextBoxFocusChange enter, TextBoxFocusChange leave)
+        {
+            Focused = null;
+            UnFocused = null;
+            Focused = enter;
+            UnFocused = leave;
+            IsDefaultColorChange = false;
+        }
+
+        /// <summary>
+        /// 更新一次热键信息
+        /// </summary>
+        /// <returns>bool 表示是否成功更新</returns>
         public bool UpdateHotKey()
         {
             bool result = false;
@@ -237,6 +312,26 @@ namespace FastHotKeyForWPF
                 }
             }
             return result;
+        }
+
+        public void Protect()
+        {
+            Protected = true;
+        }
+
+        public void UnProtect()
+        {
+            Protected = false;
+        }
+
+        public static void ProtectAll()
+        {
+            IsKeySelectProtected = true;
+        }
+
+        public static void UnProtectAll()
+        {
+            IsKeySelectProtected = false;
         }
     }
 }
