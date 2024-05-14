@@ -85,7 +85,7 @@ public delegate void KeyInvoke_Void();
 /// <summary>
 /// 热键处理函数类型二
 /// </summary>
-/// <returns>object实例对象，你可以自定义不同的类型，接着，通过typeof(BindingRef.Value)来知晓监测到了何种返回值，然后做进一步处理</returns>
+/// <returns>object实例对象，你可以用它做进一步处理</returns>
 public delegate object KeyInvoke_Return();
 
 /// <summary>

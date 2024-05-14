@@ -3,6 +3,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FastHotKeyForWPF
 {
+    /// <summary>
+    /// 此类型主要负责一些监测任务、绑定任务
+    /// </summary>
     public class BindingRef
     {
         private static BindingRef? Instance;
@@ -10,12 +13,15 @@ namespace FastHotKeyForWPF
         private BindingRef() { }
 
         private static object? _value = null;
+        /// <summary>
+        /// 最新监测到的返回值
+        /// </summary>
         public static object? Value
         {
             get { return _value; }
         }
 
-        private event KeyInvoke_Void? FunctionVoid;
+        private KeyInvoke_Void? FunctionVoid;
 
         public static void Awake()
         {
@@ -52,7 +58,7 @@ namespace FastHotKeyForWPF
             if (Instance != null)
             {
                 Instance.FunctionVoid = null;
-                Instance.FunctionVoid += function;
+                Instance.FunctionVoid = function;
             }
         }
         public static void RemoveAutoEvent()
@@ -97,6 +103,10 @@ namespace FastHotKeyForWPF
         }
         //为一个KeysSelectBox指定处理函数
 
+        /// <summary>
+        /// 取消两个KeySelectBox之间的联系
+        /// </summary>
+        /// <param name="target"></param>
         public static void DisConnect(KeySelectBox target)
         {
             if (target.LinkBox == null) { if (GlobalHotKey.IsDeBug) MessageBox.Show("⚠未建立连接的对象无法删除连接！"); return; }
@@ -112,8 +122,11 @@ namespace FastHotKeyForWPF
             target.LinkBox.LinkBox = null;
             target.LinkBox = null;
         }
-        //取消两个KeySelectBox之间的联系
 
+        /// <summary>
+        /// 取消KeysSelectBox指定的处理函数
+        /// </summary>
+        /// <param name="target"></param>
         public static void DisConnect(KeysSelectBox target)
         {
             if (KeyBox.KeyToModelKeys.ContainsKey(target.CurrentKeyA) && KeyBox.KeyToNormalKeys.ContainsKey(target.CurrentKeyB))
@@ -123,8 +136,12 @@ namespace FastHotKeyForWPF
                 GlobalHotKey.DeleteByKeys(KeyBox.KeyToModelKeys[target.CurrentKeyA], KeyBox.KeyToNormalKeys[target.CurrentKeyB]);
             }
         }
-        //取消KeysSelectBox指定的处理函数
 
+        /// <summary>
+        /// 从连接体的任何一方，获取ModelKeys与NormalKeys
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public static (ModelKeys?, NormalKeys?) GetKeysFromConnection(KeySelectBox target)
         {
             if (!target.IsConnected) { if (GlobalHotKey.IsDeBug) MessageBox.Show("⚠此目标尚未建立连接，无法获取键盘组合！"); return (null, null); }

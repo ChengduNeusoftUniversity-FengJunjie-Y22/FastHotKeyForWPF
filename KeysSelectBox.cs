@@ -8,7 +8,7 @@ namespace FastHotKeyForWPF
 {
     /// <summary>
     /// 组件☆
-    /// <para>功能 接收用户按下的前两个按键，激活热键的全自动管理</para>
+    /// <para>功能 接收两个用户按下的按键，并在与其它函数Connect后，激活热键的全自动管理</para>
     /// <para>继承 TextBox类</para>
     /// <para>实现 Component接口</para>
     /// </summary>
