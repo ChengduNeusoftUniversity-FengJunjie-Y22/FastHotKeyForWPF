@@ -148,27 +148,6 @@ namespace FastHotKeyForWPF
             MouseLeave += WhileMouseLeave;
         }
 
-        public T? GetKey<T>() where T : class
-        {
-            if (typeof(T) == typeof(string))
-            {
-                return CurrentKey.ToString() as T;
-            }
-            if (typeof(T) == typeof(int))
-            {
-                return (int)CurrentKey as T;
-            }
-            if (typeof(T) == typeof(uint))
-            {
-                if (!PrefabComponent.KeyToUint.ContainsKey(CurrentKey))
-                {
-                    return null;
-                }
-                return PrefabComponent.KeyToUint[CurrentKey] as T;
-            }
-            return null;
-        }
-
         private void WhileKeyDown(object sender, KeyEventArgs e)
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
@@ -219,15 +198,27 @@ namespace FastHotKeyForWPF
 
         public void UseStyle(string stylename)
         {
-            Style? style = null;
-            try
-            {
-                style = (Style)FindResource(stylename);
-            }
-            catch { }
+            Style? style = (Style)TryFindResource(stylename);
             if (style == null) return;
-            Style = style;
-            NewStyle = true;
+
+            if (style.TargetType == typeof(TextBox))
+            {
+                // 查找 Background 属性
+                Setter? backgroundSetter = style.Setters.FirstOrDefault(s => ((Setter)s).Property == TextBox.BackgroundProperty) as Setter;
+                if (backgroundSetter != null)
+                {
+                    Background = (Brush)backgroundSetter.Value;
+                }
+
+                // 查找 Foreground 属性
+                Setter? foregroundSetter = style.Setters.FirstOrDefault(s => ((Setter)s).Property == TextBox.ForegroundProperty) as Setter;
+                if (foregroundSetter != null)
+                {
+                    Foreground = (Brush)foregroundSetter.Value;
+                }
+
+                NewStyle = true;
+            }
         }
 
         public bool UpdateHotKey()
