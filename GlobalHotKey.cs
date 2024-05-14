@@ -111,7 +111,7 @@ namespace FastHotKeyForWPF
         /// <param name="vk">按键码</param>
         /// <returns></returns>
         [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        internal static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
         /// <summary>
         /// 取关函数，解除热键相关消息和窗口句柄间的绑定
@@ -120,7 +120,7 @@ namespace FastHotKeyForWPF
         /// <param name="id">快捷键的编号</param>
         /// <returns></returns>
         [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         public static bool IsDeBug = false;//调试开关
 

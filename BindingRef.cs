@@ -1,12 +1,22 @@
 ﻿using System.Windows;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FastHotKeyForWPF
 {
     public class BindingRef
     {
         private static BindingRef? Instance;
+
         private BindingRef() { }
-        public static object? Value = null;
+
+        private static object? _value = null;
+        public static object? Value
+        {
+            get { return _value; }
+        }
+
+        private event KeyInvoke_Void? FunctionVoid;
+
         public static void Awake()
         {
             if (Instance == null)
@@ -18,24 +28,38 @@ namespace FastHotKeyForWPF
                 MessageBox.Show("请不要重复激活操作！");
             }
         }
+
         public static void Destroy()
         {
             Instance = null;
         }
-        public static void Update(object? data)
+
+        internal static void Update(object? data)
         {
-            Value = data;
+            _value = data;
             if (Instance != null)
             {
                 Instance.Invoke();
             }
         }
-        public static void BindingEvent(KeyInvoke_Void function)
+
+        /// <summary>
+        /// 绑定自动事件，它将在监测到返回值的时候自动触发
+        /// </summary>
+        /// <param name="function">你自定义的处理函数</param>
+        public static void BindingAutoEvent(KeyInvoke_Void function)
         {
             if (Instance != null)
             {
                 Instance.FunctionVoid = null;
                 Instance.FunctionVoid += function;
+            }
+        }
+        public static void RemoveAutoEvent()
+        {
+            if (Instance != null)
+            {
+                Instance.FunctionVoid = null;
             }
         }
 
@@ -49,7 +73,6 @@ namespace FastHotKeyForWPF
             box1.Event_void = work;
             box2.Event_void = work;
         }
-
         public static void Connect(KeySelectBox box1, KeySelectBox box2, KeyInvoke_Return work)
         {
             if (box1.IsConnected || box2.IsConnected) { if (GlobalHotKey.IsDeBug) MessageBox.Show("⚠重复的连接操作！"); return; }
@@ -60,10 +83,28 @@ namespace FastHotKeyForWPF
             box1.Event_void = null;
             box2.Event_void = null;
         }
+        //连接两个分散的KeySelectBox
+
+        public static void Connect(KeysSelectBox target, KeyInvoke_Void work)
+        {
+            target.Event_void = work;
+            target.Event_return = null;
+        }
+        public static void Connect(KeysSelectBox target, KeyInvoke_Return work)
+        {
+            target.Event_return = work;
+            target.Event_void = null;
+        }
+        //为一个KeysSelectBox指定处理函数
 
         public static void DisConnect(KeySelectBox target)
         {
             if (target.LinkBox == null) { if (GlobalHotKey.IsDeBug) MessageBox.Show("⚠未建立连接的对象无法删除连接！"); return; }
+            var result = GetKeysFromConnection(target);
+            if (result.Item1 != null && result.Item2 != null)
+            {
+                GlobalHotKey.DeleteByKeys((ModelKeys)result.Item1, (NormalKeys)result.Item2);
+            }
             target.LinkBox.Event_void = null;
             target.LinkBox.Event_return = null;
             target.Event_void = null;
@@ -71,6 +112,16 @@ namespace FastHotKeyForWPF
             target.LinkBox.LinkBox = null;
             target.LinkBox = null;
         }
+        //取消两个KeySelectBox之间的联系
+
+        public static void DisConnect(KeysSelectBox target)
+        {
+            if (KeySelectBox.KeyToModelKeys.ContainsKey(target.CurrentKeyA) && KeySelectBox.KeyToNormalKeys.ContainsKey(target.CurrentKeyB))
+            {
+                GlobalHotKey.DeleteByKeys(KeySelectBox.KeyToModelKeys[target.CurrentKeyA], KeySelectBox.KeyToNormalKeys[target.CurrentKeyB]);
+            }
+        }
+        //取消KeysSelectBox指定的处理函数
 
         public static (ModelKeys?, NormalKeys?) GetKeysFromConnection(KeySelectBox target)
         {
@@ -94,7 +145,6 @@ namespace FastHotKeyForWPF
             return (null, null);
         }
 
-        private event KeyInvoke_Void? FunctionVoid;
         public void Invoke()
         {
             if (FunctionVoid != null) { FunctionVoid.Invoke(); }
