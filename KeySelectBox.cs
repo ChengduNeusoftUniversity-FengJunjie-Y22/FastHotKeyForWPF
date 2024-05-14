@@ -15,11 +15,11 @@ namespace FastHotKeyForWPF
 {
     /// <summary>
     /// 组件☆
-    /// <para>功能 接收用户按下的键并实现热键的自动管理</para>
+    /// <para>功能 接收用户按下的单个键，并在与其它KeySelectBox连接后，激活热键的全自动管理</para>
     /// <para>继承 TextBox类</para>
     /// <para>实现 Component接口</para>
     /// </summary>
-    public class KeySelectBox : PrefabTextBox
+    public class KeySelectBox : KeyBox
     {
         public static Dictionary<Key, NormalKeys> KeyToNormalKeys = new Dictionary<Key, NormalKeys>()
         {
@@ -177,7 +177,7 @@ namespace FastHotKeyForWPF
 
         private void WhileKeyDown(object sender, KeyEventArgs e)
         {
-            if (IsKeySelectProtected || Protected) { return; }
+            if (IsKeySelectBoxProtected || Protected) { return; }
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
             if (!PrefabComponent.KeyToUint.ContainsKey(key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{key}】"); return; }
             CurrentKey = key;
@@ -329,20 +329,6 @@ namespace FastHotKeyForWPF
         public void UnProtect()
         {
             Protected = false;
-        }
-
-        public static void ProtectAll()
-        {
-            IsKeySelectProtected = true;
-        }
-
-        public static void UnProtectAll()
-        {
-            IsKeySelectProtected = false;
-            foreach (KeySelectBox box in keySelectBoxes)
-            {
-                box.Protected = false;
-            }
         }
     }
 }

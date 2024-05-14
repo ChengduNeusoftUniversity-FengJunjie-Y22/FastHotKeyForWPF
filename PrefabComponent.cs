@@ -3,6 +3,11 @@ using System.Windows.Input;
 
 namespace FastHotKeyForWPF
 {
+    /// <summary>
+    /// 组件管控☆
+    /// 通过GetComponent获取组件的实例对象
+    /// 通过Protect与UnProtect管理组件是否处于保护（锁定）状态
+    /// </summary>
     public class PrefabComponent
     {
         public static ComponentInfo? TempInfo;
@@ -115,6 +120,50 @@ namespace FastHotKeyForWPF
 
             TempInfo = null;
             return result;
+        }
+
+        /// <summary>
+        /// 设为保护状态
+        /// </summary>
+        /// <typeparam name="T">组件类型</typeparam>
+        public static void ProtectSelectBox<T>() where T : KeyBox
+        {
+            if (typeof(T).Name == "KeySelectBox")
+            {
+                KeyBox.IsKeySelectBoxProtected = true;
+                return;
+            }
+            if (typeof(T).Name == "KeysSelectBox")
+            {
+                KeyBox.IsKeysSelectBoxProtected = true;
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 解除保护状态
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static void UnProtectSelectBox<T>() where T : KeyBox
+        {
+            if (typeof(T).Name == "KeySelectBox")
+            {
+                KeyBox.IsKeySelectBoxProtected = false;
+                foreach (KeySelectBox keySelectBox in KeyBox.keySelectBoxes)
+                {
+                    keySelectBox.Protected = false;
+                }
+                return;
+            }
+            if (typeof(T).Name == "KeysSelectBox")
+            {
+                KeyBox.IsKeysSelectBoxProtected = false;
+                foreach (KeysSelectBox keysSelectBox in KeyBox.keysSelectBoxes)
+                {
+                    keysSelectBox.Protected = false;
+                }
+                return;
+            }
         }
     }
 }
