@@ -196,25 +196,22 @@ namespace FastHotKeyForWPF
             Height = (double)height;
         }
 
-        public void UseStyle(string stylename)
+        public void UseStyle(string styleName, string[] targetProperties)
         {
-            Style? style = (Style)TryFindResource(stylename);
+            Style? style = (Style)TryFindResource(styleName);
             if (style == null) return;
 
             if (style.TargetType == typeof(TextBox))
             {
-                // 查找 Background 属性
-                Setter? backgroundSetter = style.Setters.FirstOrDefault(s => ((Setter)s).Property == TextBox.BackgroundProperty) as Setter;
-                if (backgroundSetter != null)
+                foreach (string target in targetProperties)
                 {
-                    Background = (Brush)backgroundSetter.Value;
-                }
-
-                // 查找 Foreground 属性
-                Setter? foregroundSetter = style.Setters.FirstOrDefault(s => ((Setter)s).Property == TextBox.ForegroundProperty) as Setter;
-                if (foregroundSetter != null)
-                {
-                    Foreground = (Brush)foregroundSetter.Value;
+                    Setter? targetSetter = style.Setters.FirstOrDefault(s => ((Setter)s).Property.Name == target) as Setter;
+                    if (targetSetter != null)
+                    {
+                        // 在这里使用目标属性的值
+                        // 例如，如果目标属性是 Background，则可以通过 targetSetter.Value 获取其值
+                        SetValue(targetSetter.Property, targetSetter);
+                    }
                 }
 
                 NewStyle = true;
