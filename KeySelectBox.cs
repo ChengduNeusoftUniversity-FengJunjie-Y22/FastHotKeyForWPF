@@ -30,6 +30,7 @@ namespace FastHotKeyForWPF
             get { return _currentkey; }
             set
             {
+                if (Protected || IsKeySelectBoxProtected) { return; }
                 var olddate = BindingRef.GetKeysFromConnection(this);
                 if (olddate.Item1 != null && olddate.Item2 != null)
                 {
@@ -90,7 +91,7 @@ namespace FastHotKeyForWPF
             Foreground = PrefabComponent.TempInfo.Foreground;
             Background = PrefabComponent.TempInfo.Background;
             Margin = PrefabComponent.TempInfo.Margin;
-            KeyDown += WhileKeyDown;
+            PreviewKeyDown += WhileKeyDown;
             MouseEnter += WhileMouseEnter;
             MouseLeave += WhileMouseLeave;
             keySelectBoxes.Add(this);

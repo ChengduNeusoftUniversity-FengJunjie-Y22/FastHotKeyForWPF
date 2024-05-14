@@ -20,6 +20,8 @@ namespace FastHotKeyForWPF
         { Key.LeftAlt, (uint)ModelKeys.ALT },
         { Key.RightAlt, (uint)ModelKeys.ALT },
 
+        { Key.Space,(uint)NormalKeys.SPACE},
+
         { Key.Up, (uint)NormalKeys.UP },
         { Key.Down, (uint)NormalKeys.DOWN },
         { Key.Left, (uint)NormalKeys.LEFT },
@@ -73,7 +75,7 @@ namespace FastHotKeyForWPF
         { Key.F5, (uint)NormalKeys.F5 },
         { Key.F6, (uint)NormalKeys.F6 },
         { Key.F7, (uint)NormalKeys.F7 },
-        { Key.F8, (uint)NormalKeys.F8 },
+        
         { Key.F9, (uint)NormalKeys.F9 },
         { Key.F10, (uint)NormalKeys.F10 },
         { Key.F11, (uint)NormalKeys.F11 },

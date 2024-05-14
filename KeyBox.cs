@@ -28,6 +28,8 @@ namespace FastHotKeyForWPF
         { Key.Left, NormalKeys.LEFT },
         { Key.Right, NormalKeys.RIGHT },
 
+        {Key.Space, NormalKeys.SPACE },
+
         { Key.A, NormalKeys.A },
         { Key.B, NormalKeys.B },
         { Key.C, NormalKeys.C },
@@ -76,7 +78,7 @@ namespace FastHotKeyForWPF
         { Key.F5, NormalKeys.F5 },
         { Key.F6, NormalKeys.F6 },
         { Key.F7, NormalKeys.F7 },
-        { Key.F8, NormalKeys.F8 },
+
         { Key.F9, NormalKeys.F9 },
         { Key.F10,NormalKeys.F10 },
         { Key.F11,NormalKeys.F11 },
@@ -207,6 +209,7 @@ namespace FastHotKeyForWPF
 
         internal void WhileMouseEnter(object sender, MouseEventArgs e)
         {
+            Protected = false;
             Focus();
             if (IsDefaultColorChange)
             {
@@ -221,6 +224,7 @@ namespace FastHotKeyForWPF
 
         internal void WhileMouseLeave(object sender, MouseEventArgs e)
         {
+            Protected = true;
             Keyboard.ClearFocus();
             if (IsDefaultColorChange)
             {

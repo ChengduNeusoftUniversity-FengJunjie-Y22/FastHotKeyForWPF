@@ -22,6 +22,7 @@ namespace FastHotKeyForWPF
             get { return key1; }
             set
             {
+                if (Protected || IsKeySelectBoxProtected) { return; }
                 RemoveOldHotKey();
                 key1 = value;
                 UpdateHotKey();
@@ -33,6 +34,7 @@ namespace FastHotKeyForWPF
             get { return key2; }
             set
             {
+                if (Protected || IsKeySelectBoxProtected) { return; }
                 RemoveOldHotKey();
                 key2 = value;
                 UpdateHotKey();
@@ -83,7 +85,7 @@ namespace FastHotKeyForWPF
             Foreground = PrefabComponent.TempInfo.Foreground;
             Background = PrefabComponent.TempInfo.Background;
             Margin = PrefabComponent.TempInfo.Margin;
-            KeyDown += WhileKeysDown;
+            PreviewKeyDown += WhileKeysDown;
             MouseEnter += WhileMouseEnter;
             MouseLeave += WhileMouseLeave;
             keysSelectBoxes.Add(this);
