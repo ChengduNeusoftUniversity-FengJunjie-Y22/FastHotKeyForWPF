@@ -175,6 +175,7 @@ namespace FastHotKeyForWPF
         {
             if (Instance != null)
             {
+                BindingRef.Destroy();
                 Instance.Uninstall();
                 Instance.RemoveHotKeys();
                 Instance = null;

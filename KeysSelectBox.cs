@@ -22,9 +22,9 @@ namespace FastHotKeyForWPF
             get { return key1; }
             set
             {
-                key1 = value; 
-                BindingRef.DisConnect(this); 
-                UpdateHotKey(); 
+                RemoveOldHotKey();
+                key1 = value;
+                UpdateHotKey();
                 UpdateText();
             }
         }
@@ -33,8 +33,8 @@ namespace FastHotKeyForWPF
             get { return key2; }
             set
             {
+                RemoveOldHotKey();
                 key2 = value;
-                BindingRef.DisConnect(this);
                 UpdateHotKey();
                 UpdateText();
             }
@@ -93,48 +93,39 @@ namespace FastHotKeyForWPF
         {
             if (IsKeysSelectBoxProtected || Protected) { return; }
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
-            if (KeySelectBox.KeyToModelKeys.ContainsKey(key))
+            if (KeyToModelKeys.ContainsKey(key))
             {
                 CurrentKeyA = key;
             }
-            else if (KeySelectBox.KeyToNormalKeys.ContainsKey(key))
+            else if (KeyToNormalKeys.ContainsKey(key))
             {
                 CurrentKeyB = key;
             }
             e.Handled = true;
         }
 
+        private void RemoveOldHotKey()
+        {
+            if (KeyToModelKeys.ContainsKey(CurrentKeyA) && KeyToNormalKeys.ContainsKey(CurrentKeyB))
+            {
+                GlobalHotKey.DeleteByKeys(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB]);
+            }
+        }
+
         private void UpdateHotKey()
         {
             if (Event_void == null && Event_return == null) { return; }
-            if (KeyTypeA == KeyTypes.None || KeyTypeB == KeyTypes.None) { return; }
-            else
+            if (KeyToModelKeys.ContainsKey(CurrentKeyA) && KeyToNormalKeys.ContainsKey(CurrentKeyB))
             {
-                if (KeyTypeA == KeyTypes.Model)
+                if (Event_void != null)
                 {
-                    if (Event_void != null)
-                    {
-                        GlobalHotKey.Add(KeySelectBox.KeyToModelKeys[CurrentKeyA], KeySelectBox.KeyToNormalKeys[CurrentKeyB], Event_void);
-                        return;
-                    }
-                    if (Event_return != null)
-                    {
-                        GlobalHotKey.Add(KeySelectBox.KeyToModelKeys[CurrentKeyA], KeySelectBox.KeyToNormalKeys[CurrentKeyB], Event_return);
-                        return;
-                    }
+                    GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_void);
+                    return;
                 }
-                else
+                if (Event_return != null)
                 {
-                    if (Event_void != null)
-                    {
-                        GlobalHotKey.Add(KeySelectBox.KeyToModelKeys[CurrentKeyB], KeySelectBox.KeyToNormalKeys[CurrentKeyA], Event_void);
-                        return;
-                    }
-                    if (Event_return != null)
-                    {
-                        GlobalHotKey.Add(KeySelectBox.KeyToModelKeys[CurrentKeyB], KeySelectBox.KeyToNormalKeys[CurrentKeyA], Event_return);
-                        return;
-                    }
+                    GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_return);
+                    return;
                 }
             }
         }

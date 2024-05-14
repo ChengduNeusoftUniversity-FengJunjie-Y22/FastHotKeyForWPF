@@ -116,9 +116,11 @@ namespace FastHotKeyForWPF
 
         public static void DisConnect(KeysSelectBox target)
         {
-            if (KeySelectBox.KeyToModelKeys.ContainsKey(target.CurrentKeyA) && KeySelectBox.KeyToNormalKeys.ContainsKey(target.CurrentKeyB))
+            if (KeyBox.KeyToModelKeys.ContainsKey(target.CurrentKeyA) && KeyBox.KeyToNormalKeys.ContainsKey(target.CurrentKeyB))
             {
-                GlobalHotKey.DeleteByKeys(KeySelectBox.KeyToModelKeys[target.CurrentKeyA], KeySelectBox.KeyToNormalKeys[target.CurrentKeyB]);
+                target.Event_void = null;
+                target.Event_return = null;
+                GlobalHotKey.DeleteByKeys(KeyBox.KeyToModelKeys[target.CurrentKeyA], KeyBox.KeyToNormalKeys[target.CurrentKeyB]);
             }
         }
         //取消KeysSelectBox指定的处理函数
@@ -129,18 +131,18 @@ namespace FastHotKeyForWPF
 
             int normal = 0;
             int model = 0;
-            if (KeySelectBox.KeyToNormalKeys.ContainsKey(target.CurrentKey)) { normal = 1; }
-            if (KeySelectBox.KeyToModelKeys.ContainsKey(target.CurrentKey)) { model = 1; }
-            if (KeySelectBox.KeyToNormalKeys.ContainsKey(target.LinkBox.CurrentKey)) { normal = 2; }
-            if (KeySelectBox.KeyToModelKeys.ContainsKey(target.LinkBox.CurrentKey)) { model = 2; }
+            if (KeyBox.KeyToNormalKeys.ContainsKey(target.CurrentKey)) { normal = 1; }
+            if (KeyBox.KeyToModelKeys.ContainsKey(target.CurrentKey)) { model = 1; }
+            if (KeyBox.KeyToNormalKeys.ContainsKey(target.LinkBox.CurrentKey)) { normal = 2; }
+            if (KeyBox.KeyToModelKeys.ContainsKey(target.LinkBox.CurrentKey)) { model = 2; }
 
             if (normal == 1 && model == 2)
             {
-                return (KeySelectBox.KeyToModelKeys[target.LinkBox.CurrentKey], KeySelectBox.KeyToNormalKeys[target.CurrentKey]);
+                return (KeyBox.KeyToModelKeys[target.LinkBox.CurrentKey], KeyBox.KeyToNormalKeys[target.CurrentKey]);
             }
             else if (normal == 2 && model == 1)
             {
-                return (KeySelectBox.KeyToModelKeys[target.CurrentKey], KeySelectBox.KeyToNormalKeys[target.LinkBox.CurrentKey]);
+                return (KeyBox.KeyToModelKeys[target.CurrentKey], KeyBox.KeyToNormalKeys[target.LinkBox.CurrentKey]);
             }
             return (null, null);
         }

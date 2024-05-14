@@ -12,17 +12,88 @@ namespace FastHotKeyForWPF
     /// </summary>
     public abstract class KeyBox : TextBox, Component
     {
-        /// <summary>
-        /// KeySelectBox组件是否处于保护中（公共）
-        /// </summary>
-        internal static bool IsKeySelectBoxProtected = false;
+        internal static bool IsKeySelectBoxProtected = false;// KeySelectBox组件是否处于保护中（公共）
         internal static List<KeySelectBox> keySelectBoxes = new List<KeySelectBox>();
 
-        /// <summary>
-        /// KeysSelectBox组件是否处于保护中（公共）
-        /// </summary>
-        internal static bool IsKeysSelectBoxProtected = false;
+        internal static bool IsKeysSelectBoxProtected = false;// KeysSelectBox组件是否处于保护中（公共）
         internal static List<KeysSelectBox> keysSelectBoxes = new List<KeysSelectBox>();
+
+        /// <summary>
+        /// Key => NormalKeys 字典
+        /// </summary>
+        public static readonly Dictionary<Key, NormalKeys> KeyToNormalKeys = new Dictionary<Key, NormalKeys>()
+        {
+        { Key.Up, NormalKeys.UP },
+        { Key.Down, NormalKeys.DOWN },
+        { Key.Left, NormalKeys.LEFT },
+        { Key.Right, NormalKeys.RIGHT },
+
+        { Key.A, NormalKeys.A },
+        { Key.B, NormalKeys.B },
+        { Key.C, NormalKeys.C },
+        { Key.D, NormalKeys.D },
+        { Key.E, NormalKeys.E },
+        { Key.F, NormalKeys.F },
+        { Key.G, NormalKeys.G },
+
+        { Key.H, NormalKeys.H },
+        { Key.I, NormalKeys.I },
+        { Key.J, NormalKeys.J },
+        { Key.K, NormalKeys.K },
+        { Key.L, NormalKeys.L },
+        { Key.M, NormalKeys.M },
+        { Key.N, NormalKeys.N },
+
+        { Key.O, NormalKeys.O },
+        { Key.P, NormalKeys.P },
+        { Key.Q, NormalKeys.Q },
+        { Key.R, NormalKeys.R },
+        { Key.S, NormalKeys.S },
+        { Key.T, NormalKeys.T },
+
+        { Key.U, NormalKeys.U },
+        { Key.V, NormalKeys.V },
+        { Key.W, NormalKeys.W },
+        { Key.X, NormalKeys.X },
+        { Key.Y, NormalKeys.Y },
+        { Key.Z, NormalKeys.Z },
+
+        { Key.D0, NormalKeys.Zero },
+        { Key.D1, NormalKeys.One },
+        { Key.D2, NormalKeys.Two },
+        { Key.D3, NormalKeys.Three },
+        { Key.D4, NormalKeys.Four },
+        { Key.D5, NormalKeys.Five },
+        { Key.D6, NormalKeys.Six },
+        { Key.D7, NormalKeys.Seven },
+        { Key.D8, NormalKeys.Eight },
+        { Key.D9, NormalKeys.Nine },
+
+        { Key.F1, NormalKeys.F1 },
+        { Key.F2, NormalKeys.F2 },
+        { Key.F3, NormalKeys.F3 },
+        { Key.F4, NormalKeys.F4 },
+        { Key.F5, NormalKeys.F5 },
+        { Key.F6, NormalKeys.F6 },
+        { Key.F7, NormalKeys.F7 },
+        { Key.F8, NormalKeys.F8 },
+        { Key.F9, NormalKeys.F9 },
+        { Key.F10,NormalKeys.F10 },
+        { Key.F11,NormalKeys.F11 },
+        { Key.F12,NormalKeys.F12 },
+
+        };
+
+        /// <summary>
+        /// Key => ModelKeys 字典
+        /// </summary>
+        public static readonly Dictionary<Key, ModelKeys> KeyToModelKeys = new Dictionary<Key, ModelKeys>()
+        {
+        { Key.LeftCtrl, ModelKeys.CTRL },
+        { Key.RightCtrl, ModelKeys.CTRL },
+        { Key.LeftAlt, ModelKeys.ALT },
+        { Key.RightAlt, ModelKeys.ALT },
+        };
 
         /// <summary>
         /// 是否被保护（独立）
