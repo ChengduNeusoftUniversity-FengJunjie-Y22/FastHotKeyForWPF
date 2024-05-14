@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace FastHotKeyForWPF
 {
+    /// <summary>
+    /// 抽象类型，所有需要继承自TextBox并实现Component接口的类型都继承自此类型
+    /// </summary>
     public abstract class PrefabTextBox : TextBox, Component
     {
         /// <summary>

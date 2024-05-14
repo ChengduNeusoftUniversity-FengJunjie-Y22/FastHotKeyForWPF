@@ -3,7 +3,6 @@ using System.Windows.Input;
 using System.Windows;
 using System.Reflection;
 using System.Windows.Media;
-using System.Runtime.CompilerServices;
 
 public enum KeyTypes
 {
@@ -14,6 +13,12 @@ public enum KeyTypes
 
 namespace FastHotKeyForWPF
 {
+    /// <summary>
+    /// 组件☆
+    /// <para>功能 接收用户按下的键并实现热键的自动管理</para>
+    /// <para>继承 TextBox类</para>
+    /// <para>实现 Component接口</para>
+    /// </summary>
     public class KeySelectBox : PrefabTextBox
     {
         public static Dictionary<Key, NormalKeys> KeyToNormalKeys = new Dictionary<Key, NormalKeys>()
