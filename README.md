@@ -27,7 +27,7 @@
 
 - [ComponentInfo类](#ComponentInfo类)
 
-- [KeySelectBox类](#KeySelectBox类)
+- [KeySelectBox类 / KeysSelectBox类](#KeySelectBox类/KeysSelectBox类)
 
 </details>
 
@@ -539,5 +539,5 @@ namespace TestDemo
 | Margin              | Thickness                                                            | 相对位置           |
 </details>
 
-## KeySelectBox类
-#### 继承自WPF的TextBox类,是PrefabComponent支持的组件类型之一
+## KeySelectBox类/KeysSelectBox类
+#### 两个预制组件，同属于KeyBox,用于接收用户按下的Key，并在调用BindingRef提供的功能函数后，接管热键的注册、修改、销毁
