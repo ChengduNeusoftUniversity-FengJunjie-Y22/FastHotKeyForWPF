@@ -360,95 +360,133 @@ namespace TestForHotKeyDll
 <details>
 <summary>示例</summary>
 
-#### 以下代码演示了如何使用预制的组件来快速构成快捷键设置功能
-##### 最终你的页面中会出现两个KeySelectBox组件，一个KeysSelectBox组件，它们将完全接管热键的注册、变动、销毁！
-###### 后端如下:
+#### 以下代码演示了如何使用预制组件快速构成快捷键设置界面
+##### 注意组件之间有自动排重机制，一个组合键只能接管一个函数
+###### C#部分:
 
 ```csharp
 using FastHotKeyForWPF;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-
+ 
 namespace TestDemo
 {
     public partial class MainWindow : Window
     {
-        static ComponentInfo Info = new ComponentInfo(25, Brushes.Cyan, Brushes.Wheat, new Thickness());
-        //盒子共用一个尺寸信息
-
-        KeySelectBox keySelectBox1 = PrefabComponent.GetComponent<KeySelectBox>(Info);
-        KeySelectBox keySelectBox2 = PrefabComponent.GetComponent<KeySelectBox>(Info);
-        //两个单键盒子
-
-        KeysSelectBox keySelectBox3 = PrefabComponent.GetComponent<KeysSelectBox>(Info);
-        //一个双键盒子
-
+        private static ComponentInfo info = new ComponentInfo(20, Brushes.Black, Brushes.Wheat, new Thickness());
+        //假设它们的字体大小颜色、背景色、Margin是相同的
+ 
+        KeySelectBox k1 = PrefabComponent.GetComponent<KeySelectBox>(info);
+        KeySelectBox k2 = PrefabComponent.GetComponent<KeySelectBox>(info);
+        //这两个组件负责接管函数TestA
+ 
+        KeySelectBox k3 = PrefabComponent.GetComponent<KeySelectBox>(info);
+        KeySelectBox k4 = PrefabComponent.GetComponent<KeySelectBox>(info);
+        //这两个组件负责接管函数TestB
+ 
+        KeysSelectBox k5 = PrefabComponent.GetComponent<KeysSelectBox>(info);
+        //这个组件负责接管函数TestC
+ 
+        KeysSelectBox k6 = PrefabComponent.GetComponent<KeysSelectBox>(info);
+        //这个组件负责接管函数TestD
+ 
         public MainWindow()
         {
             InitializeComponent();
         }
-
+ 
         protected override void OnSourceInitialized(EventArgs e)
         {
             GlobalHotKey.Awake();
-
-            Box1.Child = keySelectBox1;
-            Box2.Child = keySelectBox2;
-            Box3.Child = keySelectBox3;
-            //三个Border容器用于填装这些预制组件
-
-            keySelectBox1.UseFatherSize<Border>();
-            keySelectBox2.UseFatherSize<Border>();
-            keySelectBox3.UseFatherSize<Border>();
-            //自适应父级容器的大小
-
-            keySelectBox1.UseStyleProperty("MyBox1");
-            keySelectBox2.UseStyleProperty("MyBox1");
-            keySelectBox3.UseStyleProperty("MyBox1",new string[] {"Background"});
-            //应用样式中的属性(两种模式）
-
-            keySelectBox1.UseFocusTrigger(WhileEnter, WhileLeave);
-            keySelectBox2.UseFocusTrigger(WhileEnter, WhileLeave);
-            keySelectBox3.UseFocusTrigger(WhileEnter, WhileLeave);
-            //设置鼠标进出事件
-
-            BindingRef.Connect(keySelectBox1, keySelectBox2, Test1);
-            BindingRef.Connect(keySelectBox3, Test2);
+            //激活功能
+ 
+            GlobalHotKey.IsDeBug = true;
+            //调试模式会打印部分过程值，默认关闭
+ 
+            Box1.Child = k1;
+            Box2.Child = k2;
+            Box3.Child = k3;
+            Box4.Child = k4;
+            Box5.Child = k5;
+            Box6.Child = k6;
+            //将组件设置为容器的子元素
+ 
+            k1.UseFatherSize<Border>();
+            k2.UseFatherSize<Border>();
+            k3.UseFatherSize<Border>();
+            k4.UseFatherSize<Border>();
+            k5.UseFatherSize<Border>();
+            k6.UseFatherSize<Border>();
+            //令组件的宽高、字体大小与父容器相适应
+ 
+            string[] target = new string[] { "BorderThickness", "BorderBrush" };
+            k1.UseStyleProperty("MyBox", target);
+            k2.UseStyleProperty("MyBox", target);
+            k3.UseStyleProperty("MyBox", target);
+            k4.UseStyleProperty("MyBox", target);
+            k5.UseStyleProperty("MyBox", target);
+            k6.UseStyleProperty("MyBox", target);
+            //为组件应用指定样式中的指定属性
+ 
+            BindingRef.Connect(k1, k2, TestA);
+            BindingRef.Connect(k3, k4, TestB);
+            //令两个KeySelectBox接管指定函数
+ 
+            BindingRef.Connect(k5, TestC);
+            BindingRef.Connect(k6, TestD);
+            //令KeysSelectBox接管指定函数
+ 
+            GlobalHotKey.IsUpdate = true;
+            //设为false会关闭监测返回值功能，默认打开
+ 
             BindingRef.BindingAutoEvent(WhileReceiveValue);
-            //BindingRef类提供方法以建立联系，到这里，热键的管理全权由组件接管
-
+            //监测到返回值自动触发指定函数
+ 
+            k1.Protect();
+            k1.UnProtect();
+            //锁定与解锁一个KeySelectBox组件的按键接收功能,KeysSelectBox组件也可以像这样锁定
+ 
+            PrefabComponent.ProtectSelectBox<KeySelectBox>();
+            PrefabComponent.UnProtectSelectBox<KeySelectBox>();
+            //这是直接锁定与解锁指定类型的所有组件，优先级高于Protect()与UnProtect()
+ 
             base.OnSourceInitialized(e);
         }
-
+ 
         protected override void OnClosed(EventArgs e)
         {
             GlobalHotKey.Destroy();
+            //关闭功能
+ 
             base.OnClosed(e);
         }
-
-        private static void WhileEnter(TextBox box)
-        {
-            box.Background = Brushes.Black;
-            box.Foreground = Brushes.Cyan;
-        }
-
-        private static void WhileLeave(TextBox box)
-        {
-            box.Background = Brushes.Wheat;
-            box.Foreground = Brushes.Black;
-        }
-
-        private void Test1()
+ 
+        //k1与k2接管此函数
+        private void TestA()
         {
             MessageBox.Show("测试A");
         }
-
-        private object Test2()
+ 
+        //k3与k4接管此函数
+        private object TestB()
         {
-            return "测试B";
+            return "测试BB";
         }
-
+ 
+        //k5接管此函数
+        private void TestC()
+        {
+            MessageBox.Show("测试CCC");
+        }
+ 
+        //k6接管此函数
+        private void TestD()
+        {
+            MessageBox.Show("测试DDDD");
+        }
+ 
+        //监测到返回值时发生的事件 
         private void WhileReceiveValue()
         {
             MessageBox.Show(BindingRef.Value.ToString());
@@ -457,6 +495,7 @@ namespace TestDemo
 }
 ```
 
+###### XAML部分:
 ```xaml
 <Window x:Class="TestDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -467,18 +506,27 @@ namespace TestDemo
         mc:Ignorable="d"
         Title="MainWindow" Height="470" Width="800">
     <Window.Resources>
-        <Style x:Key="MyBox1" TargetType="TextBox">
-            <Setter Property="Background" Value="Wheat"></Setter>
-            <Setter Property="Foreground" Value="Black"></Setter>
+        <!--这是你自定义的资源样式，后续可以为组件使用样式中定义的属性-->
+        <Style x:Key="MyBox" TargetType="TextBox">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="Red"/>
         </Style>
     </Window.Resources>
     <Viewbox>
         <Grid Height="450" Width="800">
-            <Border x:Name="Box1" Margin="37,120,540,280" Height="50"/>
-            <Border x:Name="Box2" Margin="297,120,280,280" Height="50"/>
-            <Border x:Name="Box3" Margin="37,284,280,116" Height="50"/>
+            <!--这两个Border是用来给预制组件k1与k2定位的-->
+            <Border x:Name="Box1" Margin="37,27,540,373" Height="50"/>
+            <Border x:Name="Box2" Margin="297,27,280,373" Height="50"/>
+            
+            <!--这两个Border是用来给预制组件k3与k4定位的-->
+            <Border x:Name="Box3" Margin="37,133,540,267" Height="50"/>
+            <Border x:Name="Box4" Margin="297,133,280,267" Height="50"/>
+            
+            <!--这个Border是用来给预制组件k5定位的-->
+            <Border x:Name="Box5" Margin="37,251,280,149" Height="50"/>
+ 
+            <!--这个Border是用来给预制组件k6定位的-->
+            <Border x:Name="Box6" Margin="37,347,280,53" Height="50"/>
         </Grid>
     </Viewbox>
 </Window>
