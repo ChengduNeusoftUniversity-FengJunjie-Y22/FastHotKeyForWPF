@@ -265,7 +265,7 @@ namespace TestForHotKeyDll
 |--------------|-------------------|-----------|-------------------------------------------------------------------------------------------------------|
 | Awake        |                   |           | 激活，当你使用GlobalHotKey.Awake()时，会自动激活一次                                                  |
 | Destroy      |                   |           | 销毁                                                                                                  |
-| BindingEvent | KeyInvoke_Void    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
+| BindingAutoEvent | KeyInvoke_Void    |           | 将某个自定义的函数绑定至BindingRef,当BindingRef接收到热键处理函数的返回值时，自动调用这个绑定的函数   |
 | Update       | object?           |           | 更新数据，默认自动触发绑定给BindingRef的处理函数                                                      |
 | Connect      | ( KeySelectBox , KeySelectBox , KeyInvoke_Void / KeyInvoke_Return  )           |           | 将两个组件、它们负责管理的处理函数相互连接，并接管 |
 | Connect      | ( KeysSelectBox , KeyInvoke_Void / KeyInvoke_Return )           |           | 为KeysSelectBox指定一个处理函数，并接管 |
