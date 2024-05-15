@@ -30,14 +30,19 @@ namespace FastHotKeyForWPF
             get { return _currentkey; }
             set
             {
-                if (Protected || IsKeySelectBoxProtected) { return; }
                 var olddate = BindingRef.GetKeysFromConnection(this);
                 if (olddate.Item1 != null && olddate.Item2 != null)
                 {
                     GlobalHotKey.DeleteByKeys((ModelKeys)olddate.Item1, (NormalKeys)olddate.Item2);
                 }
                 _currentkey = value;
-                UpdateHotKey();
+                Text = value.ToString();
+                var result = UpdateHotKey();
+                if (result.Item1)
+                {
+                    if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
+                    //注册成功且处于DeBug模式下，会打印注册信息
+                }
             }
         }
 
@@ -103,8 +108,6 @@ namespace FastHotKeyForWPF
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
             if (!PrefabComponent.KeyToUint.ContainsKey(key)) { if (GlobalHotKey.IsDeBug) MessageBox.Show($"当前版本不支持这个按键【{key}】"); return; }
             CurrentKey = key;
-            Text = key.ToString();
-            if (GlobalHotKey.IsDeBug) { MessageBox.Show($"已更新为【{key}】"); }
             e.Handled = true;
         }
 
@@ -112,25 +115,30 @@ namespace FastHotKeyForWPF
         /// 更新一次热键信息
         /// </summary>
         /// <returns>bool 表示是否成功更新</returns>
-        internal bool UpdateHotKey()
+        internal (bool, string) UpdateHotKey()
         {
-            bool result = false;
+            bool issucces = false;
+            string info = string.Empty;
             if (IsConnected)
             {
                 var date = BindingRef.GetKeysFromConnection(this);
 
-                if (date.Item1 == null || date.Item2 == null) { if (GlobalHotKey.IsDeBug) MessageBox.Show("⚠不正确的键盘组合，无法注册"); return false; }
+                if (date.Item1 == null || date.Item2 == null) { return (issucces, info); }
 
                 if (Event_void != null)
                 {
-                    result = GlobalHotKey.Add((ModelKeys)date.Item1, (NormalKeys)date.Item2, Event_void).Item1;
+                    var result = GlobalHotKey.Add((ModelKeys)date.Item1, (NormalKeys)date.Item2, Event_void);
+                    issucces = result.Item1;
+                    info = result.Item2;
                 }
                 else if (Event_return != null)
                 {
-                    result = GlobalHotKey.Add((ModelKeys)date.Item1, (NormalKeys)date.Item2, Event_return).Item1;
+                    var result = GlobalHotKey.Add((ModelKeys)date.Item1, (NormalKeys)date.Item2, Event_return);
+                    issucces = result.Item1;
+                    info = result.Item2;
                 }
             }
-            return result;
+            return (issucces, info);
         }
     }
 }

@@ -75,7 +75,7 @@ namespace FastHotKeyForWPF
         { Key.F5, (uint)NormalKeys.F5 },
         { Key.F6, (uint)NormalKeys.F6 },
         { Key.F7, (uint)NormalKeys.F7 },
-        
+
         { Key.F9, (uint)NormalKeys.F9 },
         { Key.F10, (uint)NormalKeys.F10 },
         { Key.F11, (uint)NormalKeys.F11 },
@@ -154,6 +154,7 @@ namespace FastHotKeyForWPF
                 foreach (KeySelectBox keySelectBox in KeyBox.keySelectBoxes)
                 {
                     keySelectBox.Protected = false;
+                    keySelectBox.IsProtectedFromFunc = false;
                 }
                 return;
             }
@@ -163,6 +164,7 @@ namespace FastHotKeyForWPF
                 foreach (KeysSelectBox keysSelectBox in KeyBox.keysSelectBoxes)
                 {
                     keysSelectBox.Protected = false;
+                    keysSelectBox.IsProtectedFromFunc = false;
                 }
                 return;
             }

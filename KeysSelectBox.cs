@@ -22,11 +22,10 @@ namespace FastHotKeyForWPF
             get { return key1; }
             set
             {
-                if (Protected || IsKeySelectBoxProtected) { return; }
                 RemoveOldHotKey();
                 key1 = value;
-                UpdateHotKey();
                 UpdateText();
+                UpdateHotKey();
             }
         }
         public Key CurrentKeyB
@@ -34,42 +33,10 @@ namespace FastHotKeyForWPF
             get { return key2; }
             set
             {
-                if (Protected || IsKeySelectBoxProtected) { return; }
                 RemoveOldHotKey();
                 key2 = value;
-                UpdateHotKey();
                 UpdateText();
-            }
-        }
-
-        public KeyTypes KeyTypeA
-        {
-            get
-            {
-                if (Enum.IsDefined(typeof(NormalKeys), CurrentKeyA.ToString()))
-                {
-                    return KeyTypes.Normal;
-                }
-                if (Enum.IsDefined(typeof(ModelKeys), CurrentKeyA.ToString()))
-                {
-                    return KeyTypes.Model;
-                }
-                return KeyTypes.None;
-            }
-        }
-        public KeyTypes KeyTypeB
-        {
-            get
-            {
-                if (Enum.IsDefined(typeof(NormalKeys), CurrentKeyB.ToString()))
-                {
-                    return KeyTypes.Normal;
-                }
-                if (Enum.IsDefined(typeof(ModelKeys), CurrentKeyB.ToString()))
-                {
-                    return KeyTypes.Model;
-                }
-                return KeyTypes.None;
+                UpdateHotKey();
             }
         }
 
@@ -121,12 +88,20 @@ namespace FastHotKeyForWPF
             {
                 if (Event_void != null)
                 {
-                    GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_void);
+                    var result = GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_void);
+                    if (result.Item1)
+                    {
+                        if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
+                    }
                     return;
                 }
                 if (Event_return != null)
                 {
-                    GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_return);
+                    var result = GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_return);
+                    if (result.Item1)
+                    {
+                        if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
+                    }
                     return;
                 }
             }

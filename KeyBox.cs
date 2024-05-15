@@ -101,6 +101,7 @@ namespace FastHotKeyForWPF
         /// 是否被保护（独立）
         /// </summary>
         internal bool Protected = false;
+        internal bool IsProtectedFromFunc = false;
 
         /// <summary>
         /// 是否启用默认变色效果（独立）
@@ -209,7 +210,6 @@ namespace FastHotKeyForWPF
 
         internal void WhileMouseEnter(object sender, MouseEventArgs e)
         {
-            Protected = false;
             Focus();
             if (IsDefaultColorChange)
             {
@@ -220,11 +220,18 @@ namespace FastHotKeyForWPF
             {
                 if (Focused != null) Focused.Invoke(this);
             }
+            if (sender is KeySelectBox && !IsProtectedFromFunc)
+            {
+                ((KeySelectBox)sender).Protected = false;
+            }
+            else if (sender is KeysSelectBox && !IsProtectedFromFunc)
+            {
+                ((KeysSelectBox)sender).Protected = false;
+            }
         }
 
         internal void WhileMouseLeave(object sender, MouseEventArgs e)
         {
-            Protected = true;
             Keyboard.ClearFocus();
             if (IsDefaultColorChange)
             {
@@ -235,19 +242,32 @@ namespace FastHotKeyForWPF
             {
                 if (UnFocused != null) UnFocused.Invoke(this);
             }
+            if (sender is KeySelectBox)
+            {
+                ((KeySelectBox)sender).Protected = true;
+            }
+            else if (sender is KeysSelectBox)
+            {
+                ((KeysSelectBox)sender).Protected = true;
+            }
         }
 
         /// <summary>
-        /// 将此对象单独设为保护
+        /// 将此对象设为保护
         /// </summary>
         public void Protect()
         {
             Protected = true;
+            IsProtectedFromFunc = true;
         }
 
+        /// <summary>
+        /// 解除此对象的保护
+        /// </summary>
         public void UnProtect()
         {
             Protected = false;
+            IsProtectedFromFunc = false;
         }
     }
 }
