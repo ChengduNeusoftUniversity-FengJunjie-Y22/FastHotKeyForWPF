@@ -30,10 +30,12 @@ namespace FastHotKeyForWPF
             get { return _currentkey; }
             set
             {
+                if (value == Key.None) { _currentkey = value; return; }
                 var olddate = BindingRef.GetKeysFromConnection(this);
                 if (olddate.Item1 != null && olddate.Item2 != null)
                 {
                     GlobalHotKey.DeleteByKeys((ModelKeys)olddate.Item1, (NormalKeys)olddate.Item2);
+                    //更新消息前都会先清除原来注册的热键
                 }
                 _currentkey = value;
                 Text = value.ToString();
@@ -42,6 +44,10 @@ namespace FastHotKeyForWPF
                 {
                     if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
                     //注册成功且处于DeBug模式下，会打印注册信息
+
+                    var temp = BindingRef.GetKeysFromConnection(this);
+                    if (temp.Item1 != null && temp.Item2 != null) { RemoveSameKeySelect((ModelKeys)temp.Item1, (NormalKeys)temp.Item2, this); }
+                    //若成功则清除其它与此相同的Box
                 }
             }
         }

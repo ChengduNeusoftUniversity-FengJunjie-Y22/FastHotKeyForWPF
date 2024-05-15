@@ -95,11 +95,13 @@ namespace FastHotKeyForWPF
         {
             target.Event_void = work;
             target.Event_return = null;
+            target.IsConnected = true;
         }
         public static void Connect(KeysSelectBox target, KeyInvoke_Return work)
         {
             target.Event_return = work;
             target.Event_void = null;
+            target.IsConnected = true;
         }
         //为一个KeysSelectBox指定处理函数
 
@@ -119,6 +121,8 @@ namespace FastHotKeyForWPF
             target.LinkBox.Event_return = null;
             target.Event_void = null;
             target.Event_return = null;
+            target.CurrentKey = new System.Windows.Input.Key();
+            target.LinkBox.CurrentKey = new System.Windows.Input.Key();
             target.LinkBox.LinkBox = null;
             target.LinkBox = null;
         }
@@ -131,10 +135,13 @@ namespace FastHotKeyForWPF
         {
             if (KeyBox.KeyToModelKeys.ContainsKey(target.CurrentKeyA) && KeyBox.KeyToNormalKeys.ContainsKey(target.CurrentKeyB))
             {
-                target.Event_void = null;
-                target.Event_return = null;
                 GlobalHotKey.DeleteByKeys(KeyBox.KeyToModelKeys[target.CurrentKeyA], KeyBox.KeyToNormalKeys[target.CurrentKeyB]);
             }
+            target.Event_void = null;
+            target.Event_return = null;
+            target.CurrentKeyA = new System.Windows.Input.Key();
+            target.CurrentKeyB = new System.Windows.Input.Key();
+            target.IsConnected = false;
         }
 
         /// <summary>

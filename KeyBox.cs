@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -96,6 +97,70 @@ namespace FastHotKeyForWPF
         { Key.LeftAlt, ModelKeys.ALT },
         { Key.RightAlt, ModelKeys.ALT },
         };
+
+        internal static void RemoveSameKeySelect(ModelKeys modelKeys, NormalKeys normalKeys, KeySelectBox protect)
+        {
+            foreach (var key in keySelectBoxes)
+            {
+                if (key.IsConnected && key != protect && key != protect.LinkBox)
+                {
+                    var temp = BindingRef.GetKeysFromConnection(key);
+                    if (temp.Item1 == modelKeys && temp.Item2 == normalKeys)
+                    {
+                        key.CurrentKey = Key.None;
+                        key.LinkBox.CurrentKey = Key.None;
+                        key.Text = string.Empty;
+                        key.LinkBox.Text = string.Empty;
+                        return;
+                    }
+                }
+            }
+            foreach (var key in keysSelectBoxes)
+            {
+                if (key.IsConnected && KeyToModelKeys.ContainsKey(key.CurrentKeyA) && KeyToNormalKeys.ContainsKey(key.CurrentKeyB))
+                {
+                    if (KeyToModelKeys[key.CurrentKeyA] == modelKeys && KeyToNormalKeys[key.CurrentKeyB] == normalKeys)
+                    {
+                        key.CurrentKeyA = Key.None;
+                        key.CurrentKeyB = Key.None;
+                        key.Text = string.Empty;
+                        return;
+                    }
+                }
+            }
+        }
+
+        internal static void RemoveSameKeysSelect(ModelKeys modelKeys, NormalKeys normalKeys, KeysSelectBox protect)
+        {
+            foreach (var key in keysSelectBoxes)
+            {
+                if (key.IsConnected && key != protect && KeyToModelKeys.ContainsKey(key.CurrentKeyA) && KeyToNormalKeys.ContainsKey(key.CurrentKeyB))
+                {
+                    if (KeyToModelKeys[key.CurrentKeyA] == modelKeys && KeyToNormalKeys[key.CurrentKeyB] == normalKeys)
+                    {
+                        key.CurrentKeyA = new Key();
+                        key.CurrentKeyB = new Key();
+                        key.Text = string.Empty;
+                        return;
+                    }
+                }
+            }
+            foreach (var key in keySelectBoxes)
+            {
+                if (key.IsConnected)
+                {
+                    var temp = BindingRef.GetKeysFromConnection(key);
+                    if (temp.Item1 == modelKeys && temp.Item2 == normalKeys)
+                    {
+                        key.CurrentKey = new Key();
+                        key.LinkBox.CurrentKey = new Key();
+                        key.Text = string.Empty;
+                        key.LinkBox.Text = string.Empty;
+                        return;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// 是否被保护（独立）

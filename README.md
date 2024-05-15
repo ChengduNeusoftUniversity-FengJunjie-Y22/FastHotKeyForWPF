@@ -271,7 +271,7 @@ namespace TestForHotKeyDll
 | Connect      | ( KeysSelectBox , KeyInvoke_Void / KeyInvoke_Return )           |           | 为KeysSelectBox指定一个处理函数，并接管 |
 | DisConnect   | KeySelectBox      |           | 取消组件之间的连接以及它们接管的函数                                                  |
 | DisConnect   | KeysSelectBox      |           | 取消KeysSelectBox接管的处理函数                                                  |
-| GetKeysFromConnection| KeySelectBox | Tuple( enum ModelKeys? , enum NormalKeys? )|获取两个预制组件连接后构成的键盘组合|
+| GetKeysFromConnection| KeySelectBox | Tuple( enum ModelKeys? , enum NormalKeys? )|从一个处于连接状态的KeySelectBox获取键盘组合|
 </details>
 
 <details>

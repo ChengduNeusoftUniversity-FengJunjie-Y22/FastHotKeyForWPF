@@ -22,10 +22,19 @@ namespace FastHotKeyForWPF
             get { return key1; }
             set
             {
+                if (value == Key.None) { key1 = value; return; }
                 RemoveOldHotKey();
                 key1 = value;
                 UpdateText();
-                UpdateHotKey();
+                var result = UpdateHotKey();
+                if (result.Item1)
+                {
+                    if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
+                    //若更新成功且处于DeBug模式，则打印注册结果
+
+                    RemoveSameKeysSelect(KeyToModelKeys[key1], KeyToNormalKeys[key2], this);
+                    //若更新成功，清除与此相同的
+                }
             }
         }
         public Key CurrentKeyB
@@ -33,12 +42,23 @@ namespace FastHotKeyForWPF
             get { return key2; }
             set
             {
+                if (value == Key.None) { key2 = value; return; }
                 RemoveOldHotKey();
                 key2 = value;
                 UpdateText();
-                UpdateHotKey();
+                var result = UpdateHotKey();
+                if (result.Item1)
+                {
+                    if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
+                    //若更新成功且处于DeBug模式，则打印注册结果
+
+                    RemoveSameKeysSelect(KeyToModelKeys[key1], KeyToNormalKeys[key2], this);
+                    //若更新成功，清除与此相同的
+                }
             }
         }
+
+        public bool IsConnected = false;
 
         internal KeysSelectBox()
         {
@@ -81,30 +101,27 @@ namespace FastHotKeyForWPF
             }
         }
 
-        private void UpdateHotKey()
+        private (bool, string) UpdateHotKey()
         {
-            if (Event_void == null && Event_return == null) { return; }
+            bool result1 = false;
+            string result2 = string.Empty;
+            if (Event_void == null && Event_return == null) { return (result1, result2); }
             if (KeyToModelKeys.ContainsKey(CurrentKeyA) && KeyToNormalKeys.ContainsKey(CurrentKeyB))
             {
                 if (Event_void != null)
                 {
                     var result = GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_void);
-                    if (result.Item1)
-                    {
-                        if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
-                    }
-                    return;
+                    result1 = result.Item1;
+                    result2 = result.Item2;
                 }
-                if (Event_return != null)
+                else if (Event_return != null)
                 {
                     var result = GlobalHotKey.Add(KeyToModelKeys[CurrentKeyA], KeyToNormalKeys[CurrentKeyB], Event_return);
-                    if (result.Item1)
-                    {
-                        if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
-                    }
-                    return;
+                    result1 = result.Item1;
+                    result2 = result.Item2;
                 }
             }
+            return (result1, result2);
         }
 
         private void UpdateText()
