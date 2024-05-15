@@ -309,7 +309,7 @@ namespace TestForHotKeyDll
             GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, Test);
             //此处注册的Test()具备object返回值，而BindingRef会实时监测是否有object返回值的产生
 
-            BindingRef.BindingEvent(WhileUpdate);
+            BindingRef.BindingAutoEvent(WhileUpdate);
             //若BindingRef监测到一次返回值，则自动调用注册的WhileUpdate()函数来做进一步的处理
 
             base.OnSourceInitialized(e);
