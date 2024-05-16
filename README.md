@@ -634,8 +634,9 @@ namespace TestDemo
 
 | 属性名              | 类型                                                                 | 描述               |
 |---------------------|----------------------------------------------------------------------|--------------------|
-| Foreground          | SolidColorBrush                                                      | 字体大小           |
-| Background          | SolidColorBrush                                                      | 字体颜色           |
+| FontSize            | double                                                               | 字体大小           |
+| Foreground          | SolidColorBrush                                                      | 字体颜色           |
+| Background          | SolidColorBrush                                                      | 背景颜色           |
 | Margin              | Thickness                                                            | 相对位置           |
 </details>
 
