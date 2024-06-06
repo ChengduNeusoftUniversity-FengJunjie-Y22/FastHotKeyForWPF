@@ -8,7 +8,15 @@
 
 ## 使用指南
 <details>
-<summary>(1)如何管理类库功能的启用/关闭</summary>
+<summary>(1)管理类库功能的启用/关闭</summary>
+
+|GlobalHotKey       |功能               |
+|-------------------|-------------------|
+|Awake              |激活全局热键功能   |
+|Destroy            |关闭全局热键功能   |
+
+<details>
+<summary>代码示例</summary>
 
 ##### 启用
 ```csharp
@@ -34,15 +42,27 @@ protected override void OnClosed(EventArgs e)
 }
 ```
 ###### 你也可以在别处调用Awake()或Destroy(),但请注意句柄的存在问题,以及Destroy()会销毁已注册的热键
-
+</details>
 </details>
 
 <details>
 <summary>(2)注册热键--不需要做设置界面</summary>
 
+|GlobalHotKey       |参数                                             |功能                              |
+|-------------------|-------------------------------------------------|----------------------------------|
+|EditHotKey_Keys    |( 目标处理函数 , 新的ModelKeys ，新的NormalKeys )|修改一个函数的触发热键            |
+|EditHotKey_Function|( 目标ModelKeys , 目标NormalKeys ，新的处理函数) |修改一个热键对应的处理函数        |
+|Clear			    |                                                 |清空注册的热键                    |
+|DeleteByFunction   |目标处理函数                                     |依据函数签名来清除注册的热键      |
+|DeleteByKeys	    |( ModelKeys , NormalKeys )                       |依据热键组合来清除注册的热键      |
+
+<details>
+<summary>代码示例</summary>
+
 ###### 注意以下所有操作应发生于Awake()成功执行后,Destroy()执行前
 
 ##### 注册热键
+
 ```csharp
 //1.自定义一个热键加载函数(LoadHotKey)
 //2.自定义一个函数作为热键触发的事件(假定你自定义了一个TestA函数)
@@ -72,25 +92,20 @@ protected override void OnSourceInitialized(EventArgs e)
 }
 ```
 
+
 ##### 编辑热键
-|GlobalHotKey       |参数                                             |功能                              |
-|-------------------|-------------------------------------------------|----------------------------------|
-|EditHotKey_Keys    |( 目标处理函数 , 新的ModelKeys ，新的NormalKeys )|修改一个函数的触发热键            |
-|EditHotKey_Function|( 目标ModelKeys , 目标NormalKeys ，新的处理函数) |修改一个热键对应的处理函数        |
+
 
 ##### 删除热键
-|GlobalHotKey    |参数                                     |功能                              |
-|----------------|-----------------------------------------|----------------------------------|
-|Clear			 |                                         |清空注册的热键                    |
-|DeleteByFunction|目标处理函数                             |依据函数签名来清除注册的热键      |
-|DeleteByKeys	 |( ModelKeys , NormalKeys )               |依据热键组合来清除注册的热键      |
 
+
+</details>
 </details>
 
 <details>
 <summary>(3)注册热键--包含简易的热键设置界面</summary>
 
-##### 组件的管理
+##### 组件管理
 |PrefabComponent        |参数                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |GetComponent< T >      |                                         |获取指定类型的组件(默认样式的)    |
@@ -118,20 +133,20 @@ protected override void OnSourceInitialized(EventArgs e)
 <details>
 <summary>(4)注册热键--需要做设置界面,并且界面美术要求更高,不想使用预制组件--你需要额外了解以下内容</summary>
 
-##### Ⅰ GlobalHotKey的热键管理机制
+#### Ⅰ GlobalHotKey的热键管理机制
 
 
 
-##### Ⅱ BindingRef的传递机制
+#### Ⅱ BindingRef的传递机制
 
 
 
-##### Ⅲ RegisterInfo包含了哪些信息
+#### Ⅲ RegisterInfo包含了哪些信息
 
 </details>
 
 ## 更新合集
-- [前往Bilibili][1]
+[前往Bilibili查看各个版本的视频演示][1]
 
 [1]: https://www.bilibili.com/video/BV1rr421L7qR
 
