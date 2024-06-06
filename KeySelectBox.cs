@@ -93,11 +93,8 @@ namespace FastHotKeyForWPF
         internal KeySelectBox()
         {
             if (PrefabComponent.TempInfo == null) { return; }
-            Width = 100;
-            Height = 50;
-            VerticalContentAlignment = VerticalAlignment.Center;
-            HorizontalContentAlignment = HorizontalAlignment.Center;
             IsReadOnly = true;
+            HorizontalContentAlignment = HorizontalAlignment.Center;
             FontSize = PrefabComponent.TempInfo.FontSize;
             Foreground = PrefabComponent.TempInfo.Foreground;
             Background = PrefabComponent.TempInfo.Background;

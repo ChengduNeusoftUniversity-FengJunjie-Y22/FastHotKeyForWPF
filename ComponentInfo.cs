@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 
 namespace FastHotKeyForWPF
@@ -10,55 +11,95 @@ namespace FastHotKeyForWPF
     {
         public ComponentInfo() { }
 
-        /// <param name="fontsize">字体大小</param>
-        /// <param name="foreground">字体颜色</param>
-        /// <param name="background">控件背景色</param>
-        /// <param name="margin">Margin属性</param>
-        public ComponentInfo(double fontsize, SolidColorBrush foreground, SolidColorBrush background, Thickness margin)
+        private double _fontsize = 1;
+        private double _heightrate = 1;
+        private double _widthrate = 0.9;
+        private double _fontsizerate = 0.8;
+        private double _width = 400;
+        private double _height = 100;
+
+        public double FontSize
         {
-            FontSize = fontsize;
-            Foreground = foreground;
-            Background = background;
-            Margin = margin;
-        }
-
-        private double _fontsize = 20;
-
-        private double _marginup = 0;
-        private double _marginright = 0;
-        private double _margindown = 0;
-        private double _marginleft = 0;
-
-        public double FontSize//字体大小
-        {
-            get { return _fontsize; }
+            get => _fontsize;
             set
             {
-                if (value >= 0)
+                if (value >= 1)
                 {
                     _fontsize = value;
                 }
             }
-        }
+        }      
 
-        public SolidColorBrush Foreground = Brushes.Black;//字体颜色
-
-        public SolidColorBrush Background = Brushes.White;//背景色
-
-        public Thickness Margin//相对位置
+        public double WidthRate
         {
-            get { return new Thickness(_marginup, _marginright, _margindown, _marginleft); }
+            get => _widthrate;
             set
             {
-                if (value.Left < 0 || value.Right < 0 || value.Top < 0 || value.Bottom < 0)
+                if (value >= 0)
                 {
-                    return;
+                    _widthrate = value;
                 }
-                _marginup = value.Left;
-                _marginright = value.Top;
-                _margindown = value.Right;
-                _marginleft = value.Bottom;
             }
         }
+
+        public double HeightRate
+        {
+            get => _heightrate;
+            set
+            {
+                if (value >= 0)
+                {
+                    _heightrate = value;
+                }
+            }
+        }
+
+        public double FontSizeRate
+        {
+            get => _fontsizerate;
+            set
+            {
+                if (value >= 0)
+                {
+                    _fontsizerate = value;
+                }
+            }
+        }
+
+        public double Width
+        {
+            get => _width;
+            set
+            {
+                if (value >= 0)
+                {
+                    _width = value;
+                }
+            }
+        }
+
+        public double Height
+        {
+            get => _height;
+            set
+            {
+                if (value >= 0)
+                {
+                    _height = value;
+                }
+            }
+        }
+
+        public SolidColorBrush Foreground = Brushes.Transparent;
+
+        public SolidColorBrush Background = Brushes.Transparent;
+
+        public Thickness Margin = new Thickness(0);
+
+        public SolidColorBrush BorderBrush = Brushes.Transparent;
+
+        public Thickness BorderThickness = new Thickness(0);
+
+        public CornerRadius CornerRadius = new CornerRadius(0);
     }
 }

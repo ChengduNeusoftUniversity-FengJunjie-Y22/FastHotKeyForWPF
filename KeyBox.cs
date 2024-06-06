@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -171,7 +172,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 是否启用默认变色效果（独立）
         /// </summary>
-        public bool IsDefaultColorChange = true;
+        public bool IsDefaultColorChange = false;
 
         /// <summary>
         /// 该组件负责管理的事件之一
@@ -200,19 +201,32 @@ namespace FastHotKeyForWPF
             T? father = Parent as T;
             if (father == null) { return; }
 
-            PropertyInfo? widthProperty = typeof(T).GetProperty("Width");
             PropertyInfo? heightProperty = typeof(T).GetProperty("Height");
-            if (widthProperty == null) { return; }
             if (heightProperty == null) { return; }
 
-            object? width = widthProperty.GetValue(father);
             object? height = heightProperty.GetValue(father);
-            if (width == null) { return; }
             if (height == null) { return; }
 
-            Width = (double)width;
-            Height = (double)height;
             FontSize = (double)height * 0.8;
+        }
+        /// <summary>
+        /// 应用父容器的尺寸，并自动调节字体大小
+        /// </summary>
+        /// <typeparam name="T">父容器类型</typeparam>
+        /// <param name="rate">字体适应比率,默认为0.8</param>
+        public void UseFatherSize<T>(double rate) where T : UIElement
+        {
+            T? father = Parent as T;
+            if (father == null) { return; }
+
+            PropertyInfo? heightProperty = typeof(T).GetProperty("Height");
+            if (heightProperty == null) { return; }
+
+            object? height = heightProperty.GetValue(father);
+            if (height == null) { return; }
+
+            if (rate > 0) { FontSize = (double)height * rate; }
+            else { FontSize = (double)height * 0.8; }
         }
 
         /// <summary>
@@ -333,6 +347,13 @@ namespace FastHotKeyForWPF
         {
             Protected = false;
             IsProtectedFromFunc = false;
+        }
+
+        internal void UseRoundStyle<T>(double widthrate, double heightrate) where T : UIElement
+        {
+            Background = Brushes.Transparent;
+            BorderBrush = Brushes.Transparent;
+            BorderThickness = new Thickness(0);
         }
     }
 }

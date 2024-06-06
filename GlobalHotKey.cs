@@ -148,6 +148,18 @@ namespace FastHotKeyForWPF
             }
         }
 
+        public static List<RegisterInfo>? Registers//获取注册信息表
+        {
+            get
+            {
+                if (Instance != null)
+                {
+                    return Instance.RegisterList;
+                }
+                return null;
+            }
+        }
+
         public static void Awake()//激活
         {
             if (Instance == null)

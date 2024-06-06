@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace FastHotKeyForWPF
 {
@@ -168,6 +170,40 @@ namespace FastHotKeyForWPF
                 }
                 return;
             }
+        }
+
+        /// <summary>
+        /// 依赖一个父级Border,做出一个圆角盒子(默认样式)
+        /// </summary>
+        public static T SetToRoundBox<T>(Border target) where T : KeyBox
+        {
+            T result = GetComponent<T>();
+
+            target.Child = result;
+            result.UseRoundStyle<Border>(1, 0.85);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 依赖一个父级Border,做出一个圆角盒子(可指定盒子的字体大小、字体颜色、背景色)
+        /// </summary>
+        /// <param name="info">部分样式信息</param>
+        public static T SetAsRoundBox<T>(Border target, ComponentInfo info) where T : KeyBox
+        {
+            T result = GetComponent<T>();
+            target.Child = result;
+
+            target.Background = info.Background;
+            target.BorderBrush = info.BorderBrush;
+            target.BorderThickness = info.BorderThickness;
+            target.CornerRadius = info.CornerRadius;
+
+            result.Foreground = info.Foreground;    
+            result.UseRoundStyle<Border>(info.WidthRate, info.FontSizeRate);
+            result.UseFatherSize<Border>(info.FontSizeRate);
+
+            return result;
         }
     }
 }

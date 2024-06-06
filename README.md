@@ -6,10 +6,11 @@
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 
-## 快速入手
+## 使用指南
 <details>
 <summary>(1)如何管理类库功能的启用/关闭</summary>
 
+##### 启用
 ```csharp
 //需要重写MainWindow的OnSourceInitialized函数,这句函数执行时,窗口句柄已存在,确保了激活函数能够正确执行
 protected override void OnSourceInitialized(EventArgs e)
@@ -19,7 +20,10 @@ protected override void OnSourceInitialized(EventArgs e)
 
     base.OnSourceInitialized(e);
 }
+```
 
+##### 关闭
+```csharp
 //需要重写MainWindow的OnClosed函数,程序退出时,执行类库功能的关闭函数
 protected override void OnClosed(EventArgs e)
 {
@@ -28,14 +32,13 @@ protected override void OnClosed(EventArgs e)
 
     base.OnClosed(e);
 }
-
-//你也可以在别处调用Awake()或Destroy(),但请注意句柄的存在问题,以及Destroy()会销毁已注册的热键
 ```
+###### 你也可以在别处调用Awake()或Destroy(),但请注意句柄的存在问题,以及Destroy()会销毁已注册的热键
 
 </details>
 
 <details>
-<summary>(2)不需要做设置界面,只需用到以下函数</summary>
+<summary>(2)注册热键--不需要做设置界面</summary>
 
 ###### 注意以下所有操作应发生于Awake()成功执行后,Destroy()执行前
 
@@ -85,9 +88,9 @@ protected override void OnSourceInitialized(EventArgs e)
 </details>
 
 <details>
-<summary>(3)需要做简易的设置界面,可以使用类库提供的预制组件</summary>
+<summary>(3)注册热键--包含简易的热键设置界面</summary>
 
-##### PrefabComponent预制组件
+##### 组件的管理
 |PrefabComponent        |参数                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |GetComponent< T >      |                                         |获取指定类型的组件(默认样式的)    |
@@ -95,13 +98,13 @@ protected override void OnSourceInitialized(EventArgs e)
 |ProtectSelectBox< T >  |                                         |锁定所有T类型的组件               |
 |UnProtectSelectBox< T >|                                         |解锁所有T类型的组件               |
 
-##### 组件
+##### 支持的组件类型
 |支持的组件类型         |实现                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |KeySelectBox           |KeyBox:TextBox,Component                 |接收单个用户按下的键              |
 |KeysSelectBox          |KeyBox:TextBox,Component                 |接收两个用户按下的键              |
 
-##### 组件对象的相关方法
+##### 组件对象的方法
 |通用实例方法           |参数                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |UseFatherSize< T >     |T表示父级容器的类型                      |自适应父级容器的大小,并依据父级容器高度的70%自适应字体大小              |
@@ -113,9 +116,42 @@ protected override void OnSourceInitialized(EventArgs e)
 </details>
 
 <details>
-<summary>(4)若对于设置界面的美工要求很高,不想使用预制组件,需要额外了解以下内容</summary>
+<summary>(4)注册热键--需要做设置界面,并且界面美术要求更高,不想使用预制组件--你需要额外了解以下内容</summary>
+
+##### Ⅰ GlobalHotKey的热键管理机制
 
 
+
+##### Ⅱ BindingRef的传递机制
+
+
+
+##### Ⅲ RegisterInfo包含了哪些信息
+
+</details>
+
+## 更新合集
+- [前往Bilibili][1]
+
+[1]: https://www.bilibili.com/video/BV1rr421L7qR
+
+<details>
+<summary>Version 1.1.5</summary>
+
+#### (1)修复焦点离开盒子后，盒子仍然在接收用户按键的bug
+#### (2)修复无法使用实例方法Protect()锁定盒子的问题
+#### (3)新增组件之间的通信机制,自动清理重复的热键
+
+</details>
+
+<details>
+<summary>Version 1.1.6</summary>
+
+#### (1)提供圆角盒子来接收用户输入
+#### (2)不再使用默认的焦点进出事件
+#### (3)允许自定义函数,用于实现注册成功or失败的提示功能
+#### (4)新增一个保护名单,名单中的任何热键不允许被修改、删除
+#### (5)新增一个属性用于访问当前所有注册在列的热键信息
 
 </details>
 
