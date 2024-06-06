@@ -15,9 +15,6 @@
 |Awake              |激活全局热键功能   |
 |Destroy            |关闭全局热键功能   |
 
-<details>
-<summary>代码示例</summary>
-
 ##### 启用
 ```csharp
 //需要重写MainWindow的OnSourceInitialized函数,这句函数执行时,窗口句柄已存在,确保了激活函数能够正确执行
@@ -43,7 +40,6 @@ protected override void OnClosed(EventArgs e)
 ```
 ###### 你也可以在别处调用Awake()或Destroy(),但请注意句柄的存在问题,以及Destroy()会销毁已注册的热键
 </details>
-</details>
 
 <details>
 <summary>(2)注册热键--不需要做设置界面</summary>
@@ -56,13 +52,7 @@ protected override void OnClosed(EventArgs e)
 |DeleteByFunction   |目标处理函数                                     |依据函数签名来清除注册的热键      |
 |DeleteByKeys	    |( ModelKeys , NormalKeys )                       |依据热键组合来清除注册的热键      |
 
-<details>
-<summary>代码示例</summary>
-
-###### 注意以下所有操作应发生于Awake()成功执行后,Destroy()执行前
-
 ##### 注册热键
-
 ```csharp
 //1.自定义一个热键加载函数(LoadHotKey)
 //2.自定义一个函数作为热键触发的事件(假定你自定义了一个TestA函数)
@@ -92,14 +82,12 @@ protected override void OnSourceInitialized(EventArgs e)
 }
 ```
 
-
 ##### 编辑热键
 
 
 ##### 删除热键
 
 
-</details>
 </details>
 
 <details>
