@@ -13,7 +13,7 @@ namespace FastHotKeyForWPF
 
         private double _fontsize = 1;
         private double _heightrate = 1;
-        private double _widthrate = 0.9;
+        private double _widthrate = 1;
         private double _fontsizerate = 0.8;
         private double _width = 400;
         private double _height = 100;
