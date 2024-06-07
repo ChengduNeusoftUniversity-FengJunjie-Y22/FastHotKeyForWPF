@@ -56,19 +56,13 @@ protected override void OnClosed(EventArgs e)
 </details>
 
 <details>
-<summary>(3)管理热键--不需要做设置界面</summary>
+<summary>(3)注册热键--不需要做设置界面</summary>
 
 |GlobalHotKey类     |参数                                             |功能                              |
 |-------------------|-------------------------------------------------|----------------------------------|
 |Add                |( ModelKeys , NormalKeys , 处理函数 )            |注册热键【ModelKeys+ NormalKeys => 处理函数】|
-|EditHotKey_Keys    |( 目标处理函数 , 新的ModelKeys ，新的NormalKeys )|修改一个函数的触发热键            |
-|EditHotKey_Function|( 目标ModelKeys , 目标NormalKeys ，新的处理函数) |修改一个热键对应的处理函数        |
-|Clear			    |                                                 |清空注册的热键                    |
-|DeleteByFunction   |( 目标处理函数 )                                 |依据函数签名来清除注册的热键      |
-|DeleteByKeys	    |( ModelKeys , NormalKeys )                       |依据热键组合来清除注册的热键      |
-|DeleteById         |( int )                                          |依据热键注册时的id号(自动递增)清除注册的热键|
 
-##### 注册热键
+#### 代码示例
 ```csharp
 //1.自定义一个热键加载函数(LoadHotKey)
 //2.自定义一个函数作为热键触发的事件(假定你自定义了一个TestA函数)
@@ -97,13 +91,6 @@ protected override void OnSourceInitialized(EventArgs e)
     base.OnSourceInitialized(e);
 }
 ```
-
-##### 编辑热键
-
-
-##### 删除热键
-
-
 </details>
 
 <details>
@@ -333,7 +320,7 @@ namespace TestDemo
 
 </details>
 
-## 若预制组件无法满足你的美工需求,则建议完全了解以下API
+## 若预制组件无法满足你的美工需求,则需要完全了解以下API
 
 <details>
 <summary>API</summary>
