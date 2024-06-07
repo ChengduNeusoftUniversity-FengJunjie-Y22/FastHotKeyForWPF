@@ -149,7 +149,7 @@ namespace FastHotKeyForWPF
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static (ModelKeys?, NormalKeys?) GetKeysFromConnection(KeySelectBox target)
+        internal static (ModelKeys?, NormalKeys?) GetKeysFromConnection(KeySelectBox target)
         {
             if (!target.IsConnected) { if (GlobalHotKey.IsDeBug) MessageBox.Show("⚠此目标尚未建立连接，无法获取键盘组合！"); return (null, null); }
 
@@ -171,7 +171,7 @@ namespace FastHotKeyForWPF
             return (null, null);
         }
 
-        public void Invoke()
+        internal void Invoke()
         {
             if (FunctionVoid != null) { FunctionVoid.Invoke(); }
         }

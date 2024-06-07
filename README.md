@@ -6,7 +6,7 @@
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 
-## 使用指南
+## 快速入手(按照使用场景划分,只介绍常用API+代码示例)
 <details>
 <summary>(1)管理类库功能的启用/关闭</summary>
 
@@ -58,7 +58,7 @@ protected override void OnClosed(EventArgs e)
 <details>
 <summary>(3)管理热键--不需要做设置界面</summary>
 
-|GlobalHotKey类型   |参数                                             |功能                              |
+|GlobalHotKey类     |参数                                             |功能                              |
 |-------------------|-------------------------------------------------|----------------------------------|
 |Add                |( ModelKeys , NormalKeys , 处理函数 )            |注册热键【ModelKeys+ NormalKeys => 处理函数】|
 |EditHotKey_Keys    |( 目标处理函数 , 新的ModelKeys ，新的NormalKeys )|修改一个函数的触发热键            |
@@ -116,7 +116,7 @@ protected override void OnSourceInitialized(EventArgs e)
 |KeysSelectBox          |KeyBox:TextBox,Component                 |接收两个用户按下的键              |
 
 ##### 组件信息的表示
-|ComponentInfo对象的字段|类型                        |默认|
+|ComponentInfo对象字段  |类型                        |默认|
 |-----------------------|----------------------------|----|
 |FontSize               |double                      |1   |
 |Width                  |double                      |400 |
@@ -396,8 +396,73 @@ namespace TestDemo
 
 </details>
 
+## 若预制组件无法满足你的美工需求,则建议完全了解以下API
+
 <details>
-<summary>(5)管理热键--需要做设置界面,并且界面美术要求更高,不想使用预制组件</summary>
+<summary>API</summary>
+
+#### GlobalHotKey
+|方法               |参数                                             |功能                              |
+|-------------------|-------------------------------------------------|----------------------------------|
+|Awake              |                                                 |激活全局热键功能   |
+|Destroy            |                                                 |关闭全局热键功能   |
+|Add                |( ModelKeys , NormalKeys , 处理函数 )            |注册热键【ModelKeys+ NormalKeys => 处理函数】|
+|EditHotKey_Keys    |( 目标处理函数 , 新的ModelKeys ，新的NormalKeys )|修改一个函数的触发热键            |
+|EditHotKey_Function|( 目标ModelKeys , 目标NormalKeys ，新的处理函数) |修改一个热键对应的处理函数        |
+|Clear			    |                                                 |清空注册的热键                    |
+|DeleteByFunction   |( 目标处理函数 )                                 |清除注册的热键(依据函数签名)      |
+|DeleteByKeys	    |( ModelKeys , NormalKeys )                       |清除注册的热键(依据热键组合)      |
+|DeleteById         |( int )                                          |清除注册的热键(依据注册id号)|
+|ProtectHotKeyByKeys|( ModelKeys , NormalKeys )                       |添加受保护的热键(依据组合键)|
+|ProtectHotKeyById  |( int )                                          |添加受保护的热键键(依据注册id)|
+|UnProtectHotKeyByKeys|( ModelKeys , NormalKeys )                     |删除受保护的热键(依据组合键)|
+|UnProtectHotKeyById  |( int )                                        |删除受保护的热键(依据注册id)|
+
+|属性               |类型       |默认       |含义                              |
+|-------------------|-----------|-----------|----------------------------------|
+|IsDeBug            |bool       |false      |若为true,部分过程将打印过程值     |
+|IsUpdate           |bool       |true       |若为true,则启用BindingRef的实时监测返回值     |
+|HOTKEY_ID          |int        |2004       |第一个热键的注册id（递增）     |
+|ReturnValue        |object?    |null       |接收到的最新返回值     |
+|Registers          |List< RegisterInfo >       |           |注册在列的所有热键的信息     |
+|ProtectedHotKeys   |List< Tuple< ModelKeys , NormalKeys > >       |           |受保护的热键，不允许增删改     |
+
+#### BindingRef
+|方法               |参数                                             |功能                              |
+|-------------------|-------------------------------------------------|----------------------------------|
+|Awake              |                                                 |激活监测功能，在GlobalHotKey苏醒时自动调用一次   |
+|Destroy            |                                                 |关闭监测功能，在GlobalHotKey关闭时自动调用一次   |
+|BindingAutoEvent   |( 一个处理函数 )                                 |接收到返回值时，自动触发此处绑定的处理函数   |
+|RemoveAutoEvent    |                                                 |依然监测返回值，但是监测到返回值后，不再触发事件   |
+|Connect            |( KeySelectBox , KeySelectBox , 处理函数 )       |连接两个预制组件+一个处理函数,激活热键的自动管理   |
+|Connect            |( KeysSelectBox  , 处理函数 )                    |连接一个预制组件+一个处理函数，激活热键的自动管理   |
+|DisConnect         |( KeysSelectBox )                                |取消连接   |
+|DisConnect         |( KeySelectBox )                                 |取消连接   |
+
+|属性               |类型       |默认       |含义                              |
+|-------------------|-----------|-----------|----------------------------------|
+|Value              |object?    |null       |最新接收到的返回值                |
+
+#### RegisterInfo
+|方法               |参数                                  |返回      |功能                  |
+|-------------------|--------------------------------------|----------|----------------------|
+|SuccessRegistration|                                      |string    |手动获取成功的注册信息|
+|LoseRegistration   |( ModelKeys , NormalKeys , 处理函数 ) |string    |手动获取失败的注册信息|
+
+|属性                   |类型                        |含义        |
+|-----------------------|----------------------------|------------|
+|RegisterID             |int                         |注册id，起始为2004，自动递增        |
+|Model                  |ModelKeys                   |热键左半 |
+|Normal                 |NormalKeys                  |热键右半 |
+|FunctionType           |FunctionTypes               |热键对应处理函数的函数类型 |
+|Name                   |string                      |处理函数的函数名   |
+|FunctionVoid           |KeyInvoke_Void              |可能的处理函数A   |
+|FunctionReturn         |KeyInvoke_Return            |可能的处理函数B   |
+
+</details>
+
+<details>
+<summary>高UI需求下,让你的自定义控件与类库功能结合起来</summary>
 
 
 </details>

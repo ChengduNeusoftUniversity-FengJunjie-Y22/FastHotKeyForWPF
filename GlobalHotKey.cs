@@ -227,7 +227,7 @@ namespace FastHotKeyForWPF
                 return Instance.AddHotKey_Return(mode, key, work);
             }
             return (false, "热键功能尚未激活，请参考文档。");
-        }    
+        }
 
         public static void EditHotKey_Function(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)//修改触发函数
         {
@@ -293,24 +293,24 @@ namespace FastHotKeyForWPF
                 Instance.RemoveExistRegisterByKeys(modelKeys, normalKeys);
             }
         }
-     
-        public static void ProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)
+
+        public static void ProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)//增加受保护的热键
         {
             Instance?.AddProtectedHotKey(modelKeys, normalKeys);
         }
-        public static void ProtectHotKeyById(int id)
+        public static void ProtectHotKeyById(int id)//增加受保护的热键
         {
             Instance?.AddProtectedHotKey(id);
         }
-        public static void UnProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)
+        public static void UnProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)//删除受保护的热键
         {
             Instance?.RemoveProtectedHotKey(modelKeys, normalKeys);
         }
-        public static void UnProtectHotKeyById(int id)
+        public static void UnProtectHotKeyById(int id)//删除受保护的热键
         {
             Instance?.RemoveProtectedHotKey(id);
         }
-        public static bool IsHotKeyProtected(ModelKeys modelKeys, NormalKeys normalKeys)
+        public static bool IsHotKeyProtected(ModelKeys modelKeys, NormalKeys normalKeys)//仅检查是否处于保护态
         {
             bool result = false;
 
@@ -321,7 +321,7 @@ namespace FastHotKeyForWPF
 
             return result;
         }
-        public static bool IsHotKeyProtected(int id)
+        public static bool IsHotKeyProtected(int id)//仅检查是否处于保护态
         {
             bool result = false;
 
