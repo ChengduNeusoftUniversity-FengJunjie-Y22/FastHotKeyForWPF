@@ -109,7 +109,9 @@ namespace FastHotKeyForWPF
                     if (temp.Item1 == modelKeys && temp.Item2 == normalKeys)
                     {
                         key.CurrentKey = Key.None;
+                        key.IsSuccessRegister = false;
                         key.LinkBox.CurrentKey = Key.None;
+                        key.LinkBox.IsSuccessRegister = false;
                         key.Text = string.Empty;
                         key.LinkBox.Text = string.Empty;
                         return;
@@ -125,6 +127,7 @@ namespace FastHotKeyForWPF
                         key.CurrentKeyA = Key.None;
                         key.CurrentKeyB = Key.None;
                         key.Text = string.Empty;
+                        key.IsSuccessRegister = false;
                         return;
                     }
                 }
@@ -142,6 +145,7 @@ namespace FastHotKeyForWPF
                         key.CurrentKeyA = new Key();
                         key.CurrentKeyB = new Key();
                         key.Text = string.Empty;
+                        key.IsSuccessRegister = false;
                         return;
                     }
                 }
@@ -154,7 +158,9 @@ namespace FastHotKeyForWPF
                     if (temp.Item1 == modelKeys && temp.Item2 == normalKeys)
                     {
                         key.CurrentKey = new Key();
+                        key.IsSuccessRegister = false;
                         key.LinkBox.CurrentKey = new Key();
+                        key.LinkBox.IsSuccessRegister = false;
                         key.Text = string.Empty;
                         key.LinkBox.Text = string.Empty;
                         return;
