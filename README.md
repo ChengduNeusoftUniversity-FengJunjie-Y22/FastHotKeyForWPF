@@ -15,7 +15,7 @@
 |Awake              |激活全局热键功能   |
 |Destroy            |关闭全局热键功能   |
 
-##### 启用
+### 启用
 ```csharp
 //需要重写MainWindow的OnSourceInitialized函数,这句函数执行时,窗口句柄已存在,确保了激活函数能够正确执行
 protected override void OnSourceInitialized(EventArgs e)
@@ -27,7 +27,7 @@ protected override void OnSourceInitialized(EventArgs e)
 }
 ```
 
-##### 关闭
+### 关闭
 ```csharp
 //需要重写MainWindow的OnClosed函数,程序退出时,执行类库功能的关闭函数
 protected override void OnClosed(EventArgs e)
@@ -44,12 +44,12 @@ protected override void OnClosed(EventArgs e)
 <details>
 <summary>(2)受保护的热键名单</summary>
 
-#### 名单获取
+### 名单获取
 |GlobalHotKey属性   |类型                                |
 |-------------------|------------------------------------|
 |ProtectedHotKeys   |List<Tuple<ModelKeys, NormalKeys>>? |
 
-#### 名单增删
+### 名单增删
 |GlobalHotKey方法   |参数                                 |功能                              |
 |-------------------|-------------------------------------|----------------------------------|
 |ProtectHotKeyByKeys|( ModelKeys , NormalKeys )           |在受保护名单中新增热键组合（直接添加）        |
@@ -67,7 +67,7 @@ protected override void OnClosed(EventArgs e)
 |-------------------|-------------------------------------------------|----------------------------------|
 |Add                |( ModelKeys , NormalKeys , 处理函数 )            |注册热键【ModelKeys+ NormalKeys => 处理函数】|
 
-#### 代码示例
+### 以最快的速度，注册你的第一个全局热键！
 ```csharp
 //1.自定义一个热键加载函数(LoadHotKey)
 //2.自定义一个函数作为热键触发的事件(假定你自定义了一个TestA函数)
@@ -101,13 +101,16 @@ protected override void OnSourceInitialized(EventArgs e)
 <details>
 <summary>(4)管理热键--运用组件自动管理热键、制作简易的热键设置界面</summary>
 
-##### 支持的组件
+<details>
+<summary>API</summary>
+
+### 支持的组件
 |类型                   |实现                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |KeySelectBox           |KeyBox:TextBox,Component                 |接收单个用户按下的键              |
 |KeysSelectBox          |KeyBox:TextBox,Component                 |接收两个用户按下的键              |
 
-##### 组件信息的表示
+### 组件信息的表示
 |ComponentInfo对象字段  |类型                        |默认|
 |-----------------------|----------------------------|----|
 |FontSize               |double                      |1   |
@@ -123,7 +126,7 @@ protected override void OnSourceInitialized(EventArgs e)
 |CornerRadius           |CornerRadius                |0    |
 |Margin                 |Thickness                   |0    |
 
-##### 组件对象的通用方法
+### 组件对象的通用方法
 |方法                   |参数                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |UseFatherSize< T >     |T表示父级容器的类型                      |自适应父级容器的大小,并依据父级容器高度的70%自适应字体大小              |
@@ -132,7 +135,7 @@ protected override void OnSourceInitialized(EventArgs e)
 |Protect                |                                         |锁定该组件               |
 |UnProtect              |                                         |解锁该组件               |
 
-##### 组件的统一管理
+### 组件的统一管理
 |PrefabComponent类      |参数                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |GetComponent< T >      |                                         |获取指定类型的组件(默认样式的)    |
@@ -142,7 +145,7 @@ protected override void OnSourceInitialized(EventArgs e)
 |SetAsRoundBox< T >     |( Border )                               |令指定的Border控件变为圆角盒子(默认样式)|
 |SetAsRoundBox< T >     |( Border ，ComponentInfo )               |令指定的Border控件变为圆角盒子(可指定部分样式的)|
 
-##### 建立通信
+### 建立通信
 |BindingRef类           |参数                                     |功能                              |
 |-----------------------|-----------------------------------------|----------------------------------|
 |Connect                |(KeysSelectBox , 处理函数 )              |建立预制组件与处理函数间的绑定，激活热键自动管理|
@@ -150,9 +153,10 @@ protected override void OnSourceInitialized(EventArgs e)
 |DisConnect             |( 预制组件 )                             |取消预制组件与处理函数间的绑定，不再自动管理热键|
 |BindingAutoEvent       |( 处理函数 )                             |指定一个函数用于响应接收到object返回值时要做的事情|
 |RemoveAutoEvent        |                                         |清除响应函数|
+</details>
 
-### 代码示例
-#### XAML中,定义Border用于指定预制组件的位置
+### 使用组件自动管理热键的代码示例
+#### Ⅰ XAML中,定义Border用于指定预制组件的位置
 ```xaml
 <Window x:Class="TestDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -164,7 +168,7 @@ protected override void OnSourceInitialized(EventArgs e)
         Title="MainWindow" Height="470" Width="800">
     <Viewbox>
         <Grid Height="450" Width="800">
-            <!--Border用于给预制组件定位-->
+            <!--Border用于给预制组件定位，注意高度需要显式地定义出来-->
             <Border x:Name="Box1" Margin="109,39,341,361" Height="50"/>
             <Border x:Name="Box2" Margin="109,162,537,238" Height="50"/>
             <Border x:Name="Box3" Margin="305,162,341,238" Height="50"/>
@@ -172,7 +176,7 @@ protected override void OnSourceInitialized(EventArgs e)
     </Viewbox>
 </Window>
 ```
-#### C#中,分别使用KeySelectBox与KeysSelectBox组件,自动地管理两个热键
+#### Ⅱ C#中,使用KeySelectBox与KeysSelectBox组件
 ```csharp
 using FastHotKeyForWPF;
 using System.Windows;
