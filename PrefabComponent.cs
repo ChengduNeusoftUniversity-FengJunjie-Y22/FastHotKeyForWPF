@@ -180,7 +180,7 @@ namespace FastHotKeyForWPF
             T result = GetComponent<T>();
 
             target.Child = result;
-            result.UseRoundStyle<Border>(1, 0.85);
+            result.UseRoundStyle<Border>();
 
             return result;
         }
@@ -200,7 +200,7 @@ namespace FastHotKeyForWPF
             target.CornerRadius = info.CornerRadius;
 
             result.Foreground = info.Foreground;    
-            result.UseRoundStyle<Border>(info.WidthRate, info.FontSizeRate);
+            result.UseRoundStyle<Border>();
             result.UseFatherSize<Border>(info.FontSizeRate);
 
             return result;

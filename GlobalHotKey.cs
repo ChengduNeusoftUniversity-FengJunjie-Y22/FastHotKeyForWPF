@@ -93,7 +93,7 @@ public delegate object KeyInvoke_Return();
 /// TextBox焦点变色事件
 /// </summary>
 /// <param name="box">需要做出变动的TextBox,一般指继承自它的其它Box</param>
-public delegate void TextBoxFocusChange(TextBox box);
+public delegate void TextBoxChange(object sender);
 
 namespace FastHotKeyForWPF
 {

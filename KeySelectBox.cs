@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Reflection;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 public enum KeyTypes
 {
@@ -42,12 +43,22 @@ namespace FastHotKeyForWPF
                 var result = UpdateHotKey();
                 if (result.Item1)
                 {
+                    IsSuccessRegister = true;
+                    if (LinkBox != null) { LinkBox.IsSuccessRegister = true; }
+
                     if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
                     //注册成功且处于DeBug模式下，会打印注册信息
+
+                    SuccessRegister?.Invoke(this);
 
                     var temp = BindingRef.GetKeysFromConnection(this);
                     if (temp.Item1 != null && temp.Item2 != null) { RemoveSameKeySelect((ModelKeys)temp.Item1, (NormalKeys)temp.Item2, this); }
                     //若成功则清除其它与此相同的Box
+                }
+                else
+                {
+                    IsSuccessRegister = false;
+                    if (LinkBox != null) { LinkBox.IsSuccessRegister = false; }
                 }
             }
         }
@@ -90,6 +101,30 @@ namespace FastHotKeyForWPF
             }
         }
 
+        /// <summary>
+        /// 设置成功注册时需要触发的函数
+        /// </summary>
+        public void UseSuccessTrigger(TextBoxChange func)
+        {
+            SuccessRegister = func;
+            if (IsConnected)
+            {
+                LinkBox.SuccessRegister = func;
+            }
+        }
+
+        /// <summary>
+        /// 设置失败注册时需要触发的函数
+        /// </summary>
+        public void UseFailureTrigger(TextBoxChange func)
+        {
+            LoseRegister = func;
+            if (IsConnected)
+            {
+                LinkBox.LoseRegister = func;
+            }
+        }
+
         internal KeySelectBox()
         {
             if (PrefabComponent.TempInfo == null) { return; }
@@ -101,7 +136,9 @@ namespace FastHotKeyForWPF
             Margin = PrefabComponent.TempInfo.Margin;
             PreviewKeyDown += WhileKeyDown;
             MouseEnter += WhileMouseEnter;
+            MouseEnter += UpdateText;
             MouseLeave += WhileMouseLeave;
+            MouseLeave += InvokeLeaveEvent;
             keySelectBoxes.Add(this);
         }
 
@@ -142,6 +179,20 @@ namespace FastHotKeyForWPF
                 }
             }
             return (issucces, info);
+        }
+
+        internal void UpdateText(object sender, EventArgs e)
+        {
+            Text = CurrentKey.ToString();
+            if (IsConnected)
+            {
+                LinkBox.Text = LinkBox.CurrentKey.ToString();
+            }
+        }
+
+        internal void InvokeLeaveEvent(object sender, EventArgs e)
+        {
+            if (IsSuccessRegister) { SuccessRegister?.Invoke(this); } else { LoseRegister?.Invoke(this); }
         }
     }
 }

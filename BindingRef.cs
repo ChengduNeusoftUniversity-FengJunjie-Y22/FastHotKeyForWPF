@@ -78,6 +78,26 @@ namespace FastHotKeyForWPF
             box2.Event_return = null;
             box1.Event_void = work;
             box2.Event_void = work;
+            if (box1.SuccessRegister != null && box2.SuccessRegister == null)
+            {
+                box2.SuccessRegister = box1.SuccessRegister;
+                return;
+            }
+            else if (box1.SuccessRegister == null && box2.SuccessRegister != null)
+            {
+                box1.SuccessRegister = box2.SuccessRegister;
+                return;
+            }
+            else if (box1.LoseRegister != null && box2.LoseRegister == null)
+            {
+                box2.LoseRegister = box1.LoseRegister;
+                return;
+            }
+            else if (box1.LoseRegister == null && box2.LoseRegister != null)
+            {
+                box1.LoseRegister = box2.LoseRegister;
+                return;
+            }
         }
         public static void Connect(KeySelectBox box1, KeySelectBox box2, KeyInvoke_Return work)
         {
@@ -88,6 +108,26 @@ namespace FastHotKeyForWPF
             box2.Event_return = work;
             box1.Event_void = null;
             box2.Event_void = null;
+            if (box1.SuccessRegister != null && box2.SuccessRegister == null)
+            {
+                box2.SuccessRegister = box1.SuccessRegister;
+                return;
+            }
+            else if (box1.SuccessRegister == null && box2.SuccessRegister != null)
+            {
+                box1.SuccessRegister = box2.SuccessRegister;
+                return;
+            }
+            else if (box1.LoseRegister != null && box2.LoseRegister == null)
+            {
+                box2.LoseRegister = box1.LoseRegister;
+                return;
+            }
+            else if (box1.LoseRegister == null && box2.LoseRegister != null)
+            {
+                box1.LoseRegister = box2.LoseRegister;
+                return;
+            }
         }
         //连接两个分散的KeySelectBox
 
@@ -123,6 +163,11 @@ namespace FastHotKeyForWPF
             target.Event_return = null;
             target.CurrentKey = new System.Windows.Input.Key();
             target.LinkBox.CurrentKey = new System.Windows.Input.Key();
+            target.SuccessRegister = null;
+            target.LinkBox.SuccessRegister = null;
+            target.LoseRegister = null;
+            target.LinkBox.LoseRegister = null;
+
             target.LinkBox.LinkBox = null;
             target.LinkBox = null;
         }
@@ -142,6 +187,8 @@ namespace FastHotKeyForWPF
             target.CurrentKeyA = new System.Windows.Input.Key();
             target.CurrentKeyB = new System.Windows.Input.Key();
             target.IsConnected = false;
+            target.SuccessRegister = null;
+            target.LoseRegister = null;
         }
 
         /// <summary>

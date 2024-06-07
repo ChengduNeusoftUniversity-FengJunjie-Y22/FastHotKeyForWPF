@@ -186,11 +186,19 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 获取焦点时的行为
         /// </summary>
-        internal TextBoxFocusChange? Focused;
+        internal TextBoxChange? Focused;
         /// <summary>
         /// 失去焦点时的行为
         /// </summary>
-        internal TextBoxFocusChange? UnFocused;
+        internal TextBoxChange? UnFocused;
+
+        internal bool IsSuccessRegister = false;
+
+        internal TextBoxChange? SuccessRegister;
+
+        internal TextBoxChange? LoseRegister;
+
+        public string DefaultErrorText = "Error";
 
         /// <summary>
         /// 应用父容器的尺寸，并自动调节字体大小
@@ -278,7 +286,7 @@ namespace FastHotKeyForWPF
         /// </summary>
         /// <param name="enter">获取焦点时</param>
         /// <param name="leave">失去焦点时</param>
-        public void UseFocusTrigger(TextBoxFocusChange enter, TextBoxFocusChange leave)
+        public void UseFocusTrigger(TextBoxChange enter, TextBoxChange leave)
         {
             Focused = null;
             UnFocused = null;
@@ -307,6 +315,7 @@ namespace FastHotKeyForWPF
             {
                 ((KeysSelectBox)sender).Protected = false;
             }
+            Focused?.Invoke(this);
         }
 
         internal void WhileMouseLeave(object sender, MouseEventArgs e)
@@ -328,7 +337,7 @@ namespace FastHotKeyForWPF
             else if (sender is KeysSelectBox)
             {
                 ((KeysSelectBox)sender).Protected = true;
-            }
+            }           
         }
 
         /// <summary>
@@ -349,7 +358,10 @@ namespace FastHotKeyForWPF
             IsProtectedFromFunc = false;
         }
 
-        internal void UseRoundStyle<T>(double widthrate, double heightrate) where T : UIElement
+        /// <summary>
+        /// 圆角盒子场景下，样式的修改
+        /// </summary>
+        internal void UseRoundStyle<T>() where T : UIElement
         {
             Background = Brushes.Transparent;
             BorderBrush = Brushes.Transparent;
