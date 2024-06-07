@@ -10,7 +10,7 @@
 <details>
 <summary>(1)管理类库功能的启用/关闭</summary>
 
-|GlobalHotKey类型   |功能               |
+|GlobalHotKey类     |功能               |
 |-------------------|-------------------|
 |Awake              |激活全局热键功能   |
 |Destroy            |关闭全局热键功能   |
@@ -42,7 +42,21 @@ protected override void OnClosed(EventArgs e)
 </details>
 
 <details>
-<summary>(2)管理热键--不需要做设置界面</summary>
+<summary>(2)受保护的热键名单</summary>
+
+#### 名单获取
+
+
+#### 名单增删
+|GlobalHotKey类     |功能               |
+|-------------------|-------------------|
+|Awake              |激活全局热键功能   |
+|Destroy            |关闭全局热键功能   |
+
+</details>
+
+<details>
+<summary>(3)管理热键--不需要做设置界面</summary>
 
 |GlobalHotKey类型   |参数                                             |功能                              |
 |-------------------|-------------------------------------------------|----------------------------------|
@@ -93,7 +107,7 @@ protected override void OnSourceInitialized(EventArgs e)
 </details>
 
 <details>
-<summary>(3)管理热键--运用组件自动管理热键、制作简易的热键设置界面</summary>
+<summary>(4)管理热键--运用组件自动管理热键、制作简易的热键设置界面</summary>
 
 ##### 支持的组件
 |类型                   |实现                                     |功能                              |
@@ -383,15 +397,8 @@ namespace TestDemo
 </details>
 
 <details>
-<summary>(4)管理热键--需要做设置界面,并且界面美术要求更高,不想使用预制组件--你需要额外了解以下内容</summary>
+<summary>(5)管理热键--需要做设置界面,并且界面美术要求更高,不想使用预制组件</summary>
 
-#### Ⅰ GlobalHotKey的热键管理机制
-
-
-#### Ⅱ BindingRef的传递机制
-
-
-#### Ⅲ RegisterInfo包含了哪些信息
 
 </details>
 
@@ -416,7 +423,7 @@ namespace TestDemo
 #### (2)不再使用默认的焦点进出事件
 #### (3)允许自定义函数,用于实现注册成功or失败的提示功能
 #### (4)新增一个保护名单,名单中的任何热键不允许被修改、删除
-#### (5)新增一个属性用于访问当前所有注册在列的热键信息
+#### (5)允许通过静态属性直接获取注册信息和保护名单
 
 </details>
 

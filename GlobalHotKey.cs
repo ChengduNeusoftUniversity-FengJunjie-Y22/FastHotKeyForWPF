@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 public enum NormalKeys : uint
@@ -156,7 +157,25 @@ namespace FastHotKeyForWPF
                 {
                     return Instance.RegisterList;
                 }
-                return null;
+                if (IsDeBug)//调试模式下，尝试读取注册信息会抛出异常
+                {
+                    throw new Exception("你无法在未激活的状态下读取注册信息！");
+                }
+                return new List<RegisterInfo>();//非调试模式下，将尽可能避免程序退出
+            }
+        }
+        public static List<Tuple<ModelKeys, NormalKeys>>? ProtectedHotKeys//获取保护名单
+        {
+            get
+            {
+                if (Instance == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Instance.ProtectList;
+                }
             }
         }
 
@@ -182,7 +201,6 @@ namespace FastHotKeyForWPF
                 MessageBox.Show("请不要重复激活操作！");
             }
         }
-
         public static void Destroy()//销毁
         {
             if (Instance != null)
@@ -200,7 +218,7 @@ namespace FastHotKeyForWPF
             {
                 return Instance.AddHotKey_Void(mode, key, work);
             }
-            return (false, "热键功能尚未激活，请参考文档注释。");
+            return (false, "热键功能尚未激活，请参考文档。");
         }
         public static (bool, string) Add(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)//注册
         {
@@ -208,37 +226,8 @@ namespace FastHotKeyForWPF
             {
                 return Instance.AddHotKey_Return(mode, key, work);
             }
-            return (false, "热键功能尚未激活，请参考文档注释。");
-        }
-
-        public static void DeleteById(int id)//删除指定编号的热键
-        {
-            if (Instance != null)
-            {
-                Instance.RemoveExistRegisterByID(id);
-            }
-        }
-
-        public static void Clear()//清空热键，但不卸载钩子
-        {
-            if (Instance != null)
-            {
-                Instance.RemoveHotKeys();
-            }
-        }
-
-        public static List<RegisterInfo> HotKeyInfo()//获取在册热键的信息集合
-        {
-            if (Instance != null)
-            {
-                return Instance.RegisterList;
-            }
-            if (IsDeBug)//调试模式下，尝试读取注册信息会抛出异常
-            {
-                throw new Exception("你无法在未激活的状态下读取注册信息！");
-            }
-            return new List<RegisterInfo>();//非调试模式下，将尽可能避免程序退出
-        }
+            return (false, "热键功能尚未激活，请参考文档。");
+        }    
 
         public static void EditHotKey_Function(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)//修改触发函数
         {
@@ -254,7 +243,6 @@ namespace FastHotKeyForWPF
                 Instance.EditHotKey_NewFunctionReturn(mode, key, work);
             }
         }
-
         public static void EditHotKey_Keys(KeyInvoke_Void work, ModelKeys mode, NormalKeys key)//修改快捷键
         {
             if (Instance != null)
@@ -270,6 +258,20 @@ namespace FastHotKeyForWPF
             }
         }
 
+        public static void Clear()//清空热键，但不卸载钩子
+        {
+            if (Instance != null)
+            {
+                Instance.RemoveHotKeys();
+            }
+        }
+        public static void DeleteById(int id)//删除指定编号的热键
+        {
+            if (Instance != null)
+            {
+                Instance.RemoveExistRegisterByID(id);
+            }
+        }
         public static void DeleteByFunction(KeyInvoke_Void work)//清除一个函数的所有触发快捷键
         {
             if (Instance != null)
@@ -291,6 +293,45 @@ namespace FastHotKeyForWPF
                 Instance.RemoveExistRegisterByKeys(modelKeys, normalKeys);
             }
         }
+     
+        public static void ProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)
+        {
+            Instance?.AddProtectedHotKey(modelKeys, normalKeys);
+        }
+        public static void ProtectHotKeyById(int id)
+        {
+            Instance?.AddProtectedHotKey(id);
+        }
+        public static void UnProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)
+        {
+            Instance?.RemoveProtectedHotKey(modelKeys, normalKeys);
+        }
+        public static void UnProtectHotKeyById(int id)
+        {
+            Instance?.RemoveProtectedHotKey(id);
+        }
+        public static bool IsHotKeyProtected(ModelKeys modelKeys, NormalKeys normalKeys)
+        {
+            bool result = false;
+
+            if (Instance != null)
+            {
+                result = Instance.CheckInProtectList(modelKeys, normalKeys);
+            }
+
+            return result;
+        }
+        public static bool IsHotKeyProtected(int id)
+        {
+            bool result = false;
+
+            if (Instance != null)
+            {
+                result = Instance.CheckInProtectList(id);
+            }
+
+            return result;
+        }
 
 
         #region 动态资源
@@ -303,6 +344,8 @@ namespace FastHotKeyForWPF
         private Dictionary<int, KeyInvoke_Return> Trigger_Return = new Dictionary<int, KeyInvoke_Return>();//处理函数映射表
 
         private List<RegisterInfo> RegisterList = new List<RegisterInfo>();//注册在列的热键
+
+        private List<Tuple<ModelKeys, NormalKeys>> ProtectList = new List<Tuple<ModelKeys, NormalKeys>>();//受保护的热键名单
 
         /// <summary>
         /// 系统消息处理函数
@@ -362,6 +405,7 @@ namespace FastHotKeyForWPF
         /// <returns>元组Tuple（bool是否注册成功,string注册的热键）</returns>
         private (bool, string) AddHotKey_Void(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)
         {
+            if (CheckInProtectList(mode, key)) { return (false, "⚠受保护的热键不允许执行任何操作！"); }
             int id = HOTKEY_ID + Counter;
             RemoveExistRegisterByID(id);
             RemoveExistRegisterByKeys(mode, key);
@@ -387,6 +431,7 @@ namespace FastHotKeyForWPF
         /// <returns>元组Tuple（bool是否注册成功,string注册的热键）</returns>
         private (bool, string) AddHotKey_Return(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)
         {
+            if (CheckInProtectList(mode, key)) { return (false, "⚠受保护的热键不允许执行任何操作！"); }
             int id = HOTKEY_ID + Counter;
             RemoveExistRegisterByID(id);
             RemoveExistRegisterByKeys(mode, key);
@@ -411,6 +456,7 @@ namespace FastHotKeyForWPF
         /// <param name="key">一般按键</param>
         private void EditHotKey_NewKeysVoid(KeyInvoke_Void work, ModelKeys mode, NormalKeys key)
         {
+            if (CheckInProtectList(mode, key)) { return; }
             foreach (RegisterInfo info in RegisterList)
             {
                 if (info.FunctionVoid == work)
@@ -433,6 +479,7 @@ namespace FastHotKeyForWPF
         /// <param name="key">一般按键</param>
         private void EditHotKey_NewKeysReturn(KeyInvoke_Return work, ModelKeys mode, NormalKeys key)
         {
+            if (CheckInProtectList(mode, key)) { return; }
             foreach (RegisterInfo info in RegisterList)
             {
                 if (info.FunctionReturn == work)
@@ -455,6 +502,7 @@ namespace FastHotKeyForWPF
         /// <param name="work">新的处理事件</param>
         private void EditHotKey_NewFunctionVoid(ModelKeys mode, NormalKeys key, KeyInvoke_Void work)
         {
+            if (CheckInProtectList(mode, key)) { return; }
             foreach (RegisterInfo info in RegisterList)
             {
                 if (info.Model == mode && info.Normal == key)
@@ -477,6 +525,7 @@ namespace FastHotKeyForWPF
         /// <param name="work">新的处理事件</param>
         private void EditHotKey_NewFunctionReturn(ModelKeys mode, NormalKeys key, KeyInvoke_Return work)
         {
+            if (CheckInProtectList(mode, key)) { return; }
             foreach (RegisterInfo info in RegisterList)
             {
                 if (info.Model == mode && info.Normal == key)
@@ -503,6 +552,7 @@ namespace FastHotKeyForWPF
 
         private void RemoveExistRegisterByID(int id)//依据热键注册时的编号，删除热键
         {
+            if (CheckInProtectList(id)) { return; }
             if (UnregisterHotKey(WindowhWnd, id))
             {
                 if (Trigger_Void.ContainsKey(id)) { Trigger_Void.Remove(id); };
@@ -523,6 +573,7 @@ namespace FastHotKeyForWPF
 
         private int RemoveExistRegisterByKeys(ModelKeys mode, NormalKeys key)//依据组合键，删除热键
         {
+            if (CheckInProtectList(mode, key)) { return -1; }
             foreach (RegisterInfo info in RegisterList)
             {
                 if (info.Model == mode && info.Normal == key)
@@ -534,7 +585,7 @@ namespace FastHotKeyForWPF
             return -1;
         }
 
-        public void RemoveExistRegisterByFunction_Void(KeyInvoke_Void work)//依据函数清除所有组合键
+        private void RemoveExistRegisterByFunction_Void(KeyInvoke_Void work)//依据函数清除所有组合键
         {
             List<int> target = new List<int>();
             foreach (RegisterInfo info in RegisterList)
@@ -546,11 +597,11 @@ namespace FastHotKeyForWPF
             }
             foreach (int id in target)
             {
-                RemoveExistRegisterByID(id);
+                if (!CheckInProtectList(id)) { RemoveExistRegisterByID(id); }
             }
         }
 
-        public void RemoveExistRegisterByFunction_Return(KeyInvoke_Return work)//依据函数清除所有组合键
+        private void RemoveExistRegisterByFunction_Return(KeyInvoke_Return work)//依据函数清除所有组合键
         {
             List<int> target = new List<int>();
             foreach (RegisterInfo info in RegisterList)
@@ -562,8 +613,88 @@ namespace FastHotKeyForWPF
             }
             foreach (int id in target)
             {
-                RemoveExistRegisterByID(id);
+                if (!CheckInProtectList(id)) { RemoveExistRegisterByID(id); }
             }
+        }
+
+        private void AddProtectedHotKey(ModelKeys modelKey, NormalKeys normalKey)//依据组合键添加保护名单
+        {
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == modelKey && item.Item2 == normalKey)
+                {
+                    return;
+                }
+            }
+            ProtectList.Add(Tuple.Create(modelKey, normalKey));
+        }
+
+        private void AddProtectedHotKey(int id)//依据注册id添加保护名单
+        {
+            foreach (RegisterInfo info in RegisterList)
+            {
+                if (info.RegisterID == id)
+                {
+                    AddProtectedHotKey(info.Model, info.Normal);
+                    return;
+                }
+            }
+        }
+
+        private void RemoveProtectedHotKey(ModelKeys modelKey, NormalKeys normalKey)//依据组合键删除保护名单
+        {
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == modelKey && item.Item2 == normalKey)
+                {
+                    ProtectList.Remove(item);
+                    return;
+                }
+            }
+        }
+
+        private void RemoveProtectedHotKey(int id)//依据注册id删除保护名单
+        {
+            foreach (RegisterInfo info in RegisterList)
+            {
+                if (info.RegisterID == id)
+                {
+                    RemoveProtectedHotKey(info.Model, info.Normal);
+                    return;
+                }
+            }
+        }
+
+        private bool CheckInProtectList(ModelKeys modelKey, NormalKeys normalKey)//仅检查组合键是否处于保护态，不修改
+        {
+            bool result = false;
+
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == modelKey && item.Item2 == normalKey)
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        private bool CheckInProtectList(int id)//仅检查指定id对应的组合键是否处于保护态，不修改
+        {
+            bool result = false;
+
+            foreach (RegisterInfo info in RegisterList)
+            {
+                if (info.RegisterID == id)
+                {
+                    result = CheckInProtectList(info.Model, info.Normal);
+                    break;
+                }
+            }
+
+            return result;
         }
         #endregion
     }
