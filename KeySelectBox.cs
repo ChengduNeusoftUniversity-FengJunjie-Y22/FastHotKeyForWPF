@@ -49,8 +49,6 @@ namespace FastHotKeyForWPF
                     if (GlobalHotKey.IsDeBug) { MessageBox.Show(result.Item2); }
                     //注册成功且处于DeBug模式下，会打印注册信息
 
-                    SuccessRegister?.Invoke(this);
-
                     var temp = BindingRef.GetKeysFromConnection(this);
                     if (temp.Item1 != null && temp.Item2 != null) { RemoveSameKeySelect((ModelKeys)temp.Item1, (NormalKeys)temp.Item2, this); }
                     //若成功则清除其它与此相同的Box

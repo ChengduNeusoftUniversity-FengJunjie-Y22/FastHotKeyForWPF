@@ -45,14 +45,19 @@ protected override void OnClosed(EventArgs e)
 <summary>(2)受保护的热键名单</summary>
 
 #### 名单获取
-
+|GlobalHotKey属性   |类型                                |
+|-------------------|------------------------------------|
+|ProtectedHotKeys   |List<Tuple<ModelKeys, NormalKeys>>? |
 
 #### 名单增删
-|GlobalHotKey类     |功能               |
-|-------------------|-------------------|
-|Awake              |激活全局热键功能   |
-|Destroy            |关闭全局热键功能   |
+|GlobalHotKey方法   |参数                                 |功能                              |
+|-------------------|-------------------------------------|----------------------------------|
+|ProtectHotKeyByKeys|( ModelKeys , NormalKeys )           |在受保护名单中新增热键组合（直接添加）        |
+|ProtectHotKeyById  |int                                  |在受保护名单中新增热键组合（先依据id找到热键，再添加）       |
+|UnProtectHotKeyByKeys|( ModelKeys , NormalKeys )         |解除指定热键的保护（直接解除）               |
+|UnProtectHotKeyById  |int                                |解除指定热键的保护（先依据id找到热键，再解除）  |
 
+###### 受保护的热键，无论注册与否，都不可对其执行注册、修改、删除操作（例如有些热键属于系统热键的范畴，不适合被修改，可以放到这个名单下）
 </details>
 
 <details>
@@ -273,6 +278,10 @@ namespace TestDemo
             }
         }
 
+        //注意
+        //新版本中，无论是鼠标进出事件还是注册结果提示事件，参数都是（object sender）
+        //sender表示触发了这个事件的对象，你可以依据sender的具体类型，对组件做出修改
+
         private void WhileSuccessRegister(object sender)//若注册成功
         {
             MessageBox.Show("注册成功!");
@@ -292,12 +301,16 @@ namespace TestDemo
             if (sender is KeySelectBox e1)
             {
                 e1.Foreground = Brushes.Red;
-                e1.Background = Brushes.Wheat;
+
+                Border? border = e1.Parent as Border;              
+                if (border != null) { border.Background = Brushes.Wheat; }
+                //注意这里如果要修改圆角组件的背景色，本质是需要修改父级容器的背景色，而非组件自身的背景色
             }
             else if (sender is KeysSelectBox e2)
             {
+                Border? border = e2.Parent as Border;
                 e2.Foreground = Brushes.Cyan;
-                e2.Background = Brushes.Black;
+                if (border != null) { border.Background = Brushes.Black; }
             }
         }
 
@@ -305,19 +318,20 @@ namespace TestDemo
         {
             if (sender is KeySelectBox e1)
             {
+                Border? border = e1.Parent as Border;
                 e1.Foreground = Brushes.Cyan;
-                e1.Background = Brushes.Black;
+                if (border != null) { border.Background = Brushes.LightGray; }
             }
             else if (sender is KeysSelectBox e2)
             {
+                Border? border = e2.Parent as Border;
                 e2.Foreground = Brushes.Red;
-                e2.Background = Brushes.Wheat;
+                if (border != null) { border.Background = Brushes.Wheat; }
             }
         }
     }
 }
 ```
-
 </details>
 
 ## 若预制组件无法满足你的美工需求,则需要完全了解以下API
@@ -358,10 +372,6 @@ namespace TestDemo
 |Destroy            |                                                 |关闭监测功能，在GlobalHotKey关闭时自动调用一次   |
 |BindingAutoEvent   |( 一个处理函数 )                                 |接收到返回值时，自动触发此处绑定的处理函数   |
 |RemoveAutoEvent    |                                                 |依然监测返回值，但是监测到返回值后，不再触发事件   |
-|Connect            |( KeySelectBox , KeySelectBox , 处理函数 )       |连接两个预制组件+一个处理函数,激活热键的自动管理   |
-|Connect            |( KeysSelectBox  , 处理函数 )                    |连接一个预制组件+一个处理函数，激活热键的自动管理   |
-|DisConnect         |( KeysSelectBox )                                |取消连接   |
-|DisConnect         |( KeySelectBox )                                 |取消连接   |
 
 |属性               |类型       |默认       |含义                              |
 |-------------------|-----------|-----------|----------------------------------|
@@ -386,8 +396,17 @@ namespace TestDemo
 </details>
 
 <details>
-<summary>代码示例</summary>
+<summary>若要与你自定义的控件结合使用,需要了解以下流程</summary>
 
+### 1.热键的增删改查
+#### GlobalHotKey注册热键 => Registers集合内的注册信息会跟随变动 => 通过访问Registers内的RegisterInfo对象，查询指定热键的全部信息 => 依据id号、热键、处理函数等信息，调用GlobalHotKey提供的系列方法，增删改全局热键 => Registers集合内的注册信息会跟随变动 => ……
+
+### 2.实时监测机制
+#### 例如你注册了【CTRL+F1】=>【TestA】这样一个热键，而TestA()具备一个object返回值，此时，只要按下【CTRL+F1】，就会触发TestA()并产生一个object对象，而BindingRef会监测到这个值，并自动触发BindingAutoEvent()绑定的处理函数。
+
+### 3.一些特性
+##### 【注册】操作会先执行一次清理，前置的Delete()函数是没有必要的
+##### 【GlobalHotKey】提供的所有有关热键的变动操作，都会自动更新Registers集合，该属性只读
 
 </details>
 

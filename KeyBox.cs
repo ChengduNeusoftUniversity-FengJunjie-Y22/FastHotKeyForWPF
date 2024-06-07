@@ -337,7 +337,7 @@ namespace FastHotKeyForWPF
             else if (sender is KeysSelectBox)
             {
                 ((KeysSelectBox)sender).Protected = true;
-            }           
+            }
         }
 
         /// <summary>
