@@ -160,7 +160,7 @@ protected override void OnSourceInitialized(EventArgs e)
 |RemoveAutoEvent        |                                         |清除响应函数|
 
 ### 代码示例
-##### XAML中,定义一个Border用于指定预制组件的位置
+#### XAML中,定义Border用于指定预制组件的位置
 ```xaml
 <Window x:Class="TestDemo.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -172,13 +172,15 @@ protected override void OnSourceInitialized(EventArgs e)
         Title="MainWindow" Height="470" Width="800">
     <Viewbox>
         <Grid Height="450" Width="800">
-            <!--Border用于给预制组件KeysSelectBox定位-->
-            <Border x:Name="Box1" Margin="174,131,404,269" Height="50"/>
+            <!--Border用于给预制组件定位-->
+            <Border x:Name="Box1" Margin="109,39,341,361" Height="50"/>
+            <Border x:Name="Box2" Margin="109,162,537,238" Height="50"/>
+            <Border x:Name="Box3" Margin="305,162,341,238" Height="50"/>
         </Grid>
     </Viewbox>
 </Window>
 ```
-##### C# 添加非圆角组件
+#### C#中,分别使用KeySelectBox与KeysSelectBox组件,自动地管理两个热键
 ```csharp
 using FastHotKeyForWPF;
 using System.Windows;
@@ -189,100 +191,29 @@ namespace TestDemo
 {
     public partial class MainWindow : Window
     {
-        KeysSelectBox ksb = PrefabComponent.GetComponent<KeysSelectBox>(componentInfo);
-        //使用PrefabComponent提供的方法获取组件
+        KeySelectBox? k1;
+        KeySelectBox? k2;
+        //k1与k2分别都只能接收一个按键,它们需要（k1,k2,处理函数）的连接才能自动管理热键
+        //这里因为想直接设置成圆角组件,所以需要写成可空类型且不进行赋值或初始化操作
 
-        private static ComponentInfo componentInfo = new ComponentInfo()
-        //当ComponentInfo用于获取预制组件时(非圆角应用场景），需要为其设置的信息也不同，它只是个便于存储属性值的类型，并没有规定必须填写哪几个属性
+        KeysSelectBox k3 = PrefabComponent.GetComponent<KeysSelectBox>(RectComponentInfo);
+        //k3可以同时接收两个按键,它需要（k3,处理函数）的连接就可以自动管理热键
+
+        private static ComponentInfo RectComponentInfo = new ComponentInfo()
+        //ComponentInfo只是一种属性值的存储媒介,它其实包含很多可填字段,但不同组件的不同功能,其实只会用到一部分存储的属性值,因此没有必要为所有属性赋值
+        //例如，这条组件信息只是用于获取简单矩形组件，定义两个属性就够用了
         {
             Foreground = Brushes.Cyan,
             Background = Brushes.Black,
         };
-
-        public MainWindow()
+        private static ComponentInfo RoundComponentInfo = new ComponentInfo()
+        //例如,这条组件信息用于获取圆角组件,那你便需要设置以下属性以获取更好的效果
         {
-            InitializeComponent();
-        }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            GlobalHotKey.Awake();
-            //激活
-
-            LoadHotKeys();
-            //加载组件
-
-            base.OnSourceInitialized(e);
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            GlobalHotKey.Destroy();
-            //销毁
-
-            base.OnClosed(e);
-        }
-
-        private void LoadHotKeys()
-        {
-            Box1.Child = ksb;
-            //这种模式需要手动将预制组件放入容器内
-
-            ksb.UseFatherSize<Border>(0.8);
-            //自适应父级容器大小,0.8是字体应用的比率,可以不填写或自己指定比率
-
-            ksb.UseStyleProperty("MyBoxStyle");
-            //使用XAML中自定义的样式资源"MyBoxStyle"的所有属性,没找到的话,什么也不做
-
-            ksb.UseStyleProperty("MyBoxStyle", new string[] { "Width", "Height" });
-            //只应用"MyBoxStyle"中的"Width"和"Height"属性
-
-            ksb.IsDefaultColorChange = false;
-            //关闭默认的焦点进出事件(1.1.6开始，默认都是关闭的)
-
-            ksb.UseFocusTrigger(Enter, Leave);
-            //使用你自定义的焦点进出事件
-        }
-
-        private void Enter(TextBox e)
-        {
-            //当鼠标进入预制组件时
-        }
-
-        private void Leave(TextBox e)
-        {
-            //当鼠标离开预制组件时
-        }
-    }
-}
-```
-##### C# 添加圆角组件
-```csharp
-using FastHotKeyForWPF;
-using System.Windows;
-using System.Windows.Media;
-
-namespace TestDemo
-{
-    public partial class MainWindow : Window
-    {
-        KeysSelectBox? ksb;
-        //预制组件不可在类库外部被直接实例化,需要通过PrefabComponent提供的相关方法来获取
-
-        ComponentInfo componentInfo = new ComponentInfo()
-        //预制组件的样式信息
-        {
-            BorderBrush = Brushes.Cyan,
+            BorderBrush = Brushes.Red,
             BorderThickness = new Thickness(1),
-            Background = Brushes.Black,
+            CornerRadius = new CornerRadius(10),
+            Background = Brushes.LightGray,
             Foreground = Brushes.Cyan,
-
-            CornerRadius = new CornerRadius(5),
-            //设置圆角半径
-
-            FontSizeRate = 0.8,
-            //字体大小比率 * 父级容器的高度 = 预制组件的字体大小
-            //注意父级Border容器的高度不可为double.NAN,需要显式地指定高度
         };
 
         public MainWindow()
@@ -305,89 +236,95 @@ namespace TestDemo
 
         private void LoadHotKeys()
         {
-            ksb = PrefabComponent.SetAsRoundBox<KeysSelectBox>(Box1, componentInfo);
-        }
-    }
-}
-```
-### ☆建立预制组件与处理函数的联系,激活热键的全自动管理！
-```csharp
-using FastHotKeyForWPF;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+            Box1.Child = k3;
+            k3.UseFatherSize<Border>();
+            //非圆角组件的添加
 
-namespace TestDemo
-{
-    public partial class MainWindow : Window
-    {
-        KeysSelectBox ksb = PrefabComponent.GetComponent<KeysSelectBox>(componentInfo);
+            k1 = PrefabComponent.SetAsRoundBox<KeySelectBox>(Box2, RoundComponentInfo);
+            k2 = PrefabComponent.SetAsRoundBox<KeySelectBox>(Box3, RoundComponentInfo);
+            //向指定的Border对象嵌入预制组件，形成圆角
 
-        private static ComponentInfo componentInfo = new ComponentInfo()
-        {
-            Foreground = Brushes.Cyan,
-            Background = Brushes.Black,
-        };
+            k1.UseFocusTrigger(EnterColor, LeaveColor);
+            k2.UseFocusTrigger(EnterColor, LeaveColor);
+            k3.UseFocusTrigger(EnterColor, LeaveColor);
+            //鼠标进出控件时，拥有变色效果
 
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+            k3.UseSuccessTrigger(WhileSuccessRegister);
+            k1.UseSuccessTrigger(WhileSuccessRegister);
+            k2.UseSuccessTrigger(WhileSuccessRegister);
+            //成功注册热键时，给予用户提示
 
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            GlobalHotKey.Awake();
-            //激活
+            k3.UseFailureTrigger(WhileFailRegister);
+            k1.UseFailureTrigger(WhileFailRegister);
+            k2.UseFailureTrigger(WhileFailRegister);
+            //注册失败时，给予用户提示
 
-            LoadHotKeys();
-            //加载组件
-
-            base.OnSourceInitialized(e);
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            GlobalHotKey.Destroy();
-            //销毁
-
-            base.OnClosed(e);
-        }
-
-        private void LoadHotKeys()
-        {
-            Box1.Child = ksb;
+            BindingRef.Connect(k1, k2, TestA);
+            BindingRef.Connect(k3, InvokeHotKey);
+            //创建连接关系，启用自动管理
 
             BindingRef.BindingAutoEvent(WhileGetObject);
-            //InvokeHotKey返回一个object,若你希望实时监测InvokeHotKey的触发情况,并拿到这个object做进一步的处理，那么可以通过这句函数激活实时监测返回值的功能
-
-            GlobalHotKey.IsUpdate = false;
-            //暂时关闭实时监测，但不清除响应函数
-
-            BindingRef.RemoveAutoEvent();
-            //清除实时响应
-
-            BindingRef.Connect(ksb, InvokeHotKey);
-            //ksb将依据用户输入的按键，自动管理热键，自动注册的热键将去触发自定义的InvokeHotKey函数
-            //这里ksb是一种能同时接收两个按键的预制组件，如果你使用一次接收一个按键的盒子，Connect()需要同时填入两个盒子+一个处理函数
-            //可以同时注册多个具备object返回值的处理函数，任何一个被触发，都可以自动响应绑定的WhileGetObject()
-
-            BindingRef.DisConnect(ksb);
-            //解除连接关系，关闭自动管理
-            //如果是两个单键盒子被连接，只需要填入其中任何一个盒子，就能解除
+            //InvokeHotKey()返回的object对象将被捕获，并在WhileGetObject()函数中，对这个object做进一步解析
         }
 
-        private object InvokeHotKey()
+        private void TestA()//被k1和k2管理
+        {
+            MessageBox.Show("触发了TestA！");
+        }
+
+        private object InvokeHotKey()//被k3管理
         {
             return "热键被触发！";
         }
 
-        private void WhileGetObject()
+        private void WhileGetObject()//对监测到的object返回值做进一步操作
         {
-            if (ksb != null) { return; }
+            if (k3 == null) { return; }
             if (BindingRef.Value is string info)
-            //这里拿到最新的返回值，并根据object的实际类型，做出不同的处理
             {
                 MessageBox.Show($"接收到的返回值:{info}");
+            }
+        }
+
+        private void WhileSuccessRegister(object sender)//若注册成功
+        {
+            MessageBox.Show("注册成功!");
+        }
+
+        private void WhileFailRegister(object sender)//若注册失败
+        {
+            if (sender is KeysSelectBox e)
+            {
+                e.Text = e.DefaultErrorText;
+                //DefaultErrorText表示默认注册失败时，组件文本显示为什么内容，默认"Error"
+            }
+        }
+
+        private void EnterColor(object sender)//鼠标进入组件时
+        {
+            if (sender is KeySelectBox e1)
+            {
+                e1.Foreground = Brushes.Red;
+                e1.Background = Brushes.Wheat;
+            }
+            else if (sender is KeysSelectBox e2)
+            {
+                e2.Foreground = Brushes.Cyan;
+                e2.Background = Brushes.Black;
+            }
+        }
+
+        private void LeaveColor(object sender)//鼠标离开组件时
+        {
+            if (sender is KeySelectBox e1)
+            {
+                e1.Foreground = Brushes.Cyan;
+                e1.Background = Brushes.Black;
+            }
+            else if (sender is KeysSelectBox e2)
+            {
+                e2.Foreground = Brushes.Red;
+                e2.Background = Brushes.Wheat;
             }
         }
     }
@@ -462,7 +399,7 @@ namespace TestDemo
 </details>
 
 <details>
-<summary>美术需求高时,以下思路可以较好地将类库功能与你自定义的控件相结合</summary>
+<summary>代码示例</summary>
 
 
 </details>
