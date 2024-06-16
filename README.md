@@ -13,7 +13,7 @@
 [1]: https://www.bilibili.com/video/BV1rr421L7qR
 
 <details>
-<summary>Version 1.1.5 已上限</summary>
+<summary>Version 1.1.5 已上线</summary>
 
 #### (1)修复焦点离开盒子后，盒子仍然在接收用户按键的bug
 #### (2)修复无法使用实例方法Protect()锁定盒子的问题
