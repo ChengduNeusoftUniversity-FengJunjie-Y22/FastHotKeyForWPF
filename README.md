@@ -1,4 +1,5 @@
 # FastHotKeyForWPF
+###### 它还有个.NET6版本，那是因为作者有个老项目里的文件系统不好直接升.NET8又想用这个库，所以打包了份6.0的
 ## ☆ NuGet文档不再更新,可选择以下路径查看最新文档
 - [github][1]
 - [gitee][2]
@@ -6,7 +7,43 @@
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 
-## 快速入手(按照使用场景划分,只介绍常用API+代码示例)
+## Ⅰ 更新进度
+[前往Bilibili查看各个版本的视频演示][1]
+
+[1]: https://www.bilibili.com/video/BV1rr421L7qR
+
+<details>
+<summary>Version 1.1.5 已上限</summary>
+
+#### (1)修复焦点离开盒子后，盒子仍然在接收用户按键的bug
+#### (2)修复无法使用实例方法Protect()锁定盒子的问题
+#### (3)新增组件之间的通信机制,自动清理重复的热键
+
+</details>
+
+<details>
+<summary>Version 1.1.6 已上线</summary>
+
+#### (1)提供开箱即用的圆角组件
+#### (2)默认不使用变色效果,需要用户自定义对应函数
+#### (3)非DeBug模式下再无注册成功与否的提示,需要用户自定义对应函数
+#### (4)新增一个保护名单,名单中的任何热键不允许被增删改,即便这个热键没有被注册过
+#### (5)新增静态属性,用于获取注册信息和保护名单
+
+</details>
+
+<details>
+<summary>Version 1.1.8 更新预告（正处于测试阶段，但由于临近期末考试，会有点慢）</summary>
+
+#### (1)1.1.6  PrefabComponent.SetAsRoundBox<>()方法与PrefabComponent.SetToRoundBox<>()方法本该是互为重载方法的关系，但这里命名有As和To的区别，To不需要传入Info，As需要传入Info，下个版本会统一命名，使用As
+#### (2)修改KeyBox在鼠标进入时的逻辑
+#### (3)修复KeyBox在后端初始化定义了默认热键时，用户第一次尝试修改热键概率失效的问题
+#### (4)★新内容 : 用户控件【HotKeyBox】，你可在前端使用此控件来实现与以往类似的热键接收功能，它将提供一系列的API供你定义控件的动画、行为，与1.1.8之前的版本相比，这是更为推荐的做法
+##### 注意：旧版本后端代码添加组件的方式仍会保留，但从1.1.8以后将不再是主推做法
+
+</details>
+
+## Ⅱ 快速入手(按照使用场景划分,只介绍常用API+代码示例)
 <details>
 <summary>(1)管理类库功能的启用/关闭</summary>
 
@@ -338,7 +375,7 @@ namespace TestDemo
 ```
 </details>
 
-## 若预制组件无法满足你的美工需求,则需要完全了解以下API
+## Ⅲ 若预制组件无法满足你的美工需求,则需要完全了解以下API
 
 <details>
 <summary>API</summary>
@@ -400,7 +437,7 @@ namespace TestDemo
 </details>
 
 <details>
-<summary>若要与你自定义的控件结合使用,需要了解以下流程</summary>
+<summary>若要与你自定义的控件结合使用,以下流程是你需要了解的</summary>
 
 ### 1.热键的增删改查
 #### GlobalHotKey注册热键 => Registers集合内的注册信息会跟随变动 => 通过访问Registers内的RegisterInfo对象，查询指定热键的全部信息 => 依据id号、热键、处理函数等信息，调用GlobalHotKey提供的系列方法，增删改全局热键 => Registers集合内的注册信息会跟随变动 => ……
@@ -411,31 +448,6 @@ namespace TestDemo
 ### 3.一些特性
 ##### 【注册】操作会先执行一次清理，前置的Delete()函数是没有必要的
 ##### 【GlobalHotKey】提供的所有有关热键的变动操作，都会自动更新Registers集合，该属性只读
-
-</details>
-
-## 更新合集
-[前往Bilibili查看各个版本的视频演示][1]
-
-[1]: https://www.bilibili.com/video/BV1rr421L7qR
-
-<details>
-<summary>Version 1.1.5</summary>
-
-#### (1)修复焦点离开盒子后，盒子仍然在接收用户按键的bug
-#### (2)修复无法使用实例方法Protect()锁定盒子的问题
-#### (3)新增组件之间的通信机制,自动清理重复的热键
-
-</details>
-
-<details>
-<summary>Version 1.1.6</summary>
-
-#### (1)提供开箱即用的圆角组件
-#### (2)默认不使用变色效果,需要用户自定义对应函数
-#### (3)非DeBug模式下再无注册成功与否的提示,需要用户自定义对应函数
-#### (4)新增一个保护名单,名单中的任何热键不允许被增删改,即便这个热键没有被注册过
-#### (5)新增静态属性,用于获取注册信息和保护名单
 
 </details>
 
