@@ -1,0 +1,215 @@
+﻿using System.Reflection.Metadata;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+namespace FastHotKeyForWPF
+{
+    public partial class HotKeyBox : UserControl
+    {
+        public HotKeyBox()
+        {
+            InitializeComponent();
+
+            WhileInput += KeyHandling;
+        }
+
+        /// <summary>
+        ///  当前键
+        /// </summary>
+        public Key CurrentKey { get; private set; }
+
+        internal HotKeyBox? Link { get; set; } = null;
+
+        /// <summary>
+        /// 用户按下Enter键时,您希望额外处理一些事情,例如弹出提示框以告诉用户完成了热键的设置
+        /// </summary>
+        public event Action? WhileInput = null;
+
+        /// <summary>
+        /// 若用户输入不受支持的Key，如何显示文本
+        /// </summary>
+        public string ErrorText { get; set; } = "Error";
+
+        /// <summary>
+        /// 反映该控件及其关联控件是否成功注册了热键
+        /// </summary>
+        public bool IsHotKeyRegistered { get; private set; } = false;
+
+        /// <summary>
+        /// 上一个成功注册热键的ID
+        /// </summary>
+        public int LastHotKeyID { get; private set; } = -1;
+
+        internal event KeyInvoke_Return? HandleA;
+        internal event KeyInvoke_Void? HandleB;
+
+        /// <summary>
+        /// 与其它 HotKeyBox 连接
+        /// </summary>
+        public void ConnectWith(HotKeyBox hotKeyBox, KeyInvoke_Void handle)
+        {
+            if (Link != null) { return; }
+
+            Link = hotKeyBox;
+            hotKeyBox.Link = this;
+
+            HandleA = null;
+            Link.HandleA = null;
+            HandleB = null;
+            Link.HandleB = null;
+
+            HandleB = handle;
+            Link.HandleB = handle;
+
+            KeyHandling();
+        }
+
+        /// <summary>
+        /// 与其它 HotKeyBox 连接
+        /// </summary>
+        /// <param name="hotKeyBox"></param>
+        /// <param name="handle"></param>
+        public void ConnectWith(HotKeyBox hotKeyBox, KeyInvoke_Return handle)
+        {
+            if (Link != null) { return; }
+
+            Link = hotKeyBox;
+            hotKeyBox.Link = this;
+
+            HandleA = null;
+            Link.HandleA = null;
+            HandleB = null;
+            Link.HandleB = null;
+
+            HandleA = handle;
+            Link.HandleA = handle;
+
+            KeyHandling();
+        }
+
+        /// <summary>
+        /// 取消连接
+        /// </summary>
+        public void DisConnect()
+        {
+            if (Link == null) { return; }
+
+            HandleA = null;
+            Link.HandleA = null;
+            HandleB = null;
+            Link.HandleB = null;
+
+            GlobalHotKey.DeleteById(LastHotKeyID);
+            IsHotKeyRegistered = false;
+            Link.IsHotKeyRegistered = false;
+            LastHotKeyID = -1;
+            Link.LastHotKeyID = -1;
+
+            Link.Link = null;
+            Link = null;
+        }
+
+        private void UserInput(object sender, KeyEventArgs e)
+        {
+            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
+
+            if (key == Key.Return) { Keyboard.ClearFocus(); WhileInput?.Invoke(); return; }
+
+            CurrentKey = key;
+
+            ActualText.Text = key.ToString();
+        }
+
+        private void TextBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            FocusGet.Focus();
+        }
+
+        private void TextBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Keyboard.ClearFocus();
+            KeyHandling();
+        }
+
+        private void KeyHandling()
+        {
+            GlobalHotKey.DeleteById(LastHotKeyID);
+
+            IsHotKeyRegistered = false;
+            LastHotKeyID = -1;
+
+            var resultA = UpdateText();
+
+            if (Link == null) { return; }
+
+            Link.IsHotKeyRegistered = false;
+            Link.LastHotKeyID = -1;
+
+            var resultB = Link.UpdateText();
+
+            if (resultA.Item1 && resultB.Item1 && (resultA.Item2 != resultB.Item2))
+            {
+                ModelKeys model = ModelKeys.ALT;
+                NormalKeys normal = NormalKeys.F1;
+
+                switch (resultA.Item2)
+                {
+                    case KeyTypes.Model:
+                        model = KeyHelper.KeyToModelKeys[CurrentKey];
+                        normal = KeyHelper.KeyToNormalKeys[Link.CurrentKey];
+                        break;
+                    case KeyTypes.Normal:
+                        model = KeyHelper.KeyToModelKeys[Link.CurrentKey];
+                        normal = KeyHelper.KeyToNormalKeys[CurrentKey];
+                        break;
+                }
+
+                if (HandleA != null)
+                {
+                    var result = GlobalHotKey.Add(model, normal, HandleA);
+                    if (result.Item1)
+                    {
+                        IsHotKeyRegistered = true;
+                        Link.IsHotKeyRegistered = true;
+                        LastHotKeyID = result.Item2;
+                        Link.LastHotKeyID = result.Item2;
+                        return;
+                    }
+                }
+                if (HandleB != null)
+                {
+                    var result = GlobalHotKey.Add(model, normal, HandleB);
+                    if (result.Item1)
+                    {
+                        IsHotKeyRegistered = true;
+                        Link.IsHotKeyRegistered = true;
+                        LastHotKeyID = result.Item2;
+                        Link.LastHotKeyID = result.Item2;
+                        return;
+                    }
+                }
+            }
+
+            IsHotKeyRegistered = false;
+            Link.IsHotKeyRegistered = false;
+            LastHotKeyID = -1;
+            Link.LastHotKeyID = -1;
+        }
+
+        private (bool, KeyTypes) UpdateText()
+        {
+            var result = KeyHelper.IsKeyValid(CurrentKey);
+            if (result.Item1)
+            {
+                ActualText.Text = CurrentKey.ToString();
+                return (true, result.Item2);
+            }
+            else
+            {
+                ActualText.Text = ErrorText;
+            }
+            return (false, result.Item2);
+        }
+    }
+}

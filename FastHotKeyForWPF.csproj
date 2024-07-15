@@ -1,28 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>FastHotKeyForWPF</Title>
-    <Version>1.1.5</Version>
-    <Authors>KeQinZhenHaoKan</Authors>
-    <Company></Company>
-    <Description>Quickly build global hotkeys for WPF</Description>
-    <PackageProjectUrl></PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF</RepositoryUrl>
-    <PackageOutputPath />
-    <NeutralLanguage>zh-CN</NeutralLanguage>
-  </PropertyGroup>
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>FastHotKeyForWPF</Title>
+		<Version>1.2.0</Version>
+		<Authors>KeQinZhenHaoKan</Authors>
+		<Company></Company>
+		<Description>Quickly build global hotkeys for WPF</Description>
+		<PackageProjectUrl></PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF</RepositoryUrl>
+		<PackageOutputPath />
+		<NeutralLanguage>zh-CN</NeutralLanguage>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Update="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
