@@ -269,3 +269,62 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             }
         }
 ```
+
+---
+
+## Ⅷ [ HotKeyBox ]控件
+#### 情景. 假定你希望制作一个设置界面，允许用户自己设置热键
+#### 示例. 接入控件后，自动接收用户输入并据此自动注册、修改、删除热键
+###### 引入
+```xaml
+            xmlns:ff="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+```
+###### 接入控件
+```xaml
+            <ff:HotKeyBox x:Name="Box1"/>
+            <ff:HotKeyBox x:Name="Box2"/>
+```
+###### 后端逻辑
+```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            Box1.ConnectWith(Box2, TestA);
+        }
+
+        private object TestA()
+        {
+            return "热键A被触发了！";
+        }
+```
+
+---
+
+## Ⅷ [ HotKeysBox ]控件
+#### 情景. 假定你希望制作一个设置界面，允许用户自己设置热键
+#### 示例. 接入控件后，自动接收用户输入并据此自动注册、修改、删除热键
+###### 引入
+```xaml
+            xmlns:ff="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+```
+###### 接入控件
+```xaml
+            <ff:HotKeysBox x:Name="Box3"/>
+```
+###### 后端逻辑
+```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            Box3.ConnectWith(TestA);
+        }
+
+        private object TestA()
+        {
+            return "热键A被触发了！";
+        }
+```
