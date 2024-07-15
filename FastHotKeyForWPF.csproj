@@ -12,11 +12,12 @@
 		<Authors>KeQinZhenHaoKan</Authors>
 		<Company></Company>
 		<Description>Quickly build global hotkeys for WPF</Description>
-		<PackageProjectUrl></PackageProjectUrl>
+		<PackageProjectUrl>https://www.nuget.org/packages/FastHotKeyForWPF/</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF</RepositoryUrl>
 		<PackageOutputPath />
 		<NeutralLanguage>zh-CN</NeutralLanguage>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>
