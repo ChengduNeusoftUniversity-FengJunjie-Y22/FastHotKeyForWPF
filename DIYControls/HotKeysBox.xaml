@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:FastHotKeyForWPF"
              mc:Ignorable="d" 
              Height="50"
-             Width="340"
+             Width="320"
              Background="Transparent"
              x:Name="Total"  MouseLeave="TextBox_MouseLeave" MouseEnter="TextBox_MouseEnter">
     <UserControl.Resources>
@@ -14,7 +14,8 @@
     </UserControl.Resources>
     <Grid Background="#1e1e1e">
         <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
-        <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0" GotFocus="FocusGet_GotFocus" LostFocus="FocusGet_LostFocus"/>
+        <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
+        <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
         <TextBlock x:Name="ActualText" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
     </Grid>
 </UserControl>

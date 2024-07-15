@@ -13,8 +13,13 @@
         <local:DoubleConvertor ConvertRate="0.7" x:Key="HeightToFontSize"/>
     </UserControl.Resources>
     <Grid Background="#1e1e1e">
-        <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
+        <!--外边框-->
+         <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
+        <!--用于获取焦点的Box-->
         <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
+        <!--用于移除焦点的Box-->
+        <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
+        <!--文本显示Box-->
         <TextBlock x:Name="ActualText" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
     </Grid>
 </UserControl>

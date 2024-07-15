@@ -1,19 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FastHotKeyForWPF.DIYControls;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FastHotKeyForWPF
 {
@@ -32,12 +21,12 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 系统键
         /// </summary>
-        public Key CurrentKeyA { get; private set; }
+        public Key CurrentKeyA { get; internal set; }
 
         /// <summary>
         /// 普通键
         /// </summary>
-        public Key CurrentKeyB { get; private set; }
+        public Key CurrentKeyB { get; internal set; }
 
         /// <summary>
         /// 用户按下Enter键时,您希望额外处理一些事情,例如弹出提示框以告诉用户完成了热键的设置
@@ -57,12 +46,43 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 反映该控件及其关联控件是否成功注册了热键
         /// </summary>
-        public bool IsHotKeyRegistered { get; private set; } = false;
+        public bool IsHotKeyRegistered { get; internal set; } = false;
 
         /// <summary>
         /// 上一个成功注册热键的ID
         /// </summary>
         internal int LastHotKeyID { get; set; } = -1;
+
+        /// <summary>
+        /// 圆滑度
+        /// </summary>
+        public CornerRadius CornerRadius
+        {
+            set
+            {
+                FixedBorder.CornerRadius = value;
+            }
+        }
+
+        /// <summary>
+        /// 默认文本色
+        /// </summary>
+        public SolidColorBrush DefaultTextColor { get; set; } = Brushes.White;
+
+        /// <summary>
+        /// 默认外边框色
+        /// </summary>
+        public SolidColorBrush DefaultBorderBrush { get; set; } = Brushes.White;
+
+        /// <summary>
+        /// 悬停文本色
+        /// </summary>
+        public SolidColorBrush HoverTextColor { get; set; } = Brushes.Cyan;
+
+        /// <summary>
+        /// 悬停边框色
+        /// </summary>
+        public SolidColorBrush HoverBorderBrush { get; set; } = Brushes.Cyan;
 
         internal event KeyInvoke_Return? HandleA;
         internal event KeyInvoke_Void? HandleB;
@@ -102,6 +122,39 @@ namespace FastHotKeyForWPF
             LastHotKeyID = -1;
         }
 
+        /// <summary>
+        /// 手动设置热键
+        /// </summary>
+        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, KeyInvoke_Void handle)
+        {
+            CurrentKeyA = KeyHelper.ModelKeysToKey[modelKeys];
+            CurrentKeyB = KeyHelper.NormalKeysToKey[normalKeys];
+
+            HandleA = null;
+            HandleB = handle;
+
+            KeyHandling();
+
+            return false;
+        }
+
+        /// <summary>
+        /// 手动设置热键
+        /// </summary>
+        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, KeyInvoke_Return handle)
+        {
+            CurrentKeyA = KeyHelper.ModelKeysToKey[modelKeys];
+            CurrentKeyB = KeyHelper.NormalKeysToKey[normalKeys];
+
+            HandleB = null;
+            HandleA = handle;
+
+            KeyHandling();
+            UpdateText();
+
+            return false;
+        }
+
         private void UserInput(object sender, KeyEventArgs e)
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
@@ -130,15 +183,19 @@ namespace FastHotKeyForWPF
         private void TextBox_MouseEnter(object sender, MouseEventArgs e)
         {
             FocusGet.Focus();
+            ActualText.Foreground = HoverTextColor;
+            FixedBorder.BorderBrush = HoverBorderBrush;
         }
 
         private void TextBox_MouseLeave(object sender, MouseEventArgs e)
         {
-            Keyboard.ClearFocus();
             KeyHandling();
+            ActualText.Foreground = DefaultTextColor;
+            FixedBorder.BorderBrush = DefaultBorderBrush;
+            EmptyOne.Focus();
         }
 
-        private void KeyHandling()
+        internal void KeyHandling()
         {
             GlobalHotKey.DeleteById(LastHotKeyID);
 
@@ -157,6 +214,7 @@ namespace FastHotKeyForWPF
                     {
                         IsHotKeyRegistered = true;
                         LastHotKeyID = register.Item2;
+                        BoxTool.RemoveSame(CurrentKeyA, CurrentKeyB);
                         return;
                     }
                 }
@@ -167,6 +225,7 @@ namespace FastHotKeyForWPF
                     {
                         IsHotKeyRegistered = true;
                         LastHotKeyID = register.Item2;
+                        BoxTool.RemoveSame(CurrentKeyA, CurrentKeyB);
                         return;
                     }
                 }
@@ -176,7 +235,7 @@ namespace FastHotKeyForWPF
             LastHotKeyID = -1;
         }
 
-        private void UpdateText()
+        internal void UpdateText()
         {
             ActualText.Text = CurrentKeyA.ToString() + ConnectText + CurrentKeyB.ToString();
         }

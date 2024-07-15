@@ -29,9 +29,7 @@ namespace FastHotKeyForWPF
         {
 
         { Key.LeftCtrl, (uint)ModelKeys.CTRL },
-        { Key.RightCtrl, (uint)ModelKeys.CTRL },
         { Key.LeftAlt, (uint)ModelKeys.ALT },
-        { Key.RightAlt, (uint)ModelKeys.ALT },
 
         { Key.Space,(uint)NormalKeys.SPACE},
 
@@ -170,10 +168,23 @@ namespace FastHotKeyForWPF
         public static readonly Dictionary<Key, ModelKeys> KeyToModelKeys = new Dictionary<Key, ModelKeys>()
         {
         { Key.LeftCtrl, ModelKeys.CTRL },
-        { Key.RightCtrl, ModelKeys.CTRL },
         { Key.LeftAlt, ModelKeys.ALT },
-        { Key.RightAlt, ModelKeys.ALT },
         };
+
+        /// <summary>
+        /// Uint => Key
+        /// </summary>
+        public static Dictionary<uint, Key> UintToKey = KeyToUint.ToDictionary(kv => kv.Value, kv => kv.Key);
+
+        /// <summary>
+        /// NormalKey => Key
+        /// </summary>
+        public static Dictionary<NormalKeys, Key> NormalKeysToKey = KeyToNormalKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
+
+        /// <summary>
+        /// ModelKey => Key
+        /// </summary>
+        public static Dictionary<ModelKeys, Key> ModelKeysToKey = KeyToModelKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
 
         /// <summary>
         /// 检查键是否合法,以及它的所属类型
