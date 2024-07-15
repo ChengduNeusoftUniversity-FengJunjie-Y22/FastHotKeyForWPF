@@ -151,6 +151,8 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
         }
 ```
 
+---
+
 ## Ⅴ 使用 GlobalHotKey ，删除热键
 #### 示例1. 根据 注册ID 删除热键（默认第一个ID是2004，之后逐个累加）
 ```csharp
@@ -186,6 +188,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
         }
 ```
 
+---
 
 ## Ⅵ 使用 RegisterCollection ，查询注册在列的热键信息
 #### 示例1. 根据 ID 查询完整的注册信息 （ RegisterInfo 对象 ）
@@ -203,7 +206,66 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |FunctionVoid           |KeyInvoke_Void              |处理函数 - void 型   |
 |FunctionReturn         |KeyInvoke_Return            |处理函数B - return object 型   |
 
+---
 
 ## Ⅶ 使用 ReturnValueMonitor ，在热键事件处理完毕后，对其返回值进一步处理（不常用）
+#### 示例. 使用 BindingAutoEvent 处理监测到的返回值
 ```csharp
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            ReturnValueMonitor.Awake();
+            ReturnValueMonitor.BindingAutoEvent(WhileObjectReturned);
+            //WhileObjectReturned将对TestA与TestB返回的object做处理
+
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F2, TestB);
+            //TestA与TestB只负责返回object,并不对其做任何处理
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            GlobalHotKey.Destroy();
+            ReturnValueMonitor.Destroy();
+
+            base.OnClosed(e);
+        }
+
+        private object TestA()
+        {
+            return "热键A被触发了！";
+        }
+
+        private object TestB()
+        {
+            return 66868;
+        }
+
+        private void WhileObjectReturned()
+        {
+            if (ReturnValueMonitor.Value == null) { return; }
+
+            if (ReturnValueMonitor.Value is string text)
+            {
+                //……
+                //stringg 处理逻辑，例如打印值
+
+                return;
+            }
+
+            if (ReturnValueMonitor.Value is int number)
+            {
+                //……
+                //int 处理逻辑，例如打印值
+
+                return;
+            }
+        }
 ```
