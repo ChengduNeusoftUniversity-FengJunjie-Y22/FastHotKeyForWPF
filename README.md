@@ -351,9 +351,9 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 #### [ HotKeyBox ] & [ HotKeysBox ] 在Xaml构成上几乎一模一样，你可以通过 x:Name 访问内部元素并修改它们
 ##### 内部元素如下
 ```xaml
-    <Grid Background="#1e1e1e">
+    <Grid x:Name="BackGrid" Background="#1e1e1e">
         <!--外边框-->
-         <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
+        <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
         <!--用于获取焦点的Box-->
         <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
         <!--用于移除焦点的Box-->
