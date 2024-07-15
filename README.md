@@ -349,7 +349,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |HoverBorderBrush       |SolidColorBrush             |悬停外边框色|
 
 #### [ HotKeyBox ] & [ HotKeysBox ] 在Xaml构成上几乎一模一样，你可以通过 x:Name 访问内部元素并修改它们
-##### 示例
+##### 内部元素如下
 ```xaml
     <Grid Background="#1e1e1e">
         <!--外边框-->
