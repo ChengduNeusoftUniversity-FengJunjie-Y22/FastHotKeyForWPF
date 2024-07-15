@@ -255,7 +255,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             if (ReturnValueMonitor.Value is string text)
             {
                 //……
-                //stringg 处理逻辑，例如打印值
+                //string 处理逻辑，例如打印值
 
                 return;
             }
