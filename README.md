@@ -34,7 +34,7 @@
 </details>
 
 <details>
-<summary>Version 1.2.0 即将</summary>
+<summary>Version 1.2.0 即将上线</summary>
 
 ### 在保留 99% GlobalHotKey 的前提下，进行了大量重构操作
 ##### （1）弃用 BindingRef ，改为 ReturnValueMonitor ，不再自动 Awake()
