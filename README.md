@@ -272,19 +272,23 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 ---
 
-## Ⅷ [ HotKeyBox ] 控件
+## Ⅷ [ HotKeyBox ] 控件 & [ HotKeysBox ] 控件
 #### 情景. 假定你希望制作一个设置界面，允许用户自己设置热键
-#### 示例. 接入控件后，自动接收用户输入并据此自动注册、修改、删除热键
-###### 引入
-```xaml
+#### 示例1. 接入控件
+##### 引入库
+```xaml          
             xmlns:ff="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
-###### 接入控件
+##### 定义控件
 ```xaml
+            <!--每个控件只接收一个Key-->
             <ff:HotKeyBox x:Name="Box1"/>
             <ff:HotKeyBox x:Name="Box2"/>
+
+            <!--每个控件接收两个Key-->
+            <ff:HotKeysBox x:Name="Box3"/>
 ```
-###### 后端逻辑
+##### 建立连接
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -292,6 +296,8 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             GlobalHotKey.Awake();
 
             Box1.ConnectWith(Box2, TestA);
+            Box3.ConnectWith(TestA);
+            //无论哪种 Box ，连接操作只需要执行一次
         }
 
         private object TestA()
@@ -307,10 +313,14 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             GlobalHotKey.Awake();
 
             Box1.ConnectWith(Box2, TestA);
-            Box1.SetHotKey(ModelKeys.CTRL,NormalKeys.F1,TestA);
+            Box3.ConnectWith(TestB);
+            //注意先建立连接再设置初始热键
+
+            Box1.SetHotKey(ModelKeys.CTRL,NormalKeys.F1,TestA);           
+            Box3.SetHotKey(ModelKeys.CTRL, NormalKeys.F2, TestB);
         }
 ```
-#### 可选项
+#### [ HotKeyBox ] 可选项
 |属性                   |类型                        |含义        |
 |-----------------------|----------------------------|------------|
 |CurrentKey             |Key                         |当前值 |
@@ -323,61 +333,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |DefaultBorderBrush     |SolidColorBrush             |默认外边框色|
 |HoverTextColor         |SolidColorBrush             |悬停文本色|
 |HoverBorderBrush       |SolidColorBrush             |悬停外边框色|
-
-#### UserControl 的 Xaml构成 - 你可用 x:Name 更好地改变外观效果
-```xaml
-    <Grid Background="#1e1e1e">
-        <!--外边框-->
-         <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
-        <!--用于获取焦点的Box-->
-        <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
-        <!--用于移除焦点的Box-->
-        <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
-        <!--文本显示Box-->
-        <TextBlock x:Name="ActualText" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
-    </Grid>
-```
-
----
-
-## Ⅸ [ HotKeysBox ] 控件
-#### 情景. 假定你希望制作一个设置界面，允许用户自己设置热键
-#### 示例1. 接入控件后，自动接收用户输入并据此自动注册、修改、删除热键
-###### 引入
-```xaml
-            xmlns:ff="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
-```
-###### 接入控件
-```xaml
-            <ff:HotKeysBox x:Name="Box3"/>
-```
-###### 后端逻辑
-```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-
-            Box3.ConnectWith(TestA);
-        }
-
-        private object TestA()
-        {
-            return "热键A被触发了！";
-        }
-```
-#### 示例2. 为控件设置初始热键
-```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-
-            Box3.ConnectWith(TestB);
-            Box3.SetHotKey(ModelKeys.CTRL, NormalKeys.F2, TestB);
-        }
-```
-#### 可选项
+#### [ HotKeysBox ] 可选项
 |属性                   |类型                        |含义        |
 |-----------------------|----------------------------|------------|
 |CurrentKeyA            |Key                         |左键值 |
@@ -392,7 +348,8 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |HoverTextColor         |SolidColorBrush             |悬停文本色|
 |HoverBorderBrush       |SolidColorBrush             |悬停外边框色|
 
-#### UserControl 的 Xaml构成 - 你可用 x:Name 更好地改变外观效果
+#### [ HotKeyBox ] & [ HotKeysBox ] 在Xaml构成上几乎一模一样，你可以通过 x:Name 访问内部元素并修改它们
+##### 示例
 ```xaml
     <Grid Background="#1e1e1e">
         <!--外边框-->
@@ -405,3 +362,5 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
         <TextBlock x:Name="ActualText" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
     </Grid>
 ```
+
+---

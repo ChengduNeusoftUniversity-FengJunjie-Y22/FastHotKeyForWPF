@@ -16,6 +16,7 @@ namespace FastHotKeyForWPF
             InitializeComponent();
 
             WhileInput += KeyHandling;
+            BoxPool.hotKeysBoxes.Add(this);
         }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace FastHotKeyForWPF
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
 
-            if (key == Key.Return) { Keyboard.ClearFocus(); WhileInput?.Invoke(); return; }
+            if (key == Key.Return) { EmptyOne.Focus(); WhileInput?.Invoke(); e.Handled = true; return; }
 
             var result = KeyHelper.IsKeyValid(key);
             if (result.Item1)
@@ -178,6 +179,8 @@ namespace FastHotKeyForWPF
             }
 
             UpdateText();
+
+            e.Handled = true;
         }
 
         private void TextBox_MouseEnter(object sender, MouseEventArgs e)
@@ -185,6 +188,7 @@ namespace FastHotKeyForWPF
             FocusGet.Focus();
             ActualText.Foreground = HoverTextColor;
             FixedBorder.BorderBrush = HoverBorderBrush;
+            UpdateText();
         }
 
         private void TextBox_MouseLeave(object sender, MouseEventArgs e)
@@ -205,6 +209,9 @@ namespace FastHotKeyForWPF
             var resultA = KeyHelper.IsKeyValid(CurrentKeyA);
             var resultB = KeyHelper.IsKeyValid(CurrentKeyB);
 
+            BoxPool.RemoveSameInKeys(CurrentKeyA, CurrentKeyB, this);
+            BoxPool.RemoveSameInKey(CurrentKeyA, CurrentKeyB);
+
             if (resultA.Item1 && resultB.Item1)
             {
                 if (HandleA != null)
@@ -214,7 +221,6 @@ namespace FastHotKeyForWPF
                     {
                         IsHotKeyRegistered = true;
                         LastHotKeyID = register.Item2;
-                        BoxTool.RemoveSame(CurrentKeyA, CurrentKeyB);
                         return;
                     }
                 }
@@ -225,7 +231,6 @@ namespace FastHotKeyForWPF
                     {
                         IsHotKeyRegistered = true;
                         LastHotKeyID = register.Item2;
-                        BoxTool.RemoveSame(CurrentKeyA, CurrentKeyB);
                         return;
                     }
                 }
@@ -233,6 +238,7 @@ namespace FastHotKeyForWPF
 
             IsHotKeyRegistered = false;
             LastHotKeyID = -1;
+            ActualText.Text = ErrorText;
         }
 
         internal void UpdateText()

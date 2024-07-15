@@ -13,6 +13,7 @@ namespace FastHotKeyForWPF
             InitializeComponent();
 
             WhileInput += KeyHandling;
+            BoxPool.hotKeyBoxes.Add(this);
         }
 
         internal HotKeyBox? Link { get; set; } = null;
@@ -31,7 +32,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 若用户输入不受支持的Key，如何显示文本
         /// </summary>
-        public string ErrorText { get; set; } = "None";
+        public string ErrorText { get; set; } = "Error";
 
         /// <summary>
         /// 反映该控件及其关联控件是否成功注册了热键
@@ -196,11 +197,13 @@ namespace FastHotKeyForWPF
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
 
-            if (key == Key.Return) { Keyboard.ClearFocus(); WhileInput?.Invoke(); return; }
+            if (key == Key.Return) { EmptyOne.Focus(); WhileInput?.Invoke(); e.Handled = true; return; }
 
             CurrentKey = key;
 
             ActualText.Text = key.ToString();
+
+            e.Handled = true;
         }
 
         private void TextBox_MouseEnter(object sender, MouseEventArgs e)
@@ -208,6 +211,8 @@ namespace FastHotKeyForWPF
             FocusGet.Focus();
             ActualText.Foreground = HoverTextColor;
             FixedBorder.BorderBrush = HoverBorderBrush;
+            UpdateText();
+            Link?.UpdateText();
         }
 
         private void TextBox_MouseLeave(object sender, MouseEventArgs e)
@@ -215,6 +220,11 @@ namespace FastHotKeyForWPF
             KeyHandling();
             ActualText.Foreground = DefaultTextColor;
             FixedBorder.BorderBrush = DefaultBorderBrush;
+            if (!IsHotKeyRegistered)
+            {
+                ActualText.Text = ErrorText;
+                if (Link != null) { Link.ActualText.Text = Link.ErrorText; }
+            }
             EmptyOne.Focus();
         }
 
@@ -233,6 +243,9 @@ namespace FastHotKeyForWPF
             Link.LastHotKeyID = -1;
 
             var resultB = Link.UpdateText();
+
+            BoxPool.RemoveSameInKey(CurrentKey, Link.CurrentKey, this);
+            BoxPool.RemoveSameInKeys(CurrentKey, Link.CurrentKey);
 
             if (resultA.Item1 && resultB.Item1 && (resultA.Item2 != resultB.Item2))
             {
@@ -260,7 +273,6 @@ namespace FastHotKeyForWPF
                         Link.IsHotKeyRegistered = true;
                         LastHotKeyID = result.Item2;
                         Link.LastHotKeyID = result.Item2;
-                        BoxTool.RemoveSame(CurrentKey, Link.CurrentKey);
                         return;
                     }
                 }
@@ -272,8 +284,6 @@ namespace FastHotKeyForWPF
                         IsHotKeyRegistered = true;
                         Link.IsHotKeyRegistered = true;
                         LastHotKeyID = result.Item2;
-                        Link.LastHotKeyID = result.Item2;
-                        BoxTool.RemoveSame(CurrentKey, Link.CurrentKey);
                         return;
                     }
                 }
