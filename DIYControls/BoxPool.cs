@@ -63,8 +63,8 @@ namespace FastHotKeyForWPF.DIYControls
             {
                 listB[i].CurrentKey = Key.None;
                 listB[i].Link.CurrentKey = Key.None;
-                listB[i].UpdateText();
-                listB[i].Link.UpdateText();
+                listB[i].ActualText.Text = listB[i].CurrentKey.ToString();
+                listB[i].Link.ActualText.Text = listB[i].Link.CurrentKey.ToString();
             }
         }
         internal static void RemoveSameInKeys(Key key1, Key key2, HotKeysBox sender)
@@ -97,7 +97,7 @@ namespace FastHotKeyForWPF.DIYControls
             List<HotKeysBox> listA = new List<HotKeysBox>();
             foreach (var boxA in hotKeysBoxes)
             {
-                if ((boxA.CurrentKeyA == key1 && boxA.CurrentKeyB == key2)||
+                if ((boxA.CurrentKeyA == key1 && boxA.CurrentKeyB == key2) ||
                     (boxA.CurrentKeyA == key2 && boxA.CurrentKeyB == key1))
                 {
                     listA.Add(boxA);

@@ -211,8 +211,8 @@ namespace FastHotKeyForWPF
             FocusGet.Focus();
             ActualText.Foreground = HoverTextColor;
             FixedBorder.BorderBrush = HoverBorderBrush;
-            UpdateText();
-            Link?.UpdateText();
+            ActualText.Text = CurrentKey.ToString();
+            if (Link != null) { Link.ActualText.Text = Link.CurrentKey.ToString(); }
         }
 
         private void TextBox_MouseLeave(object sender, MouseEventArgs e)
