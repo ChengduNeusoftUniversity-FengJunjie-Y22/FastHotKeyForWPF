@@ -25,9 +25,10 @@
 </details>
 
 <details>
-<summary>Version 1.2.2 已上线 </summary>
+<summary>Version 1.2.3 已上线 </summary>
 
 ### 修复 HotKeysBox 在 手动设置热键 时，部分情况下文本显示异常的问题 (即手动设置初始热键后，文本显示None+None而不是初始设置的热键,但鼠标进入一下框体就恢复了正常)
+### 优化了用户控件的圆角效果，新增ActualBackground可选项
 </details>
 
 ---
@@ -320,6 +321,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |DefaultBorderBrush     |SolidColorBrush             |默认外边框色|
 |HoverTextColor         |SolidColorBrush             |悬停文本色|
 |HoverBorderBrush       |SolidColorBrush             |悬停外边框色|
+|ActualBackground       |SolidColorBrush             |背景色,注意不是 Background|
 #### [ HotKeysBox ] 可选项
 |属性                   |类型                        |含义        |
 |-----------------------|----------------------------|------------|
@@ -334,20 +336,32 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |DefaultBorderBrush     |SolidColorBrush             |默认外边框色|
 |HoverTextColor         |SolidColorBrush             |悬停文本色|
 |HoverBorderBrush       |SolidColorBrush             |悬停外边框色|
+|ActualBackground       |SolidColorBrush             |背景色,注意不是 Background|
 
 #### [ HotKeyBox ] & [ HotKeysBox ] 在Xaml构成上几乎一模一样，你可以通过 x:Name 访问内部元素并修改它们
 ##### 内部元素如下
 ```xaml
-    <Grid x:Name="BackGrid" Background="#1e1e1e">
-        <!--外边框-->
-        <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
-        <!--用于获取焦点的Box-->
+<UserControl x:Class="FastHotKeyForWPF.HotKeysBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FastHotKeyForWPF"
+             mc:Ignorable="d" 
+             Height="50"
+             Width="320"
+             Background="Transparent"
+             x:Name="Total"  MouseLeave="TextBox_MouseLeave" MouseEnter="TextBox_MouseEnter">
+    <UserControl.Resources>
+        <local:DoubleConvertor ConvertRate="0.7" x:Key="HeightToFontSize"/>
+    </UserControl.Resources>
+    <Grid x:Name="BackGrid" Background="{Binding ElementName=Total,Path=Background}">
+        <Border x:Name="FixedBorder" BorderBrush="White" Background="#1e1e1e" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
         <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
-        <!--用于移除焦点的Box-->
         <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
-        <!--文本显示Box-->
         <TextBlock x:Name="ActualText" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
     </Grid>
+</UserControl>
 ```
 
 ---

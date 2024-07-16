@@ -12,9 +12,9 @@
     <UserControl.Resources>
         <local:DoubleConvertor ConvertRate="0.7" x:Key="HeightToFontSize"/>
     </UserControl.Resources>
-    <Grid x:Name="BackGrid" Background="#1e1e1e">
-        <!--外边框-->
-        <Border x:Name="FixedBorder" BorderBrush="White" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
+    <Grid x:Name="BackGrid" Background="{Binding ElementName=Total,Path=Background}">
+        <!--外边框,实际边框效果与背景色的实现-->
+        <Border x:Name="FixedBorder" BorderBrush="White" Background="#1e1e1e" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
         <!--用于获取焦点的Box-->
         <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
         <!--用于移除焦点的Box-->

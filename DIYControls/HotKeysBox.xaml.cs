@@ -66,6 +66,17 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
+        /// 实际的控件背景色
+        /// </summary>
+        public SolidColorBrush ActualBackground
+        {
+            set
+            {
+                FixedBorder.Background = value;
+            }
+        }
+
+        /// <summary>
         /// 默认文本色
         /// </summary>
         public SolidColorBrush DefaultTextColor { get; set; } = Brushes.White;
