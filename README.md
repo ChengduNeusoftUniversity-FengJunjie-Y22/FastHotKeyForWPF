@@ -9,9 +9,9 @@
 ---
 
 ## 更新进度
-[Bilibili合集][1]
+[Bilibili合集][3]
 
-[1]: https://www.bilibili.com/video/BV1WTbReZEZU
+[3]: https://www.bilibili.com/video/BV1WTbReZEZU
 
 <details>
 <summary>Version 1.1.6 已上线 ( 使用PrefabComponent的最后一个版本 ) </summary>
