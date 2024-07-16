@@ -9,21 +9,12 @@
 ---
 
 ## 更新进度
-[Bilibili][1]
+[Bilibili合集][1]
 
-[1]: https://www.bilibili.com/video/BV1rr421L7qR
-
-<details>
-<summary>Version 1.1.5 已上线</summary>
-
-#### (1)修复焦点离开盒子后，盒子仍然在接收用户按键的bug
-#### (2)修复无法使用实例方法Protect()锁定盒子的问题
-#### (3)新增组件之间的通信机制,自动清理重复的热键
-
-</details>
+[1]: https://www.bilibili.com/video/BV1WTbReZEZU
 
 <details>
-<summary>Version 1.1.6 已上线</summary>
+<summary>Version 1.1.6 已上线 ( 使用PrefabComponent的最后一个版本 ) </summary>
 
 #### (1)提供开箱即用的圆角组件
 #### (2)默认不使用变色效果,需要用户自定义对应函数
@@ -34,13 +25,9 @@
 </details>
 
 <details>
-<summary>Version 1.2.0 即将上线</summary>
+<summary>Version 1.2.2 已上线 </summary>
 
-### 在保留 99% GlobalHotKey 的前提下，进行了大量重构操作
-##### （1）弃用 BindingRef ，改为 ReturnValueMonitor ，不再自动 Awake()
-##### （2）弃用 PrefabComponent , 改为 UserControl , 这次是真的开箱即用了
-##### （3）新增 RegisterCollection ，可将ID作为索引，便捷地查询注册信息
-##### （4）全新的文档，以代码示例为主
+### 修复 HotKeysBox 在 手动设置热键 时，部分情况下文本显示异常的问题 (即手动设置初始热键后，文本显示None+None而不是初始设置的热键,但鼠标进入一下框体就恢复了正常)
 </details>
 
 ---

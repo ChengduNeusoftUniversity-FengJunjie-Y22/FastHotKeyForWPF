@@ -135,6 +135,7 @@ namespace FastHotKeyForWPF
             HandleB = handle;
 
             KeyHandling();
+            UpdateText();
 
             return false;
         }

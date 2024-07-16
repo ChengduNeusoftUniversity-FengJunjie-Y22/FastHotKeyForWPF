@@ -8,7 +8,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>FastHotKeyForWPF</Title>
-		<Version>1.2.1</Version>
+		<Version>1.2.2</Version>
 		<Authors>KeQinZhenHaoKan</Authors>
 		<Company></Company>
 		<Description>Quickly build global hotkeys for WPF</Description>
