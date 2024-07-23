@@ -96,13 +96,13 @@ namespace FastHotKeyForWPF
         /// </summary>
         public SolidColorBrush HoverBorderBrush { get; set; } = Brushes.Cyan;
 
-        internal event KeyInvoke_Return? HandleA;
-        internal event KeyInvoke_Void? HandleB;
+        internal event Func<object>? HandleA;
+        internal event Action? HandleB;
 
         /// <summary>
         /// 与指定的处理函数连接
         /// </summary>
-        public void ConnectWith(KeyInvoke_Void handle)
+        public void ConnectWith(Action handle)
         {
             HandleA = null;
             HandleB = null;
@@ -113,7 +113,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 与其它 HotKeyBox 连接
         /// </summary>
-        public void ConnectWith(KeyInvoke_Return handle)
+        public void ConnectWith(Func<object> handle)
         {
             HandleA = null;
             HandleB = null;
@@ -137,7 +137,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 手动设置热键
         /// </summary>
-        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, KeyInvoke_Void handle)
+        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, Action handle)
         {
             CurrentKeyA = KeyHelper.ModelKeysToKey[modelKeys];
             CurrentKeyB = KeyHelper.NormalKeysToKey[normalKeys];
@@ -154,7 +154,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 手动设置热键
         /// </summary>
-        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, KeyInvoke_Return handle)
+        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, Func<object> handle)
         {
             CurrentKeyA = KeyHelper.ModelKeysToKey[modelKeys];
             CurrentKeyB = KeyHelper.NormalKeysToKey[normalKeys];
@@ -228,7 +228,7 @@ namespace FastHotKeyForWPF
             {
                 if (HandleA != null)
                 {
-                    var register = GlobalHotKey.Add(KeyHelper.KeyToModelKeys[CurrentKeyA], KeyHelper.KeyToNormalKeys[CurrentKeyB], HandleA);
+                    var register = GlobalHotKey.Add([KeyHelper.KeyToModelKeys[CurrentKeyA]], KeyHelper.KeyToNormalKeys[CurrentKeyB], HandleA);
                     if (register.Item1)
                     {
                         IsHotKeyRegistered = true;
@@ -238,7 +238,7 @@ namespace FastHotKeyForWPF
                 }
                 if (HandleB != null)
                 {
-                    var register = GlobalHotKey.Add(KeyHelper.KeyToModelKeys[CurrentKeyA], KeyHelper.KeyToNormalKeys[CurrentKeyB], HandleB);
+                    var register = GlobalHotKey.Add([KeyHelper.KeyToModelKeys[CurrentKeyA]], KeyHelper.KeyToNormalKeys[CurrentKeyB], HandleB);
                     if (register.Item1)
                     {
                         IsHotKeyRegistered = true;

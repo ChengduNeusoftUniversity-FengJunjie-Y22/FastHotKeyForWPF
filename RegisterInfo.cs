@@ -6,7 +6,7 @@ namespace FastHotKeyForWPF
     /// </summary>
     public class RegisterInfo
     {
-        internal RegisterInfo(int id, ModelKeys model, NormalKeys key, KeyInvoke_Void work)
+        internal RegisterInfo(int id, uint model, uint key, Action work)
         {
             _registerid = id;
             _model = model;
@@ -15,7 +15,7 @@ namespace FastHotKeyForWPF
             _functiontype = FunctionTypes.Void;
             FunctionVoid = work;
         }
-        internal RegisterInfo(int id, ModelKeys model, NormalKeys key, KeyInvoke_Return work)
+        internal RegisterInfo(int id, uint model, uint key, Func<object> work)
         {
             _registerid = id;
             _model = model;
@@ -29,41 +29,41 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 注册编号，默认从2004开始累加
         /// </summary>
-        public int RegisterID { get { return _registerid; } }
+        public int RegisterID => _registerid;
 
-        private ModelKeys _model;
+        private uint _model;
         /// <summary>
         /// 系统按键
         /// </summary>
-        public ModelKeys Model { get { return _model; } }
+        public uint Model => _model;
 
-        private NormalKeys _normal;
+        private uint _normal;
         /// <summary>
         /// 普通按键
         /// </summary>
-        public NormalKeys Normal { get { return _normal; } }
+        public uint Normal => _normal;
 
         private FunctionTypes _functiontype;
         /// <summary>
         /// 函数的类型（主要是有无返回值的区别）
         /// </summary>
-        public FunctionTypes FunctionType { get { return _functiontype; } }
+        public FunctionTypes FunctionType => _functiontype;
 
         private string _name = string.Empty;
         /// <summary>
         /// 函数签名,初始化时决定
         /// </summary>
-        public string Name { get { return _name; } }
+        public string Name => _name;
 
         /// <summary>
         /// 热键可能对应的处理函数
         /// </summary>
-        public KeyInvoke_Void? FunctionVoid { internal set; get; } = null;
+        public Action? FunctionVoid { internal set; get; } = null;
 
         /// <summary>
         /// 热键可能对应的处理函数
         /// </summary>
-        public KeyInvoke_Return? FunctionReturn { internal set; get; } = null;
+        public Func<object>? FunctionReturn { internal set; get; } = null;
 
     }
 }

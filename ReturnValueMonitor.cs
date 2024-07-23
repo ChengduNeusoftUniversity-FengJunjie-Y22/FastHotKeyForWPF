@@ -12,7 +12,7 @@ namespace FastHotKeyForWPF
 
         private ReturnValueMonitor() { }
 
-        private KeyInvoke_Void? FunctionVoid;
+        private Action? FunctionVoid;
 
         private static object? _value = null;
         /// <summary>
@@ -57,7 +57,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 指定一个无参无返回值的处理函数，用于处理最新监测到的object对象
         /// </summary>
-        public static void BindingAutoEvent(KeyInvoke_Void function)
+        public static void BindingAutoEvent(Action function)
         {
             if (Instance != null)
             {

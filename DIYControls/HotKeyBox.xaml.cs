@@ -86,13 +86,13 @@ namespace FastHotKeyForWPF
         /// </summary>
         public SolidColorBrush HoverBorderBrush { get; set; } = Brushes.Cyan;
 
-        internal event KeyInvoke_Return? HandleA;
-        internal event KeyInvoke_Void? HandleB;
+        internal event Func<object>? HandleA;
+        internal event Action? HandleB;
 
         /// <summary>
         /// 与其它 HotKeyBox 连接
         /// </summary>
-        public void ConnectWith(HotKeyBox hotKeyBox, KeyInvoke_Void handle)
+        public void ConnectWith(HotKeyBox hotKeyBox, Action handle)
         {
             if (Link != null) { return; }
 
@@ -118,7 +118,7 @@ namespace FastHotKeyForWPF
         /// </summary>
         /// <param name="hotKeyBox"></param>
         /// <param name="handle"></param>
-        public void ConnectWith(HotKeyBox hotKeyBox, KeyInvoke_Return handle)
+        public void ConnectWith(HotKeyBox hotKeyBox, Func<object> handle)
         {
             if (Link != null) { return; }
 
@@ -167,7 +167,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 手动设置热键
         /// </summary>
-        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, KeyInvoke_Void handle)
+        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, Action handle)
         {
             if (Link == null) { return false; }
 
@@ -187,7 +187,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 手动设置热键
         /// </summary>
-        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, KeyInvoke_Return handle)
+        public bool SetHotKey(ModelKeys modelKeys, NormalKeys normalKeys, Func<object> handle)
         {
             if (Link == null) { return false; }
 
@@ -277,7 +277,7 @@ namespace FastHotKeyForWPF
 
                 if (HandleA != null)
                 {
-                    var result = GlobalHotKey.Add(model, normal, HandleA);
+                    var result = GlobalHotKey.Add([model], normal, HandleA);
                     if (result.Item1)
                     {
                         IsHotKeyRegistered = true;
@@ -289,7 +289,7 @@ namespace FastHotKeyForWPF
                 }
                 if (HandleB != null)
                 {
-                    var result = GlobalHotKey.Add(model, normal, HandleB);
+                    var result = GlobalHotKey.Add([model], normal, HandleB);
                     if (result.Item1)
                     {
                         IsHotKeyRegistered = true;

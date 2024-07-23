@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastHotKeyForWPF", "FastHotKeyForWPF.csproj", "{104F07D0-465F-4E4E-AA9D-52FB128465A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestDemo", "..\TestDemo\TestDemo.csproj", "{D01488E3-8F1A-4F60-9B5E-825961A5F195}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{104F07D0-465F-4E4E-AA9D-52FB128465A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{104F07D0-465F-4E4E-AA9D-52FB128465A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{104F07D0-465F-4E4E-AA9D-52FB128465A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D01488E3-8F1A-4F60-9B5E-825961A5F195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D01488E3-8F1A-4F60-9B5E-825961A5F195}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D01488E3-8F1A-4F60-9B5E-825961A5F195}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D01488E3-8F1A-4F60-9B5E-825961A5F195}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

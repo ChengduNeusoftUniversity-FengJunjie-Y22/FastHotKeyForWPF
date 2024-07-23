@@ -27,4 +27,12 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="F:\_programming\c#\FastHotKeyForWPF\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="F:\_programming\c#\FastHotKeyForWPF\.editorconfig" />
+	</ItemGroup>
+
 </Project>
