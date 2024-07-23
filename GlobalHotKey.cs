@@ -426,21 +426,20 @@ namespace FastHotKeyForWPF
             {
                 case WM_HOTKEY:
                     int id = wParam.ToInt32();
-                    try
+
+                    if (Trigger_Void.TryGetValue(id, out Action? action))
                     {
-                        Trigger_Void[id].Invoke();
+                        action.Invoke();
                     }
-                    catch (KeyNotFoundException)
+                    else if (Trigger_Return.TryGetValue(id, out Func<object>? func))
                     {
-                        try
-                        {
-                            ReturnValue = Trigger_Return[id].Invoke();
-                        }
-                        catch (KeyNotFoundException)
-                        {
-                            MessageBox.Show("未能找到对应的事件处理函数！");
-                        }
+                        ReturnValue = Trigger_Return[id].Invoke();
                     }
+                    else
+                    {
+                        MessageBox.Show("未能找到对应的事件处理函数！");
+                    }
+
                     handled = true;
                     break;
 
