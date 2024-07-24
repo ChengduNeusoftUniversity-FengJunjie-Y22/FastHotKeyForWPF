@@ -6,26 +6,99 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 /// <summary>
+/// 普通按键
+/// </summary>
+public enum NormalKeys : uint
+{
+    F1 = 0x70,
+    F2 = 0x71,
+    F3 = 0x72,
+    F4 = 0x73,
+    F5 = 0x74,
+    F6 = 0x75,
+    F7 = 0x76,
+
+    F9 = 0x78,
+    F10 = 0x79,
+    F11 = 0x7A,
+    F12 = 0x7B,
+
+    LEFT = 0x25,
+    UP = 0x26,
+    RIGHT = 0x27,
+    DOWN = 0x28,
+
+    Zero = 0x30,
+    One = 0x31,
+    Two = 0x32,
+    Three = 0x33,
+    Four = 0x34,
+    Five = 0x35,
+    Six = 0x36,
+    Seven = 0x37,
+    Eight = 0x38,
+    Nine = 0x39,
+
+    SPACE = 0x20,
+
+    A = 0x41,
+    B = 0x42,
+    C = 0x43,
+    D = 0x44,
+    E = 0x45,
+    F = 0x46,
+    G = 0x47,
+    H = 0x48,
+    I = 0x49,
+    J = 0x4A,
+    K = 0x4B,
+    L = 0x4C,
+    M = 0x4D,
+    N = 0x4E,
+    O = 0x4F,
+    P = 0x50,
+    Q = 0x51,
+    R = 0x52,
+    S = 0x53,
+    T = 0x54,
+    U = 0x55,
+    V = 0x56,
+    W = 0x57,
+    X = 0x58,
+    Y = 0x59,
+    Z = 0x5A
+}
+
+/// <summary>
+/// 系统按键
+/// </summary>
+public enum ModelKeys : uint
+{
+    ALT = 0x0001,
+    CTRL = 0x0002,
+}
+
+/// <summary>
 /// 系统Key转为库中Key后的对应类型
 /// </summary>
 public enum KeyTypes
 {
-    Model,
-    Normal,
+    ModelKey,
+    NormalKey,
     None
 }
 
 namespace FastHotKeyForWPF
 {
     /// <summary>
-    /// 为Key的转换、合法性判断提供便利
+    /// 处理系统 Key 与 类库Key 之间的关系
     /// </summary>
     public static class KeyHelper
     {
         /// <summary>
         /// Key => Uint
         /// </summary>
-        public static Dictionary<Key, uint> KeyToUint = new Dictionary<Key, uint>()
+        public static readonly Dictionary<Key, uint> KeyToUint = new Dictionary<Key, uint>()
         {
 
         { Key.LeftCtrl, (uint)ModelKeys.CTRL },
@@ -174,28 +247,46 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// Uint => Key
         /// </summary>
-        public static Dictionary<uint, Key> UintToKey = KeyToUint.ToDictionary(kv => kv.Value, kv => kv.Key);
+        public static readonly Dictionary<uint, Key> UintToKey = KeyToUint.ToDictionary(kv => kv.Value, kv => kv.Key);
 
         /// <summary>
         /// NormalKey => Key
         /// </summary>
-        public static Dictionary<NormalKeys, Key> NormalKeysToKey = KeyToNormalKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
+        public static readonly Dictionary<NormalKeys, Key> NormalKeysToKey = KeyToNormalKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
 
         /// <summary>
         /// ModelKey => Key
         /// </summary>
-        public static Dictionary<ModelKeys, Key> ModelKeysToKey = KeyToModelKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
+        public static readonly Dictionary<ModelKeys, Key> ModelKeysToKey = KeyToModelKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
 
         /// <summary>
         /// 检查键是否合法,以及它的所属类型
         /// </summary>
-        /// <param name="target">要检查的键</param>
         /// <returns>如果键存在于 KeyToModelKeys 或 KeyToNormalKeys 中，返回 true 和其所属类型；否则返回 false 和 KeyTypes.None</returns>
         public static (bool, KeyTypes) IsKeyValid(Key target)
         {
             bool result = KeyToModelKeys.ContainsKey(target) ^ KeyToNormalKeys.ContainsKey(target);
-            KeyTypes type = result ? (KeyToModelKeys.ContainsKey(target) ? KeyTypes.Model : KeyTypes.Normal) : KeyTypes.None;
+            KeyTypes type = result ? (KeyToModelKeys.ContainsKey(target) ? KeyTypes.ModelKey : KeyTypes.NormalKey) : KeyTypes.None;
             return (result, type);
+        }
+
+        /// <summary>
+        /// 尝试从目标元素抓取出有序的Key
+        /// </summary>
+        public static (bool, ModelKeys, NormalKeys) GetKeysFrom(IAutoHotKeyProperty target)
+        {
+            var resultA = IsKeyValid(target.CurrentKeyA);
+            var resultB = IsKeyValid(target.CurrentKeyB);
+
+            if ((resultA.Item1 && resultB.Item1) &&
+                (resultA.Item2 != resultB.Item2))
+            {
+                Key key1 = resultA.Item2 == KeyTypes.ModelKey ? target.CurrentKeyA : target.CurrentKeyB;
+                Key key2 = resultB.Item2 == KeyTypes.NormalKey ? target.CurrentKeyB : target.CurrentKeyA;
+                return (true, KeyToModelKeys[key1], KeyToNormalKeys[key2]);
+            }
+
+            return (false, new ModelKeys(), new NormalKeys());
         }
     }
 }

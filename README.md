@@ -14,7 +14,7 @@
 [3]: https://www.bilibili.com/video/BV1WTbReZEZU
 
 <details>
-<summary>Version 1.1.6 已上线 ( 使用PrefabComponent的最后一个版本 ) </summary>
+<summary>Version 1.1.6 已上线 ( 使用 PrefabComponent 的最后一个版本 ) </summary>
 
 #### (1)提供开箱即用的圆角组件
 #### (2)默认不使用变色效果,需要用户自定义对应函数
@@ -25,10 +25,20 @@
 </details>
 
 <details>
-<summary>Version 1.2.3 已上线 </summary>
+<summary>Version 1.2.3 已上线（ 使用 非MVVM 的最后一个版本 ） </summary>
 
 ### 修复 HotKeysBox 在 手动设置热键 时，部分情况下文本显示异常的问题 (即手动设置初始热键后，文本显示None+None而不是初始设置的热键,但鼠标进入一下框体就恢复了正常)
 ### 优化了用户控件的圆角效果，新增ActualBackground可选项
+</details>
+
+<details>
+<summary>Version 2.0.0 即将上线 </summary>
+
+### ★本次更新将基于MVVM , 进行一次高度重构
+### Ⅰ新控件是对XAML友好的
+### Ⅱ新的委托用于热键处理函数,它更符合WPF的书写习惯
+### Ⅲ新增了一些抽象基类 , 它们已实现了必要的接口 , 可快速构筑用于注册热键的用户控件 ， 即功能与库提供的控件相同但样式的自由度更高
+### Ⅳ
 </details>
 
 ---

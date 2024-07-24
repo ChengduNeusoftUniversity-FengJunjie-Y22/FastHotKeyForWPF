@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="FastHotKeyForWPF.HotKeyBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FastHotKeyForWPF"
+             mc:Ignorable="d" 
+             Height="50"
+             Width="320" 
+             x:Name="Total"
+             MouseEnter="UserControl_MouseEnter" 
+             MouseLeave="UserControl_MouseLeave">
+    <UserControl.Resources>
+        <local:DoubleConvertor ConvertRate="0.7" x:Key="HeightToFontSize"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <local:HotKeyBoxViewModel x:Name="ViewModel"
+                                   DefaultTextColor="White"
+                                   DefaultBorderBrush="White"
+                                   HoverBorderBrush="Cyan"
+                                   ActualBackground="#1e1e1e"
+                                   CornerRadius="5"/>
+    </UserControl.DataContext>
+    <Grid x:Name="BackGrid" Background="{Binding ElementName=Total,Path=Background}">
+        <Border x:Name="FixedBorder" 
+                BorderBrush="{Binding DefaultBorderBrush}" 
+                Background="{Binding ActualBackground}" 
+                BorderThickness="1"
+                CornerRadius="{Binding CornerRadius}" 
+                ClipToBounds="True">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Cyan"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+        <TextBox x:Name="FocusGet" 
+                 Background="Transparent" 
+                 IsReadOnly="True"
+                 BorderBrush="Transparent" 
+                 BorderThickness="0"/>
+        <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
+        <TextBlock x:Name="ActualText" 
+                   Text="{Binding Text}"
+                   Foreground="{Binding DefaultTextColor}" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center" 
+                   FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
+    </Grid>
+</UserControl>

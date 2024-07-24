@@ -2,68 +2,41 @@
 namespace FastHotKeyForWPF
 {
     /// <summary>
-    /// 注册信息，由一个注册编号\一个键盘组合\一个函数签名构成
+    /// 注册信息
     /// </summary>
     public class RegisterInfo
     {
-        internal RegisterInfo(int id, ModelKeys model, NormalKeys key, KeyInvoke_Void work)
-        {
-            _registerid = id;
-            _model = model;
-            _normal = key;
-            _name = work.Method.Name;
-            _functiontype = FunctionTypes.Void;
-            FunctionVoid = work;
-        }
-        internal RegisterInfo(int id, ModelKeys model, NormalKeys key, KeyInvoke_Return work)
-        {
-            _registerid = id;
-            _model = model;
-            _normal = key;
-            _name = work.Method.Name;
-            _functiontype = FunctionTypes.Return;
-            FunctionReturn = work;
-        }
+        internal RegisterInfo() { }
 
-        private int _registerid = 2004;
         /// <summary>
-        /// 注册编号，默认从2004开始累加
+        /// 初始化后,外部不允许修改各项属性值
         /// </summary>
-        public int RegisterID { get { return _registerid; } }
+        public RegisterInfo(int id, ModelKeys model, NormalKeys key, HotKeyEventHandler handler)
+        {
+            RegisterID = id;
+            ModelKey = model;
+            NormalKey = key;
+            Handler = handler;
+        }
 
-        private ModelKeys _model;
+        /// <summary>
+        /// [ 注册ID ] 默认-1，表示一个失败的注册消息
+        /// </summary>
+        public int RegisterID { get; internal set; } = -1;
+
         /// <summary>
         /// 系统按键
         /// </summary>
-        public ModelKeys Model { get { return _model; } }
+        public ModelKeys ModelKey { get; internal set; }
 
-        private NormalKeys _normal;
         /// <summary>
         /// 普通按键
         /// </summary>
-        public NormalKeys Normal { get { return _normal; } }
-
-        private FunctionTypes _functiontype;
-        /// <summary>
-        /// 函数的类型（主要是有无返回值的区别）
-        /// </summary>
-        public FunctionTypes FunctionType { get { return _functiontype; } }
-
-        private string _name = string.Empty;
-        /// <summary>
-        /// 函数签名,初始化时决定
-        /// </summary>
-        public string Name { get { return _name; } }
+        public NormalKeys NormalKey { get; internal set; }
 
         /// <summary>
-        /// 热键可能对应的处理函数
+        /// 热键的处理者
         /// </summary>
-        public KeyInvoke_Void? FunctionVoid { internal set; get; } = null;
-
-        /// <summary>
-        /// 热键可能对应的处理函数
-        /// </summary>
-        public KeyInvoke_Return? FunctionReturn { internal set; get; } = null;
-
+        public HotKeyEventHandler? Handler { get; internal set; } = null;
     }
 }

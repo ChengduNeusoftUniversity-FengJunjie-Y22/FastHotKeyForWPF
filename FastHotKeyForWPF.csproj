@@ -2,13 +2,14 @@
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>1591</NoWarn>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>FastHotKeyForWPF</Title>
-		<Version>1.2.3</Version>
+		<Version>2.0.0</Version>
 		<Authors>KeQinZhenHaoKan</Authors>
 		<Company></Company>
 		<Description>Quickly build global hotkeys for WPF</Description>
