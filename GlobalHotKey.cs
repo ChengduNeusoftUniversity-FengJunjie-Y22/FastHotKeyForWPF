@@ -83,7 +83,6 @@ namespace FastHotKeyForWPF
                     {
                         BoxPool.ModelItems[i].UpdateText();
                         BoxPool.ModelItems[i].UpdateHotKey();
-                        BoxPool.ModelItems[i].RemoveSame();
                     }
                 }
                 else
@@ -93,7 +92,7 @@ namespace FastHotKeyForWPF
             }
             else
             {
-                throw new Exception("尝试重复激活GlobalHotKey ！");
+                throw new Exception("重复激活 GlobalHotKey ！");
             }
         }
         /// <summary>

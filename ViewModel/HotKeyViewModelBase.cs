@@ -43,11 +43,8 @@ namespace FastHotKeyForWPF
 
                 _model.CurrentKeyA = value;
 
-                if (value != Key.None)
-                {
-                    UpdateText();
-                    UpdateHotKey();
-                }
+                UpdateText();
+                UpdateHotKey();
 
                 OnPropertyChanged(nameof(CurrentKeyA));
             }
@@ -62,11 +59,8 @@ namespace FastHotKeyForWPF
 
                 _model.CurrentKeyB = value;
 
-                if (value != Key.None)
-                {
-                    UpdateText();
-                    UpdateHotKey();
-                }
+                UpdateText();
+                UpdateHotKey();
 
                 OnPropertyChanged(nameof(CurrentKeyB));
             }
@@ -93,6 +87,9 @@ namespace FastHotKeyForWPF
             get => _model.Handler;
         }
 
+        /// <summary>
+        /// 目前是否已成功注册了热键
+        /// </summary>
         public bool IsHotKeyRegistered
         {
             get => _model.IsHotKeyRegistered;
@@ -106,6 +103,9 @@ namespace FastHotKeyForWPF
             }
         }
 
+        /// <summary>
+        /// 最近一次注册的热键ID
+        /// </summary>
         internal int LastHotKeyID
         {
             get => _model.LastHotKeyID;
@@ -119,6 +119,9 @@ namespace FastHotKeyForWPF
             }
         }
 
+        /// <summary>
+        /// 去除原有注册项
+        /// </summary>
         public virtual void RemoveOld()
         {
             GlobalHotKey.DeleteById(LastHotKeyID);

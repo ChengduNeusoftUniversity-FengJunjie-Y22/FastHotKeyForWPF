@@ -76,7 +76,6 @@ namespace FastHotKeyForWPF
                 target[i].CurrentKeyA = new Key();
                 target[i].CurrentKeyB = new Key();
                 ModelItems[position[i]].UpdateText();
-                ModelItems[position[i]].UpdateHotKey();
             }
         }
     }
