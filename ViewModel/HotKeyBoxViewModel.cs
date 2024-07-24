@@ -158,11 +158,17 @@ namespace FastHotKeyForWPF
                     Text = ErrorText;
                 }
             }
+            RemoveSame();
         }
 
         public override void UpdateText()
         {
             Text = CurrentKeyA.ToString() + ConnectText + CurrentKeyB.ToString();
+        }
+
+        public override void RemoveSame()
+        {
+            BoxPool.RemoveSame(this);
         }
     }
 }

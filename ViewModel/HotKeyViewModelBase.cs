@@ -39,15 +39,12 @@ namespace FastHotKeyForWPF
             get => _model.CurrentKeyA;
             set
             {
-                if (value != _model.CurrentKeyA)
-                {
-                    _model.CurrentKeyA = value;
+                _model.CurrentKeyA = value;
 
-                    UpdateText();
-                    UpdateHotKey();
+                UpdateText();
+                UpdateHotKey();
 
-                    OnPropertyChanged(nameof(CurrentKeyA));
-                }
+                OnPropertyChanged(nameof(CurrentKeyA));
             }
         }
 
@@ -56,15 +53,12 @@ namespace FastHotKeyForWPF
             get => _model.CurrentKeyB;
             set
             {
-                if (value != _model.CurrentKeyB)
-                {
-                    _model.CurrentKeyB = value;
+                _model.CurrentKeyB = value;
 
-                    UpdateText();
-                    UpdateHotKey();
+                UpdateText();
+                UpdateHotKey();
 
-                    OnPropertyChanged(nameof(CurrentKeyB));
-                }
+                OnPropertyChanged(nameof(CurrentKeyB));
             }
         }
 
