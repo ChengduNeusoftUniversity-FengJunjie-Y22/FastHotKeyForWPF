@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FastHotKeyForWPF
 {
     /// <summary>
-    /// 注册信息的集合
+    /// 注册信息的集合,提供了索引式的查询
     /// </summary>
     public class RegisterCollection
     {
