@@ -42,7 +42,8 @@
                  Background="Transparent" 
                  IsReadOnly="True"
                  BorderBrush="Transparent" 
-                 BorderThickness="0"/>
+                 BorderThickness="0"
+                 PreviewKeyDown="FocusGet_PreviewKeyDown"/>
         <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
         <TextBlock x:Name="ActualText" 
                    Text="{Binding Text}"

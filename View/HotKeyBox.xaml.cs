@@ -67,12 +67,33 @@ namespace FastHotKeyForWPF
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            FocusGet.Focus();
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
+            EmptyOne.Focus();
+        }
 
+        private void FocusGet_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
+
+            var result = KeyHelper.IsKeyValid(key);
+
+            if (result.Item1)
+            {
+                if (result.Item2 == KeyTypes.ModelKey)
+                {
+                    CurrentKeyA = key;
+                }
+                if (result.Item2 == KeyTypes.NormalKey)
+                {
+                    CurrentKeyB = key;
+                }
+            }
+
+            e.Handled = true;
         }
     }
 }

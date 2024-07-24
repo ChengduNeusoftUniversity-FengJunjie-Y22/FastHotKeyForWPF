@@ -126,6 +126,7 @@ namespace FastHotKeyForWPF
                     Text = "Error";
                 }
             }
+            RemoveSame();
         }
 
         public virtual void UpdateText()
