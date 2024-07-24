@@ -1,4 +1,4 @@
-# FastHotKeyForWPF
+ï»¿# FastHotKeyForWPF ( âš  æ–‡æ¡£ç»´æŠ¤ä¸­ ï¼Œå°†äº V2.0.0 å®Œæˆ )
 ## Quickly build global hotkeys in WPF programs
 - [github][1]
 - [gitee][2]
@@ -8,55 +8,55 @@
 
 ---
 
-## ¸üĞÂ½ø¶È
-[BilibiliºÏ¼¯][3]
+## æ›´æ–°è¿›åº¦
+[Bilibiliåˆé›†][3]
 
 [3]: https://www.bilibili.com/video/BV1WTbReZEZU
 
 <details>
-<summary>Version 1.1.6 ÒÑÉÏÏß ( Ê¹ÓÃ PrefabComponent µÄ×îºóÒ»¸ö°æ±¾ ) </summary>
+<summary>Version 1.1.6 å·²ä¸Šçº¿ ( ä½¿ç”¨ PrefabComponent çš„æœ€åä¸€ä¸ªç‰ˆæœ¬ ) </summary>
 
-#### (1)Ìá¹©¿ªÏä¼´ÓÃµÄÔ²½Ç×é¼ş
-#### (2)Ä¬ÈÏ²»Ê¹ÓÃ±äÉ«Ğ§¹û,ĞèÒªÓÃ»§×Ô¶¨Òå¶ÔÓ¦º¯Êı
-#### (3)·ÇDeBugÄ£Ê½ÏÂÔÙÎŞ×¢²á³É¹¦Óë·ñµÄÌáÊ¾,ĞèÒªÓÃ»§×Ô¶¨Òå¶ÔÓ¦º¯Êı
-#### (4)ĞÂÔöÒ»¸ö±£»¤Ãûµ¥,Ãûµ¥ÖĞµÄÈÎºÎÈÈ¼ü²»ÔÊĞí±»ÔöÉ¾¸Ä,¼´±ãÕâ¸öÈÈ¼üÃ»ÓĞ±»×¢²á¹ı
-#### (5)ĞÂÔö¾²Ì¬ÊôĞÔ,ÓÃÓÚ»ñÈ¡×¢²áĞÅÏ¢ºÍ±£»¤Ãûµ¥
+#### (1)æä¾›å¼€ç®±å³ç”¨çš„åœ†è§’ç»„ä»¶
+#### (2)é»˜è®¤ä¸ä½¿ç”¨å˜è‰²æ•ˆæœ,éœ€è¦ç”¨æˆ·è‡ªå®šä¹‰å¯¹åº”å‡½æ•°
+#### (3)éDeBugæ¨¡å¼ä¸‹å†æ— æ³¨å†ŒæˆåŠŸä¸å¦çš„æç¤º,éœ€è¦ç”¨æˆ·è‡ªå®šä¹‰å¯¹åº”å‡½æ•°
+#### (4)æ–°å¢ä¸€ä¸ªä¿æŠ¤åå•,åå•ä¸­çš„ä»»ä½•çƒ­é”®ä¸å…è®¸è¢«å¢åˆ æ”¹,å³ä¾¿è¿™ä¸ªçƒ­é”®æ²¡æœ‰è¢«æ³¨å†Œè¿‡
+#### (5)æ–°å¢é™æ€å±æ€§,ç”¨äºè·å–æ³¨å†Œä¿¡æ¯å’Œä¿æŠ¤åå•
 
 </details>
 
 <details>
-<summary>Version 1.2.3 ÒÑÉÏÏß£¨ Ê¹ÓÃ ·ÇMVVM µÄ×îºóÒ»¸ö°æ±¾ £© </summary>
+<summary>Version 1.2.3 å·²ä¸Šçº¿ï¼ˆ ä½¿ç”¨ éMVVM çš„æœ€åä¸€ä¸ªç‰ˆæœ¬ ï¼‰ </summary>
 
-### ĞŞ¸´ HotKeysBox ÔÚ ÊÖ¶¯ÉèÖÃÈÈ¼ü Ê±£¬²¿·ÖÇé¿öÏÂÎÄ±¾ÏÔÊ¾Òì³£µÄÎÊÌâ (¼´ÊÖ¶¯ÉèÖÃ³õÊ¼ÈÈ¼üºó£¬ÎÄ±¾ÏÔÊ¾None+None¶ø²»ÊÇ³õÊ¼ÉèÖÃµÄÈÈ¼ü,µ«Êó±ê½øÈëÒ»ÏÂ¿òÌå¾Í»Ö¸´ÁËÕı³£)
-### ÓÅ»¯ÁËÓÃ»§¿Ø¼şµÄÔ²½ÇĞ§¹û£¬ĞÂÔöActualBackground¿ÉÑ¡Ïî
+### ä¿®å¤ HotKeysBox åœ¨ æ‰‹åŠ¨è®¾ç½®çƒ­é”® æ—¶ï¼Œéƒ¨åˆ†æƒ…å†µä¸‹æ–‡æœ¬æ˜¾ç¤ºå¼‚å¸¸çš„é—®é¢˜ (å³æ‰‹åŠ¨è®¾ç½®åˆå§‹çƒ­é”®åï¼Œæ–‡æœ¬æ˜¾ç¤ºNone+Noneè€Œä¸æ˜¯åˆå§‹è®¾ç½®çš„çƒ­é”®,ä½†é¼ æ ‡è¿›å…¥ä¸€ä¸‹æ¡†ä½“å°±æ¢å¤äº†æ­£å¸¸)
+### ä¼˜åŒ–äº†ç”¨æˆ·æ§ä»¶çš„åœ†è§’æ•ˆæœï¼Œæ–°å¢ActualBackgroundå¯é€‰é¡¹
 </details>
 
 <details>
-<summary>Version 2.0.0 ¼´½«ÉÏÏß </summary>
+<summary>Version 2.0.0 å³å°†ä¸Šçº¿ </summary>
 
-### ¡ï±¾´Î¸üĞÂ½«»ùÓÚMVVM , ½øĞĞÒ»´Î¸ß¶ÈÖØ¹¹
-### ¢ñĞÂ¿Ø¼şÊÇ¶ÔXAMLÓÑºÃµÄ
-### ¢òĞÂµÄÎ¯ÍĞÓÃÓÚÈÈ¼ü´¦Àíº¯Êı,Ëü¸ü·ûºÏWPFµÄÊéĞ´Ï°¹ß
-### ¢óĞÂÔöÁËÒ»Ğ©³éÏó»ùÀà , ËüÃÇÒÑÊµÏÖÁË±ØÒªµÄ½Ó¿Ú , ¿É¿ìËÙ¹¹ÖşÓÃÓÚ×¢²áÈÈ¼üµÄÓÃ»§¿Ø¼ş £¬ ¼´¹¦ÄÜÓë¿âÌá¹©µÄ¿Ø¼şÏàÍ¬µ«ÑùÊ½µÄ×ÔÓÉ¶È¸ü¸ß
-### ¢ô
+### â˜…æœ¬æ¬¡æ›´æ–°å°†åŸºäºMVVM , è¿›è¡Œä¸€æ¬¡é«˜åº¦é‡æ„
+### â… æ–°æ§ä»¶æ˜¯å¯¹XAMLå‹å¥½çš„
+### â…¡æ–°çš„å§”æ‰˜ç”¨äºçƒ­é”®å¤„ç†å‡½æ•°,å®ƒæ›´ç¬¦åˆWPFçš„ä¹¦å†™ä¹ æƒ¯
+### â…¢æ–°å¢äº†ä¸€äº›æŠ½è±¡åŸºç±» , å®ƒä»¬å·²å®ç°äº†å¿…è¦çš„æ¥å£ , å¯å¿«é€Ÿæ„ç­‘ç”¨äºæ³¨å†Œçƒ­é”®çš„ç”¨æˆ·æ§ä»¶ ï¼Œ å³åŠŸèƒ½ä¸åº“æä¾›çš„æ§ä»¶ç›¸åŒä½†æ ·å¼çš„è‡ªç”±åº¦æ›´é«˜
+### â…£
 </details>
 
 ---
 
-## ¢ñ ÒıÈëÃüÃû¿Õ¼ä
-##### ºó¶Ë
+## â…  å¼•å…¥å‘½åç©ºé—´
+#### C#
 ```csharp
 using FastHotKeyForWPF;
 ```
-##### Ç°¶Ë
+#### XAML
 ```xaml
 xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
 
 ---
 
-## ¢ò ¼¤»îÓëÏú»Ù
-#### Ê¾Àı1. GlobalHotKey - ÈÈ¼üÏà¹ØµÄºËĞÄ¹¦ÄÜ
+## â…¡ æ¿€æ´»ä¸é”€æ¯
+#### ç¤ºä¾‹1. GlobalHotKey - çƒ­é”®ç›¸å…³çš„æ ¸å¿ƒåŠŸèƒ½
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -72,7 +72,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             base.OnClosed(e);
         }
 ```
-#### Ê¾Àı2. ReturnValueMonitor - ÍØÕ¹¹¦ÄÜ£¨·Ç±ØÒª£©
+#### ç¤ºä¾‹2. ReturnValueMonitor - æ‹“å±•åŠŸèƒ½ï¼ˆéå¿…è¦ï¼‰
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -88,290 +88,63 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             base.OnClosed(e);
         }
 ```
-###### ÖØĞ´MainWindowµÄOnSourceInitializedÓëOnClosedÊÇÍÆ¼öµÄ×ö·¨£¬µ±È»£¬Äã¿ÉÒÔÑ¡ÔñÆäËüÊ±¿Ì¼¤»î£¬Ö»ÒªÄãÄÜÈ·±£Awake()Ê±´°¿Ú¾ä±úÒÑ´æÔÚ
+###### é‡å†™MainWindowçš„OnSourceInitializedä¸OnClosedæ˜¯æ¨èçš„åšæ³•ï¼Œå½“ç„¶ï¼Œä½ å¯ä»¥é€‰æ‹©å…¶å®ƒæ—¶åˆ»æ¿€æ´»ï¼Œåªè¦ä½ èƒ½ç¡®ä¿Awake()æ—¶çª—å£å¥æŸ„å·²å­˜åœ¨
 
 ---
 
-## ¢ó Ê¹ÓÃ GlobalHotKey £¬×¢²áÈÈ¼ü
-#### Çé¾°. ¼Ù¶¨Äã×Ô¶¨ÒåÁËÒÔÏÂº¯Êı²¢Ï£ÍûÓÃ»§°´ÏÂ [ Ctrl + F1 ] Óë [ Ctrl + F2 ] Ê±£¬·Ö±ğÖ´ĞĞ TestA Óë TestB
+## â…¢ ä½¿ç”¨ GlobalHotKey ï¼Œæ³¨å†Œçƒ­é”®
+#### æƒ…æ™¯. å‡å®šä½ è‡ªå®šä¹‰äº†ä»¥ä¸‹å‡½æ•°å¹¶å¸Œæœ›ç”¨æˆ·æŒ‰ä¸‹ [ Ctrl + F1 ] ä¸ [ Ctrl + F2 ] æ—¶ï¼Œåˆ†åˆ«æ‰§è¡Œ TestA ä¸ TestB
 ```csharp
-        private void TestA()//ÎŞ²ÎÊı¡¢ÎŞ·µ»ØÖµ
-        {
-            MessageBox.Show("ÈÈ¼üA±»´¥·¢ÁË£¡");
-        }
 
-        private object TestB()//ÎŞ²ÎÊı¡¢·µ»ØÒ»¸öobject
-        {
-            return "ÈÈ¼üB±»´¥·¢ÁË£¡";
-        }
 ```
-#### Ê¾Àı. Ê¹ÓÃ GlobalHotKey.Add ¿ìËÙ×¢²áÁ½¸öÈ«¾ÖÈÈ¼ü
+#### ç¤ºä¾‹. ä½¿ç”¨ GlobalHotKey.Add å¿«é€Ÿæ³¨å†Œä¸¤ä¸ªå…¨å±€çƒ­é”®
 ```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
 
-            GlobalHotKey.Awake();
-
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F2, TestB);
-        }
 ```
-###### ¹§Ï²£¬ÄãÒÑ¾­ÕÆÎÕÁË¸Ã¿â×îºËĞÄµÄ¹¦ÄÜ£¡
+###### æ­å–œï¼Œä½ å·²ç»æŒæ¡äº†è¯¥åº“æœ€æ ¸å¿ƒçš„åŠŸèƒ½ï¼
 
 ---
 
-## ¢ô Ê¹ÓÃ GlobalHotKey £¬ĞŞ¸ÄÈÈ¼ü
-#### Ê¾Àı1. ÒÑÖª Keys ,ĞŞ¸ÄÆä¶ÔÓ¦µÄ´¦ÀíÊÂ¼ş£¨º¯Êı£©
+## â…£ ä½¿ç”¨ GlobalHotKey ï¼Œä¿®æ”¹çƒ­é”®
+#### ç¤ºä¾‹1. å·²çŸ¥è§¦å‘Keys ,ä¿®æ”¹å…¶å¯¹åº”çš„å¤„ç†å‡½æ•°HotKeyEventHandler
 ```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
 
-            GlobalHotKey.EditHotKey_Function(ModelKeys.CTRL, NormalKeys.F1, TestB);
-            //Ô­±¾ [ Ctrl + F1 ] Ó¦¸Ã´¥·¢ TestA
-            //¾­ĞŞ¸Äºó , Ó¦¸Ã±»´¥·¢µÄ±äÎª TestB
-        }
 ```
-#### Ê¾Àı2. ÒÑÖª´¦ÀíÊÂ¼ş£¬ĞŞ¸ÄÆä¶ÔÓ¦µÄ Keys
+#### ç¤ºä¾‹2. å·²çŸ¥å¤„ç†å‡½æ•°HotKeyEventHandler ï¼Œä¿®æ”¹å…¶å¯¹åº”çš„è§¦å‘Keys
 ```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
 
-            GlobalHotKey.EditHotKey_Keys(TestA, ModelKeys.CTRL, NormalKeys.F2);
-            //Ô­±¾ TestA Ó¦ÓÉ [ Ctrl + F1 ] ´¥·¢ 
-            //¾­ĞŞ¸Äºó , Ó¦ÓÉ [ Ctrl + F2 ] ´¥·¢
-        }
 ```
 
 ---
 
-## ¢õ Ê¹ÓÃ GlobalHotKey £¬É¾³ıÈÈ¼ü
-#### Ê¾Àı1. ¸ù¾İ ×¢²áID É¾³ıÈÈ¼ü£¨Ä¬ÈÏµÚÒ»¸öIDÊÇ2004£¬Ö®ºóÖğ¸öÀÛ¼Ó£©
+## â…¤ ä½¿ç”¨ GlobalHotKey ï¼Œåˆ é™¤çƒ­é”®
+#### ç¤ºä¾‹1. æ ¹æ®çƒ­é”®çš„æ³¨å†ŒIDåˆ é™¤çƒ­é”®
 ```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
 
-            GlobalHotKey.DeleteById(2004);
-        }
 ```
-#### Ê¾Àı2. ¸ù¾İ Keys É¾³ıÈÈ¼ü
+#### ç¤ºä¾‹2. æ ¹æ®çƒ­é”®çš„è§¦å‘Keysåˆ é™¤çƒ­é”®
 ```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
 
-            GlobalHotKey.DeleteByKeys(ModelKeys.CTRL, NormalKeys.F1);
-        }
 ```
-#### Ê¾Àı3. ¸ù¾İ ´¦Àíº¯Êı É¾³ıÈÈ¼ü
+#### ç¤ºä¾‹3. æ ¹æ®çƒ­é”®çš„å¤„ç†å‡½æ•°HotKeyEventHandleråˆ é™¤çƒ­é”®
 ```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
 
-            GlobalHotKey.DeleteByFunction(TestA);
-        }
 ```
 
 ---
 
-## ¢ö Ê¹ÓÃ RegisterCollection £¬²éÑ¯×¢²áÔÚÁĞµÄÈÈ¼üĞÅÏ¢
-#### Ê¾Àı1. ¸ù¾İ ID ²éÑ¯ÍêÕûµÄ×¢²áĞÅÏ¢ £¨ RegisterInfo ¶ÔÏó £©
+## â…¥ ä½¿ç”¨ RegisterCollection ï¼ŒæŸ¥è¯¢æ³¨å†Œåœ¨åˆ—çš„çƒ­é”®ä¿¡æ¯ ï¼ˆ RegisterInfo å¯¹è±¡ ï¼‰
+
+#### ä»‹ç». RegisterInfo åŒ…å«çš„ä¿¡æ¯
+|å±æ€§                   |ç±»å‹                        |å«ä¹‰        |
+|-----------------------|----------------------------|------------|
+|RegisterID             |int                         |æ³¨å†Œidï¼Œ-1è¡¨ç¤ºæ— æ•ˆçš„æ³¨å†Œä¿¡æ¯ |
+|ModelKey               |ModelKeys                   |è§¦å‘Keyä¹‹ä¸€ï¼Œæ”¯æŒ CTRL/ALT |
+|NormalKey              |NormalKeys                  |è§¦å‘Keyä¹‹ä¸€ï¼Œæ”¯æŒ æ•°å­—/å­—æ¯/Fxé”®|
+|Handler                |HotKeyEventHandler?         |å¤„ç†å‡½æ•°|
+
+#### ç¤ºä¾‹1. æ ¹æ® ID æŸ¥è¯¢å®Œæ•´çš„æ³¨å†Œä¿¡æ¯ 
 ```csharp
         RegisterInfo Info = GlobalHotKey.Registers[2004];
 ```
-#### Ê¾Àı2. ´Ó RegisterInfo ÖĞ £¬È¡µÃÈÈ¼üµÄÏ¸½ÚĞÅÏ¢
-|ÊôĞÔ                   |ÀàĞÍ                        |º¬Òå        |
-|-----------------------|----------------------------|------------|
-|RegisterID             |int                         |×¢²áid£¬ÆğÊ¼Îª2004£¬×Ô¶¯µİÔö |
-|Model                  |ModelKeys                   |ÈÈ¼ü - ÏµÍ³°´¼ü |
-|Normal                 |NormalKeys                  |ÈÈ¼ü - ÎÄ±¾°´¼ü |
-|FunctionType           |FunctionTypes               |´¦Àíº¯ÊıËùÊô·ÖÀà |
-|Name                   |string                      |´¦Àíº¯ÊıµÄº¯ÊıÃû |
-|FunctionVoid           |KeyInvoke_Void              |´¦Àíº¯Êı - void ĞÍ   |
-|FunctionReturn         |KeyInvoke_Return            |´¦Àíº¯ÊıB - return object ĞÍ   |
-
----
-
-## ¢÷ Ê¹ÓÃ ReturnValueMonitor £¬ÔÚÈÈ¼üÊÂ¼ş´¦ÀíÍê±Ïºó£¬¶ÔÆä·µ»ØÖµ½øÒ»²½´¦Àí£¨²»³£ÓÃ£©
-#### Ê¾Àı. Ê¹ÓÃ BindingAutoEvent ´¦Àí¼à²âµ½µÄ·µ»ØÖµ
-```csharp
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-
-            ReturnValueMonitor.Awake();
-            ReturnValueMonitor.BindingAutoEvent(WhileObjectReturned);
-            //WhileObjectReturned½«¶ÔTestAÓëTestB·µ»ØµÄobject×ö´¦Àí
-
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, TestA);
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F2, TestB);
-            //TestAÓëTestBÖ»¸ºÔğ·µ»Øobject,²¢²»¶ÔÆä×öÈÎºÎ´¦Àí
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            GlobalHotKey.Destroy();
-            ReturnValueMonitor.Destroy();
-
-            base.OnClosed(e);
-        }
-
-        private object TestA()
-        {
-            return "ÈÈ¼üA±»´¥·¢ÁË£¡";
-        }
-
-        private object TestB()
-        {
-            return 66868;
-        }
-
-        private void WhileObjectReturned()
-        {
-            if (ReturnValueMonitor.Value == null) { return; }
-
-            if (ReturnValueMonitor.Value is string text)
-            {
-                //¡­¡­
-                //string ´¦ÀíÂß¼­£¬ÀıÈç´òÓ¡Öµ
-
-                return;
-            }
-
-            if (ReturnValueMonitor.Value is int number)
-            {
-                //¡­¡­
-                //int ´¦ÀíÂß¼­£¬ÀıÈç´òÓ¡Öµ
-
-                return;
-            }
-        }
-```
-
----
-
-## ¢ø [ HotKeyBox ] ¿Ø¼ş & [ HotKeysBox ] ¿Ø¼ş
-#### Çé¾°. ¼Ù¶¨ÄãÏ£ÍûÖÆ×÷Ò»¸öÉèÖÃ½çÃæ£¬ÔÊĞíÓÃ»§×Ô¼ºÉèÖÃÈÈ¼ü
-#### Ê¾Àı1. ½ÓÈë¿Ø¼ş
-##### ÒıÈë¿â
-```xaml          
-            xmlns:ff="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
-```
-##### ¶¨Òå¿Ø¼ş
-```xaml
-            <!--Ã¿¸ö¿Ø¼şÖ»½ÓÊÕÒ»¸öKey-->
-            <ff:HotKeyBox x:Name="Box1"/>
-            <ff:HotKeyBox x:Name="Box2"/>
-
-            <!--Ã¿¸ö¿Ø¼ş½ÓÊÕÁ½¸öKey-->
-            <ff:HotKeysBox x:Name="Box3"/>
-```
-##### ½¨Á¢Á¬½Ó
-```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-
-            Box1.ConnectWith(Box2, TestA);
-            Box3.ConnectWith(TestA);
-            //ÎŞÂÛÄÄÖÖ Box £¬Á¬½Ó²Ù×÷Ö»ĞèÒªÖ´ĞĞÒ»´Î
-        }
-
-        private object TestA()
-        {
-            return "ÈÈ¼üA±»´¥·¢ÁË£¡";
-        }
-```
-#### Ê¾Àı2. Îª¿Ø¼şÉèÖÃ³õÊ¼ÈÈ¼ü
-```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-
-            Box1.ConnectWith(Box2, TestA);
-            Box3.ConnectWith(TestB);
-            //×¢ÒâÏÈ½¨Á¢Á¬½ÓÔÙÉèÖÃ³õÊ¼ÈÈ¼ü
-
-            Box1.SetHotKey(ModelKeys.CTRL,NormalKeys.F1,TestA);           
-            Box3.SetHotKey(ModelKeys.CTRL, NormalKeys.F2, TestB);
-        }
-```
-#### [ HotKeyBox ] ¿ÉÑ¡Ïî
-|ÊôĞÔ                   |ÀàĞÍ                        |º¬Òå        |
-|-----------------------|----------------------------|------------|
-|CurrentKey             |Key                         |µ±Ç°Öµ |
-|WhileInput             |event Action?               |ÓÃ»§·¢ÉúÊäÈëĞĞÎªÊ±£¬´¥·¢´ËÊÂ¼ş |
-|ErrorText              |string                      |Èô°´¼ü²»ÊÜ¿âÖ§³Ö£¬Ôò¿Ø¼şÏÔÊ¾¸ÃÎÄ±¾ |
-|IsHotKeyRegistered     |bool                        |Ä¿Ç°ÊÇ·ñ³É¹¦×¢²á |
-|LastHotKeyID           |int                         |×î½üÒ»´Î×¢²á³É¹¦µÄID |
-|CornerRadius           |CornerRadius                |Ô²»¬¶È   |
-|DefaultTextColor       |SolidColorBrush             |Ä¬ÈÏÎÄ±¾É«|
-|DefaultBorderBrush     |SolidColorBrush             |Ä¬ÈÏÍâ±ß¿òÉ«|
-|HoverTextColor         |SolidColorBrush             |ĞüÍ£ÎÄ±¾É«|
-|HoverBorderBrush       |SolidColorBrush             |ĞüÍ£Íâ±ß¿òÉ«|
-|ActualBackground       |SolidColorBrush             |±³¾°É«,×¢Òâ²»ÊÇ Background|
-#### [ HotKeysBox ] ¿ÉÑ¡Ïî
-|ÊôĞÔ                   |ÀàĞÍ                        |º¬Òå        |
-|-----------------------|----------------------------|------------|
-|CurrentKeyA            |Key                         |×ó¼üÖµ |
-|CurrentKeyB            |Key                         |ÓÒ¼üÖµ |
-|WhileInput             |event Action?               |ÓÃ»§·¢ÉúÊäÈëĞĞÎªÊ±£¬´¥·¢´ËÊÂ¼ş |
-|ErrorText              |string                      |Èô°´¼ü²»ÊÜ¿âÖ§³Ö£¬Ôò¿Ø¼şÏÔÊ¾¸ÃÎÄ±¾ |
-|IsHotKeyRegistered     |bool                        |Ä¿Ç°ÊÇ·ñ³É¹¦×¢²á |
-|LastHotKeyID           |int                         |×î½üÒ»´Î×¢²á³É¹¦µÄID |
-|CornerRadius           |CornerRadius                |Ô²»¬¶È   |
-|DefaultTextColor       |SolidColorBrush             |Ä¬ÈÏÎÄ±¾É«|
-|DefaultBorderBrush     |SolidColorBrush             |Ä¬ÈÏÍâ±ß¿òÉ«|
-|HoverTextColor         |SolidColorBrush             |ĞüÍ£ÎÄ±¾É«|
-|HoverBorderBrush       |SolidColorBrush             |ĞüÍ£Íâ±ß¿òÉ«|
-|ActualBackground       |SolidColorBrush             |±³¾°É«,×¢Òâ²»ÊÇ Background|
-
-#### [ HotKeyBox ] & [ HotKeysBox ] ÔÚXaml¹¹³ÉÉÏ¼¸ºõÒ»Ä£Ò»Ñù£¬Äã¿ÉÒÔÍ¨¹ı x:Name ·ÃÎÊÄÚ²¿ÔªËØ²¢ĞŞ¸ÄËüÃÇ
-##### ÄÚ²¿ÔªËØÈçÏÂ
-```xaml
-<UserControl x:Class="FastHotKeyForWPF.HotKeysBox"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FastHotKeyForWPF"
-             mc:Ignorable="d" 
-             Height="50"
-             Width="320"
-             Background="Transparent"
-             x:Name="Total"  MouseLeave="TextBox_MouseLeave" MouseEnter="TextBox_MouseEnter">
-    <UserControl.Resources>
-        <local:DoubleConvertor ConvertRate="0.7" x:Key="HeightToFontSize"/>
-    </UserControl.Resources>
-    <Grid x:Name="BackGrid" Background="{Binding ElementName=Total,Path=Background}">
-        <Border x:Name="FixedBorder" BorderBrush="White" Background="#1e1e1e" BorderThickness="1" CornerRadius="5" ClipToBounds="True"/>
-        <TextBox x:Name="FocusGet" Background="Transparent" IsReadOnly="True" PreviewKeyDown="UserInput" BorderBrush="Transparent" BorderThickness="0"/>
-        <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
-        <TextBlock x:Name="ActualText" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{Binding ElementName=Total,Path=Height,Converter={StaticResource HeightToFontSize}}"/>
-    </Grid>
-</UserControl>
-```
-
 ---

@@ -39,7 +39,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 将组合键作为索引,查询注册ID
         /// </summary>
-        public int this[ModelKeys key1, NormalKeys key2]
+        public RegisterInfo this[ModelKeys key1, NormalKeys key2]
         {
             get
             {
@@ -47,27 +47,27 @@ namespace FastHotKeyForWPF
                 {
                     if (register.ModelKey == key1 && register.NormalKey == key2)
                     {
-                        return register.RegisterID;
+                        return register;
                     }
                 }
-                return -1;
+                return new RegisterInfo();
             }
         }
 
         /// <summary>
         /// 将Handler作为索引,查询所有注册了此Handler的热键ID
         /// </summary>
-        public List<int> this[HotKeyEventHandler handler]
+        public List<RegisterInfo> this[HotKeyEventHandler handler]
         {
             get
             {
-                List<int> list = new List<int>();
+                List<RegisterInfo> list = new List<RegisterInfo>();
 
                 foreach (RegisterInfo register in RegisterList)
                 {
                     if (register.Handler == handler)
                     {
-                        list.Add(register.RegisterID);
+                        list.Add(register);
                     }
                 }
 

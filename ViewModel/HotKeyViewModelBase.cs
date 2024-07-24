@@ -79,7 +79,7 @@ namespace FastHotKeyForWPF
                     if (result.Item1 && value != null)
                     {
                         GlobalHotKey.EditHandler(result.Item2, result.Item3, value);
-                        LastHotKeyID = GlobalHotKey.Registers[result.Item2, result.Item3];
+                        LastHotKeyID = GlobalHotKey.Registers[result.Item2, result.Item3].RegisterID;
                     }
                 }
                 OnPropertyChanged(nameof(Handler));
