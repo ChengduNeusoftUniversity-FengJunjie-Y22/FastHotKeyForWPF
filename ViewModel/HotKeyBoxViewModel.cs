@@ -153,7 +153,12 @@ namespace FastHotKeyForWPF
             if (Keys.Item1 && Handler != null)
             {
                 var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, Handler);
-                if (!result.Item1)
+                if (result.Item1)
+                {
+                    IsHotKeyRegistered = true;
+                    LastHotKeyID = result.Item2;
+                }
+                else
                 {
                     Text = ErrorText;
                 }

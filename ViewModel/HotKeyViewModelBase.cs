@@ -39,10 +39,15 @@ namespace FastHotKeyForWPF
             get => _model.CurrentKeyA;
             set
             {
+                RemoveOld();
+
                 _model.CurrentKeyA = value;
 
-                UpdateText();
-                UpdateHotKey();
+                if (value != Key.None)
+                {
+                    UpdateText();
+                    UpdateHotKey();
+                }
 
                 OnPropertyChanged(nameof(CurrentKeyA));
             }
@@ -53,10 +58,15 @@ namespace FastHotKeyForWPF
             get => _model.CurrentKeyB;
             set
             {
+                RemoveOld();
+
                 _model.CurrentKeyB = value;
 
-                UpdateText();
-                UpdateHotKey();
+                if (value != Key.None)
+                {
+                    UpdateText();
+                    UpdateHotKey();
+                }
 
                 OnPropertyChanged(nameof(CurrentKeyB));
             }
@@ -109,13 +119,24 @@ namespace FastHotKeyForWPF
             }
         }
 
+        public virtual void RemoveOld()
+        {
+            GlobalHotKey.DeleteById(LastHotKeyID);
+            IsHotKeyRegistered = false;
+        }
+
         public virtual void UpdateHotKey()
         {
             var Keys = KeyHelper.GetKeysFrom(this);
             if (Keys.Item1 && Handler != null)
             {
                 var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, Handler);
-                if (!result.Item1)
+                if (result.Item1)
+                {
+                    IsHotKeyRegistered = true;
+                    LastHotKeyID = result.Item2;
+                }
+                else
                 {
                     Text = "Error";
                 }
