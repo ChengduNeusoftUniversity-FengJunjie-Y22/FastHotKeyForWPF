@@ -112,13 +112,13 @@ namespace FastHotKeyForWPF
         /// 添加一个热键
         /// </summary>
         /// <returns>元组，Item1表示是否成功注册热键，Item2表示注册ID</returns>
-        public static (bool, int) Add(ModelKeys mode, NormalKeys key, HotKeyEventHandler handler)
+        public static int Add(ModelKeys mode, NormalKeys key, HotKeyEventHandler handler)
         {
             if (Instance != null)
             {
                 return Instance.AddHotKey(mode, key, handler);
             }
-            return (false, -1);
+            return -1;
         }
 
         /// <summary>
@@ -291,9 +291,9 @@ namespace FastHotKeyForWPF
             source.RemoveHook(new HwndSourceHook(WhileKeyInvoked));
         }
 
-        private (bool, int) AddHotKey(ModelKeys mode, NormalKeys key, HotKeyEventHandler handler)
+        private int AddHotKey(ModelKeys mode, NormalKeys key, HotKeyEventHandler handler)
         {
-            if (CheckInProtectList(mode, key)) { return (false, -1); }
+            if (CheckInProtectList(mode, key)) { return -1; }
             int id = HOTKEY_ID + Counter;
             RemoveExistRegisterByID(id);
             RemoveExistRegisterByKeys(mode, key);
@@ -305,9 +305,9 @@ namespace FastHotKeyForWPF
                 RegisterInfo info = new RegisterInfo(id, mode, key, handler);
                 RegisterList.Add(info);
                 Counter++;
-                return (result, info.RegisterID);
+                return info.RegisterID;
             }
-            return (result, -1);
+            return -1;
         }
 
         private void EditExistKeys(HotKeyEventHandler handler, ModelKeys mode, NormalKeys key)
