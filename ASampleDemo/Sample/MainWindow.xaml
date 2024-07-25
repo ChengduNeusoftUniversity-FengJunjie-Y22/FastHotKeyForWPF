@@ -1,0 +1,55 @@
+﻿<Window x:Class="Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sample"
+        xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        Height="450" 
+        Width="800"
+        Background="#1e1e1e">
+    <Viewbox>
+        <Grid Height="450" Width="800">
+            <!--类库控件,注意ErrorText与ConnectText不是依赖属性-->
+            <hk:HotKeyBox x:Name="KeyBoxA"
+                          CurrentKeyA="LeftCtrl"
+                          CurrentKeyB="Q"
+                          Handler="HandlerA"
+                          CornerRadius="15"
+                          ActualBackground="#1e1e1e"
+                          FixedBorderBrush="White"
+                          FixedBorderThickness="2"
+                          TextColor="White"
+                          HoverTextColor="Violet"
+                          HoverBorderBrush="Cyan"
+                          ConnectText=" + "
+                          ErrorText="Failed" Margin="24,34,456,366"/>
+            <hk:HotKeyBox x:Name="KeyBoxC"
+                          CurrentKeyA="LeftCtrl"
+                          CurrentKeyB="F1"
+                          Handler="HandlerA"
+                          CornerRadius="15"
+                          ActualBackground="#1e1e1e"
+                          FixedBorderBrush="White"
+                          FixedBorderThickness="2"
+                          TextColor="White"
+                          HoverTextColor="Violet"
+                          HoverBorderBrush="Cyan"
+                          ConnectText=" + "
+                          ErrorText="Failed" Margin="24,120,456,280"/>
+
+            <!--若使用与库相同的Model制作用户控件（ 基于抽象基类+1次接口的实现 ）-->
+            <!--这里的 CTRL/ALT 在显示层是不区分左右的-->
+            <local:MyHotKeyBoxA x:Name="KeyBoxB" Margin="34,349,466,51"
+                                CurrentKeyA="LeftAlt"
+                                CurrentKeyB="Q"
+                                Handler="HandlerB"/>
+            <local:MyHotKeyBoxA x:Name="KeyBoxD" Margin="34,265,466,135"
+                                CurrentKeyA="LeftCtrl"
+                                CurrentKeyB="D1"
+                                Handler="HandlerB"/>
+        </Grid>
+    </Viewbox>
+</Window>
