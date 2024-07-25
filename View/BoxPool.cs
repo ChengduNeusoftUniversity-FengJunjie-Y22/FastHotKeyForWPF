@@ -29,6 +29,7 @@ namespace FastHotKeyForWPF
         public static int Add(IAutoHotKeyProperty prop, IAutoHotKeyUpdate model)
         {
             ItemID++;
+            prop.PoolID = ItemID;
             model.PoolID = ItemID;
             PropertyItems.Add(prop);
             ModelItems.Add(model);
@@ -61,7 +62,7 @@ namespace FastHotKeyForWPF
             {
                 if ((prop.CurrentKeyA == item.CurrentKeyA) &&
                     (prop.CurrentKeyB == item.CurrentKeyB) &&
-                    (prop.PoolID != ModelItems[Counter].PoolID))
+                    (prop.PoolID != item.PoolID))
                 {
                     target.Add(item);
                     position.Add(Counter);
@@ -70,12 +71,10 @@ namespace FastHotKeyForWPF
                 Counter++;
             }
 
-
             for (int i = 0; i < target.Count; i++)
             {
                 target[i].CurrentKeyA = new Key();
                 target[i].CurrentKeyB = new Key();
-                ModelItems[position[i]].UpdateText();
             }
         }
     }

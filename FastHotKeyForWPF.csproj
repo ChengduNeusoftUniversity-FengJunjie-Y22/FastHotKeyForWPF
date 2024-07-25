@@ -9,7 +9,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>FastHotKeyForWPF</Title>
-		<Version>1.6.2</Version>
+		<Version>2.0.0</Version>
 		<Authors>KeQinZhenHaoKan</Authors>
 		<Company></Company>
 		<Description>Quickly build global hotkeys for WPF</Description>
@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ASampleDemo\" />
+		<Folder Include="ASampleDemo\" />
 	</ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿# FastHotKeyForWPF ( ⚠ 文档维护中 ，将于 V2.0.0 完成 )
+﻿# FastHotKeyForWPF
 ## Quickly build global hotkeys in WPF programs
 - [github][1]
 - [gitee][2]
@@ -32,12 +32,27 @@
 </details>
 
 <details>
-<summary>Version 2.0.0 即将上线 ( Version 1.6.x 都是测试版本 ) </summary>
+<summary>Version 2.0.0 已上线</summary>
 
-### ★本次更新将基于MVVM , 进行一次高度重构
-### Ⅰ新控件是对XAML友好的
-### Ⅱ新的委托用于热键处理函数,它更符合WPF的书写习惯
-### Ⅲ新增了一些抽象基类 , 它们已实现了必要的接口 , 可快速构筑用于注册热键的用户控件 ， 即功能与库提供的控件相同但样式的自由度更高
+## 变更
+#### 1.GlobalHotKey.Add() 返回( bool,int ) => 返回注册编号 int , -1表示失败的操作
+#### 2.GlobalHotKey.EditHotKey_Keys() => GlobalHotKey.EditKeys()
+#### 3.GlobalHotKey.EditHotKey_Function() => GlobalHotKey.EditHandler()
+#### 4.GlobalHotKey.DeleteByFunction() => GlobalHotKey.DeleteByHandler()
+#### 5.[delegate KeyInvoke_Void & delegate KeyInvoke_Return] => [ delegate HotKeyEventHandler & HotKeyEventArgs ]
+#### 6.[HotKeyBox & HotKeysBox] => [HotKeyBox]
+## 新增
+#### 1.RegisterCollection[ModelKey,NormalKey] => RegisterInfo
+#### 2.RegisterCollection[HotKeyEventHandler] => List< RegisterInfo >
+#### 3.[接口]IAutoHotKeyProperty 约束 Model、View、ViewModel
+#### 4.[接口]IAutoHotKeyUpdate   约束 ViewModel
+#### 5.[抽象基类]HotKeyModelBase     快速实现用于热键注册的UserControl的Model
+#### 6.[抽象基类]HotKeyViewModelBase 快速实现用于热键注册的UserControl的ViewModel
+## 相比于旧版本
+#### 1.对XAML更友好
+#### 2.事件书写更符合WPF的习惯
+#### 3.更好的可拓展性
+
 </details>
 
 ---
@@ -227,8 +242,200 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 ---
 
-## Ⅷ 使用库提供的抽象基类或接口,实现属于您自己的UserControl
-### 情景1.您对于Model层没有定制需求,这种情况只需要借助抽象基类即可实现
-### 情景2.您需要定制Model层,这种情况需要借助接口实现
+## Ⅷ 使用库提供的抽象基类或接口,实现属于您自己的UserControl,详情可在 SampleDemo查看
+### 介绍1.接口的使用规范
+#### IAutoHotKeyProperty接口必须在View与ViewModel实现
+#### IAutoHotKeyUpdate接口必须在ViewModel实现
 
+### 示例1.您对于Model层没有定制需求 ( 1次接口的手动实现 )
+##### ViewModel
+```csharp
+    /// <summary>
+    /// 基于抽象基类设计 ViewModel 层 , 要求使用统一的 HotKeyBoxModel 作为 Model ( 已在基类中定义_model )
+    /// </summary>
+    public class MyHotKeyBoxViewModelA : HotKeyViewModelBase
+    {
+        public MyHotKeyBoxViewModelA()
+        {
+            _model = new HotKeyBoxModel();
+        }
+
+        private SolidColorBrush _fixedtransparent = Brushes.Transparent;
+        public SolidColorBrush FixedTransparent
+        {
+            get => _fixedtransparent;
+            set
+            {
+                if (_fixedtransparent != value)
+                {
+                    OnPropertyChanged(nameof(FixedTransparent));
+                }
+            }
+        }
+        //…
+        //拓展属性,它们不存在于Model,只负责逻辑数据的处理
+        //例如,将【UserControl的Background】与【FixedTransparent】做【TwoWay绑定】,即可永远保持为透明
+
+
+        //…
+        //重写属性,多数情况并不需要这一步
+
+
+        public override void UpdateText()
+        {
+            string? PossibilityA = (CurrentKeyA == Key.LeftCtrl || CurrentKeyA == Key.RightCtrl) ? "CTRL" : null;
+            string? PossibilityB = (CurrentKeyA == Key.LeftAlt || CurrentKeyA == Key.RightAlt) ? "ALT" : null;
+
+            string Left = (PossibilityA == null ? string.Empty : PossibilityA) + (PossibilityB == null ? string.Empty : PossibilityB);
+
+            Text = Left + " + " + CurrentKeyB.ToString();
+        }
+        //…
+        //重写方法
+        //例如,您希望不再区分 CTRL/ALT的左右,那么您可以重写UpdateText()
+    }
+```
+##### View
+```xaml
+<UserControl x:Class="Sample.MyHotKeyBoxA"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Sample"
+             mc:Ignorable="d" 
+             Height="50" 
+             Width="300"
+             Background="{Binding FixedTransparent,Mode=TwoWay}"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
+    <!--经过拓展的ViewModel-->
+    <UserControl.DataContext>
+        <local:MyHotKeyBoxViewModelA x:Name="ViewModel"/>
+    </UserControl.DataContext>
+    
+    <Grid>
+        <TextBox x:Name="KeyGet"
+                 Background="{Binding FixedTransparent}"
+                 IsReadOnly="True"
+                 PreviewKeyDown="KeyGet_PreviewKeyDown"/>
+        <TextBox x:Name="ActualText"
+                 Text="{Binding Text}"
+                 Background="{Binding FixedTransparent}"
+                 FontSize="30"
+                 Foreground="White"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 BorderBrush="Transparent"/>
+    </Grid>
+</UserControl>
+```
+```csharp
+    public partial class MyHotKeyBoxA : UserControl, IAutoHotKeyProperty
+    {
+        public MyHotKeyBoxA()
+        {
+            InitializeComponent();
+
+            BoxPool.Add(this, ViewModel);
+            //必须执行这句话才可以参与库提供的唯一热键的实现流程
+        }
+
+
+        #region 接口实现
+
+        public int PoolID { get; set; } = 0;
+
+        public Key CurrentKeyA
+        {
+            get { return (Key)GetValue(CurrentKeyAProperty); }
+            set { SetValue(CurrentKeyAProperty, value); }
+        }
+        public Key CurrentKeyB
+        {
+            get { return (Key)GetValue(CurrentKeyBProperty); }
+            set { SetValue(CurrentKeyBProperty, value); }
+        }
+
+        public HotKeyEventHandler? HandlerData { get; set; }
+        public event HotKeyEventHandler? Handler
+        {
+            add { SetValue(HandlerProperty, value); }
+            remove { SetValue(HandlerProperty, null); }
+        }
+
+        #endregion
+
+
+        #region 依赖属性定义
+
+        public static readonly DependencyProperty CurrentKeyAProperty =
+            DependencyProperty.Register(nameof(CurrentKeyA), typeof(Key), typeof(MyHotKeyBoxA), new PropertyMetadata(Key.None, OnKeyAChanged));
+        public static readonly DependencyProperty CurrentKeyBProperty =
+            DependencyProperty.Register(nameof(CurrentKeyB), typeof(Key), typeof(MyHotKeyBoxA), new PropertyMetadata(Key.None, OnKeyBChanged));
+        public static readonly DependencyProperty HandlerProperty =
+            DependencyProperty.Register(nameof(Handler), typeof(HotKeyEventHandler), typeof(MyHotKeyBoxA), new PropertyMetadata(null, OnHandlerChanged));
+
+        private static void OnKeyAChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var target = (MyHotKeyBoxA)d;
+            target.ViewModel.CurrentKeyA = (Key)e.NewValue;
+        }
+        private static void OnKeyBChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var target = (MyHotKeyBoxA)d;
+            target.ViewModel.CurrentKeyB = (Key)e.NewValue;
+        }
+        private static void OnHandlerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var target = (MyHotKeyBoxA)d;
+            target.HandlerData = (HotKeyEventHandler)e.NewValue;
+            target.ViewModel.HandlerData = (HotKeyEventHandler)e.NewValue;
+        }
+
+        #endregion
+
+
+        #region 事件
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            KeyGet.Focus();
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Keyboard.ClearFocus();
+        }
+
+        private void KeyGet_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            ViewModel.UpdateText();
+
+            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
+
+            var result = KeyHelper.IsKeyValid(key);
+            //KeyHelper提供Key合法性检查,以确保是一个受库支持的Key
+            if (result.Item1)
+            {
+                if (result.Item2 == KeyTypes.ModelKey)
+                {
+                    CurrentKeyA = key;
+                    //注意这里应该向依赖属性通知更改,直接通知ViewModel会导致BoxPool功能异常
+                }
+                else if (result.Item2 == KeyTypes.NormalKey)
+                {
+                    CurrentKeyB = key;
+                }
+            }
+
+            e.Handled = true;
+        }
+
+        #endregion
+    }
+```
+
+### 示例2.您需要定制Model层 ( 3~4次接口的手动实现 )
+#### 需求场景过少,示例代码将延后提交
 ---
