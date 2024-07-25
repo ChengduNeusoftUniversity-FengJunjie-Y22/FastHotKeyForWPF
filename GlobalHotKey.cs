@@ -165,7 +165,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 清除与指定函数关联的热键
         /// </summary>
-        public static void DeleteByFunction(HotKeyEventHandler handler)
+        public static void DeleteByHandler(HotKeyEventHandler handler)
         {
             if (Instance != null)
             {

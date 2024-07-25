@@ -32,13 +32,12 @@
 </details>
 
 <details>
-<summary>Version 2.0.0 即将上线 ( Version 1.6.0是一个测试版本 ) </summary>
+<summary>Version 2.0.0 即将上线 ( Version 1.6.x 都是测试版本 ) </summary>
 
 ### ★本次更新将基于MVVM , 进行一次高度重构
 ### Ⅰ新控件是对XAML友好的
 ### Ⅱ新的委托用于热键处理函数,它更符合WPF的书写习惯
 ### Ⅲ新增了一些抽象基类 , 它们已实现了必要的接口 , 可快速构筑用于注册热键的用户控件 ， 即功能与库提供的控件相同但样式的自由度更高
-### Ⅳ
 </details>
 
 ---
@@ -50,7 +49,7 @@ using FastHotKeyForWPF;
 ```
 #### XAML
 ```xaml
-xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
 
 ---
@@ -93,13 +92,24 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅲ 使用 GlobalHotKey ，注册热键
-#### 情景. 假定你自定义了以下函数并希望用户按下 [ Ctrl + F1 ] 与 [ Ctrl + F2 ] 时，分别执行 TestA 与 TestB
+#### 情景. 假设你定义了以下HandlerA , 并希望用户按下 [ Ctrl + F1 ] 时执行它
 ```csharp
+        private void HandlerA(object sender, HotKeyEventArgs e)
+        {
+            int ID = e.RegisterInfo.RegisterID;
 
+            MessageBox.Show($"A HotKey Has Been Invoked Whose ID is {ID}");
+        }
 ```
-#### 示例. 使用 GlobalHotKey.Add 快速注册两个全局热键
+#### 示例. 使用 GlobalHotKey.Add 注册热键 [ Ctrl + F1 ] => [ HandlerA ]
 ```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
 
+            GlobalHotKey.Awake();
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
+        }
 ```
 ###### 恭喜，你已经掌握了该库最核心的功能！
 
@@ -108,32 +118,74 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ## Ⅳ 使用 GlobalHotKey ，修改热键
 #### 示例1. 已知触发Keys ,修改其对应的处理函数HotKeyEventHandler
 ```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
 
+            GlobalHotKey.Awake();
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
+            //初始热键为 [ CTRL + F1 => HandlerA ]
+
+            GlobalHotKey.EditHandler(ModelKeys.CTRL,NormalKeys.F1, HandlerB);
+            //由 [ CTRL + F1 => HandlerA ] 变为 [ CTRL + F1 => HandlerB ];
+        }
 ```
 #### 示例2. 已知处理函数HotKeyEventHandler ，修改其对应的触发Keys
 ```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
 
+            GlobalHotKey.Awake();
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
+            //初始热键为 [ CTRL + F1 => HandlerA ]
+
+            GlobalHotKey.EditKeys(HandlerA, ModelKeys.CTRL, NormalKeys.Q);
+            //由 [ CTRL + F1 => HandlerA ] 变为 [ CTRL + Q => HandlerA ];
+            //注意:通常情况下,即便允许多个组合键指向同一Handler,也不建议您这么做,类库默认只修改第一个找到的Handler,意外的情况需要您手动查询并修改热键
+        }
 ```
 
 ---
 
 ## Ⅴ 使用 GlobalHotKey ，删除热键
-#### 示例1. 根据热键的注册ID删除热键
+#### 示例1.
 ```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
 
+            GlobalHotKey.Awake();
+            int ID = GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
+            //初始热键为 [ CTRL + F1 => HandlerA ]
+            //注册成功将返回注册ID，否则返回-1
+
+            GlobalHotKey.Clear();
+            //删除所有热键
+        }
 ```
-#### 示例2. 根据热键的触发Keys删除热键
+#### 示例2.
 ```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
 
-```
-#### 示例3. 根据热键的处理函数HotKeyEventHandler删除热键
-```csharp
+            GlobalHotKey.Awake();
+            int ID = GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
+            //初始热键为 [ CTRL + F1 => HandlerA ]
+            //注册成功将返回注册ID，否则返回-1
 
+            GlobalHotKey.DeleteById(ID);
+            GlobalHotKey.DeleteByKeys(ModelKeys.CTRL, NormalKeys.F1);
+            GlobalHotKey.DeleteByHandler(HandlerA);
+            //删除指定热键(三种方案选一个即可)
+            //注意:DeleteByHandler与EditKeys特性不同,它会删除所有注册了指定Handler的热键,而不是只针对第一个
+        }
 ```
 
 ---
 
-## Ⅵ 使用 RegisterCollection ，查询注册在列的热键信息 （ RegisterInfo 对象 ）
+## Ⅵ 使用 RegisterCollection ，索引式地查询注册在列的热键信息 （ RegisterInfo 对象 ）
 
 #### 介绍. RegisterInfo 包含的信息
 |属性                   |类型                        |含义        |
@@ -141,10 +193,58 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |RegisterID             |int                         |注册id，-1表示无效的注册信息 |
 |ModelKey               |ModelKeys                   |触发Key之一，支持 CTRL/ALT |
 |NormalKey              |NormalKeys                  |触发Key之一，支持 数字/字母/Fx键/方向箭头|
-|Handler                |HotKeyEventHandler?         |处理函数|
+|Handler                |delegate HotKeyEventHandler?|处理函数|
 
-#### 示例1. 根据 ID 查询完整的注册信息 
+#### 示例1. 根据 ID 查询注册信息 
 ```csharp
         RegisterInfo Info = GlobalHotKey.Registers[2004];
 ```
+#### 示例2. 根据 Keys 查询注册信息 
+```csharp
+        RegisterInfo Info = GlobalHotKey.Registers[ModelKeys.CTRL,NormalKeys.F1];
+```
+#### 示例3. 根据 Handler 查询注册信息 
+```csharp
+        List<RegisterInfo> Infos = GlobalHotKey.Registers[HandlerA];
+```
+---
+
+## Ⅶ 使用库提供的UserControl搭建您的热键设置界面
+#### 引入库
+```xaml
+xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+```
+#### 使用库中控件
+```xaml
+            <!--类库控件,注意ErrorText与ConnectText不是依赖属性-->
+            <hk:HotKeyBox x:Name="KeyBoxA"
+                          CurrentKeyA="LeftCtrl"
+                          CurrentKeyB="Q"
+                          Handler="HandlerA"
+                          CornerRadius="15"
+                          ActualBackground="#1e1e1e"
+                          FixedBorderBrush="White"
+                          FixedBorderThickness="2"
+                          TextColor="White"
+                          HoverTextColor="Violet"
+                          HoverBorderBrush="Cyan"
+                          ConnectText=" + "
+                          ErrorText="Failed"/>
+```
+```csharp
+        private void HandlerA(object sender, HotKeyEventArgs e)
+        {
+            int ID = e.RegisterInfo.RegisterID;
+            //此处可获取热键的具体信息
+
+            MessageBox.Show($"A HotKey Has Been Invoked Whose ID is {ID}");
+        }
+```
+
+---
+
+## Ⅷ 使用库提供的抽象基类或接口,实现属于您自己的UserControl
+### 情景1.您对于Model层没有定制需求,这种情况只需要借助抽象基类即可实现
+### 情景2.您需要定制Model层,这种情况需要借助接口实现
+
 ---
