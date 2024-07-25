@@ -25,7 +25,7 @@
         <Border x:Name="FixedBorder" 
                 BorderBrush="{Binding DefaultBorderBrush}" 
                 Background="{Binding ActualBackground}" 
-                BorderThickness="1"
+                BorderThickness="{Binding DefaultBorderThickness}"
                 CornerRadius="{Binding CornerRadius}" 
                 ClipToBounds="True">
             <Border.Style>

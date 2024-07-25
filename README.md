@@ -32,7 +32,7 @@
 </details>
 
 <details>
-<summary>Version 2.0.0 即将上线 </summary>
+<summary>Version 2.0.0 即将上线 ( Version 1.6.0是一个测试版本 ) </summary>
 
 ### ★本次更新将基于MVVM , 进行一次高度重构
 ### Ⅰ新控件是对XAML友好的
@@ -140,7 +140,7 @@ xmlns:fh="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |-----------------------|----------------------------|------------|
 |RegisterID             |int                         |注册id，-1表示无效的注册信息 |
 |ModelKey               |ModelKeys                   |触发Key之一，支持 CTRL/ALT |
-|NormalKey              |NormalKeys                  |触发Key之一，支持 数字/字母/Fx键|
+|NormalKey              |NormalKeys                  |触发Key之一，支持 数字/字母/Fx键/方向箭头|
 |Handler                |HotKeyEventHandler?         |处理函数|
 
 #### 示例1. 根据 ID 查询完整的注册信息 

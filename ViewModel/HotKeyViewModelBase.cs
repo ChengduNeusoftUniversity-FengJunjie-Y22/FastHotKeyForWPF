@@ -21,7 +21,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 控件中的文本
         /// </summary>
-        public string Text
+        public virtual string Text
         {
             get => _model.Text;
             set
@@ -34,7 +34,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public Key CurrentKeyA
+        public virtual Key CurrentKeyA
         {
             get => _model.CurrentKeyA;
             set
@@ -50,7 +50,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public Key CurrentKeyB
+        public virtual Key CurrentKeyB
         {
             get => _model.CurrentKeyB;
             set
@@ -66,13 +66,12 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public HotKeyEventHandler? HandlerData { get; set; }
-
-        public HotKeyEventHandler? Handler
+        public HotKeyEventHandler? HandlerData
         {
+            get => _model.HandlerData;
             set
             {
-                _model.Handler = value;
+                _model.HandlerData = value;
                 if (IsHotKeyRegistered)
                 {
                     var result = KeyHelper.GetKeysFrom(this);
@@ -82,15 +81,14 @@ namespace FastHotKeyForWPF
                         LastHotKeyID = GlobalHotKey.Registers[result.Item2, result.Item3].RegisterID;
                     }
                 }
-                OnPropertyChanged(nameof(Handler));
+                OnPropertyChanged(nameof(HandlerData));
             }
-            get => _model.Handler;
         }
 
         /// <summary>
         /// 目前是否已成功注册了热键
         /// </summary>
-        public bool IsHotKeyRegistered
+        public virtual bool IsHotKeyRegistered
         {
             get => _model.IsHotKeyRegistered;
             set
@@ -106,7 +104,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 最近一次注册的热键ID
         /// </summary>
-        internal int LastHotKeyID
+        public virtual int LastHotKeyID
         {
             get => _model.LastHotKeyID;
             set
@@ -131,9 +129,9 @@ namespace FastHotKeyForWPF
         public virtual void UpdateHotKey()
         {
             var Keys = KeyHelper.GetKeysFrom(this);
-            if (Keys.Item1 && Handler != null)
+            if (Keys.Item1 && HandlerData != null)
             {
-                var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, Handler);
+                var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, HandlerData);
                 if (result.Item1)
                 {
                     IsHotKeyRegistered = true;

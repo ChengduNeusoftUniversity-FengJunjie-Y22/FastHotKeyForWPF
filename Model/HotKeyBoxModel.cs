@@ -35,6 +35,8 @@ namespace FastHotKeyForWPF
 
         public SolidColorBrush DefaultBorderBrush { get; set; } = Brushes.White;
 
+        public Thickness DefaultBorderThickness { get; set; } = new Thickness(1);
+
         public SolidColorBrush HoverTextColor { get; set; } = Brushes.Cyan;
 
         public SolidColorBrush HoverBorderBrush { get; set; } = Brushes.Cyan;

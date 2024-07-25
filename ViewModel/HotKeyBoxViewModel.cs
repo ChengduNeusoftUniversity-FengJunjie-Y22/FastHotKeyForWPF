@@ -115,6 +115,19 @@ namespace FastHotKeyForWPF
             }
         }
 
+        public Thickness DefaultBorderThickness
+        {
+            get => _model.DefaultBorderThickness;
+            set
+            {
+                if (value != _model.DefaultBorderThickness)
+                {
+                    _model.DefaultBorderThickness = value;
+                    OnPropertyChanged(nameof(DefaultBorderThickness));
+                }
+            }
+        }
+
         /// <summary>
         /// 悬停文字颜色
         /// </summary>
@@ -150,9 +163,9 @@ namespace FastHotKeyForWPF
         public override void UpdateHotKey()
         {
             var Keys = KeyHelper.GetKeysFrom(this);
-            if (Keys.Item1 && Handler != null)
+            if (Keys.Item1 && HandlerData != null)
             {
-                var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, Handler);
+                var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, HandlerData);
                 if (result.Item1)
                 {
                     IsHotKeyRegistered = true;
