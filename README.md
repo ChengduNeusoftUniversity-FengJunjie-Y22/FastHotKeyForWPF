@@ -55,7 +55,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅱ 激活与销毁
-#### 示例1. GlobalHotKey - 热键相关的核心功能
+#### 示例. GlobalHotKey
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -67,22 +67,6 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
         protected override void OnClosed(EventArgs e)
         {
             GlobalHotKey.Destroy();
-
-            base.OnClosed(e);
-        }
-```
-#### 示例2. ReturnValueMonitor - 拓展功能（非必要）
-```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-
-            ReturnValueMonitor.Awake();
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            ReturnValueMonitor.Destroy();
 
             base.OnClosed(e);
         }
