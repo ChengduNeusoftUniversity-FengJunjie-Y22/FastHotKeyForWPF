@@ -1,17 +1,20 @@
 ﻿# FastHotKeyForWPF
 ## Quickly build global hotkeys in WPF programs
+## Supported [ .NET6.0 ] [ .NET8.0 ]
 - [github][1]
-- [gitee][2]
+- [nuget][2]
+- [gitee][3]
 
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
-[2]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
+[2]: https://www.nuget.org/packages/FastHotKeyForWPF/
+[3]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 
 ---
 
 ## 更新进度
-[Bilibili合集][3]
+[Bilibili合集][4]
 
-[3]: https://www.bilibili.com/video/BV1WTbReZEZU
+[4]: https://www.bilibili.com/video/BV1WTbReZEZU
 
 <details>
 <summary>Version 1.1.6 已上线 ( 使用 PrefabComponent 的最后一个版本 ) </summary>
@@ -32,7 +35,7 @@
 </details>
 
 <details>
-<summary>Version 2.0.0 已上线</summary>
+<summary>Version 2.0.0 已上线 ( 2.0.1 尝试支持 .NET6.0 )</summary>
 
 ## 变更
 #### 1.GlobalHotKey.Add() 返回( bool,int ) => 返回注册编号 int , -1表示失败的操作
