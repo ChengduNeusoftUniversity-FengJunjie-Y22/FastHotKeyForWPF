@@ -243,7 +243,11 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅷ 使用库提供的抽象基类或接口,实现属于您自己的UserControl,详情可在 SampleDemo查看
-### 示例1.若您对于Model层没有定制需求 ( 1次接口的手动实现 )
+### 介绍1.接口的使用规范
+#### IAutoHotKeyProperty接口必须在View与ViewModel实现
+#### IAutoHotKeyUpdate接口必须在ViewModel实现
+
+### 示例1.您对于Model层没有定制需求 ( 1次接口的手动实现 )
 ##### ViewModel
 ```csharp
     /// <summary>
@@ -432,6 +436,6 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
     }
 ```
 
-### 示例2.若您需要定制Model层 ( 3~4次接口的手动实现 )
+### 示例2.您需要定制Model层 ( 3~4次接口的手动实现 )
 #### 需求场景过少,示例代码将延后提交
 ---
