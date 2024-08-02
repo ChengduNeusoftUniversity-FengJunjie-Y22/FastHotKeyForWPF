@@ -20,38 +20,6 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
-        /// 注册失败时的文本
-        /// </summary>
-        public string ErrorText
-        {
-            get => _model.ErrorText;
-            set
-            {
-                if (_model.ErrorText != value)
-                {
-                    _model.ErrorText = value;
-                    OnPropertyChanged(nameof(ErrorText));
-                }
-            }
-        }
-
-        /// <summary>
-        /// 连接两个Key的文本
-        /// </summary>
-        public string ConnectText
-        {
-            get => _model.ConnectText;
-            set
-            {
-                if (value != _model.ConnectText)
-                {
-                    _model.ConnectText = value;
-                    OnPropertyChanged(nameof(ConnectText));
-                }
-            }
-        }
-
-        /// <summary>
         /// 圆滑度
         /// </summary>
         public CornerRadius CornerRadius
@@ -158,30 +126,6 @@ namespace FastHotKeyForWPF
                     OnPropertyChanged(nameof(HoverBorderBrush));
                 }
             }
-        }
-
-        public override void UpdateHotKey()
-        {
-            var Keys = KeyHelper.GetKeysFrom(this);
-            if (Keys.Item1 && HandlerData != null)
-            {
-                var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, HandlerData);
-                if (result != -1)
-                {
-                    IsHotKeyRegistered = true;
-                    LastHotKeyID = result;
-                }
-                else
-                {
-                    Text = ErrorText;
-                }
-            }
-            RemoveSame();
-        }
-
-        public override void UpdateText()
-        {
-            Text = CurrentKeyA.ToString() + ConnectText + CurrentKeyB.ToString();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace FastHotKeyForWPF
 
             for (int i = 0; i < target.Count; i++)
             {
-                target[i].CurrentKeyA = new Key();
+                target[i].CurrentKeyA = 0x0000;
                 target[i].CurrentKeyB = new Key();
             }
         }

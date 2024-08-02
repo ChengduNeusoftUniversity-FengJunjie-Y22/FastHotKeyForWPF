@@ -34,7 +34,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        public virtual Key CurrentKeyA
+        public virtual uint CurrentKeyA
         {
             get => _model.CurrentKeyA;
             set
@@ -74,11 +74,10 @@ namespace FastHotKeyForWPF
                 _model.HandlerData = value;
                 if (IsHotKeyRegistered)
                 {
-                    var result = KeyHelper.GetKeysFrom(this);
-                    if (result.Item1 && value != null)
+                    var temp = KeyHelper.IsKeyValid(CurrentKeyB);
+                    if (temp.Item2 == KeyTypes.NormalKey && value != null)
                     {
-                        GlobalHotKey.EditHandler(result.Item2, result.Item3, value);
-                        LastHotKeyID = GlobalHotKey.Registers[result.Item2, result.Item3].RegisterID;
+                        GlobalHotKey.EditHandler(CurrentKeyA, KeyHelper.KeyToNormalKeys[CurrentKeyB], value);
                     }
                 }
                 OnPropertyChanged(nameof(HandlerData));
@@ -118,6 +117,38 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
+        /// 注册失败时的文本
+        /// </summary>
+        public string ErrorText
+        {
+            get => _model.ErrorText;
+            set
+            {
+                if (_model.ErrorText != value)
+                {
+                    _model.ErrorText = value;
+                    OnPropertyChanged(nameof(ErrorText));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 连接两个Key的文本
+        /// </summary>
+        public string ConnectText
+        {
+            get => _model.ConnectText;
+            set
+            {
+                if (value != _model.ConnectText)
+                {
+                    _model.ConnectText = value;
+                    OnPropertyChanged(nameof(ConnectText));
+                }
+            }
+        }
+
+        /// <summary>
         /// 去除原有注册项
         /// </summary>
         public virtual void RemoveOld()
@@ -128,10 +159,10 @@ namespace FastHotKeyForWPF
 
         public virtual void UpdateHotKey()
         {
-            var Keys = KeyHelper.GetKeysFrom(this);
-            if (Keys.Item1 && HandlerData != null)
+            var temp = KeyHelper.IsKeyValid(CurrentKeyB);
+            if (temp.Item2 == KeyTypes.NormalKey && HandlerData != null)
             {
-                var result = GlobalHotKey.Add(Keys.Item2, Keys.Item3, HandlerData);
+                var result = GlobalHotKey.Add(CurrentKeyA, KeyHelper.KeyToNormalKeys[CurrentKeyB], HandlerData);
                 if (result != -1)
                 {
                     IsHotKeyRegistered = true;
@@ -139,7 +170,7 @@ namespace FastHotKeyForWPF
                 }
                 else
                 {
-                    Text = "Error";
+                    Text = ErrorText;
                 }
             }
             RemoveSame();
@@ -147,7 +178,18 @@ namespace FastHotKeyForWPF
 
         public virtual void UpdateText()
         {
-            Text = CurrentKeyA.ToString() + "  +  " + CurrentKeyB.ToString();
+            List<ModelKeys> models = KeyHelper.UintParse(CurrentKeyA);
+            bool pos1 = models.Contains(ModelKeys.ALT);
+            bool pos2 = models.Contains(ModelKeys.CTRL);
+            bool pos3 = models.Contains(ModelKeys.SHIFT);
+            string Left = (pos1 ? "ALT" + (pos2 || pos3 ? ConnectText : string.Empty) : string.Empty)
+                        + (pos2 ? "CTRL" + (pos3 ? ConnectText : string.Empty) : string.Empty)
+                        + (pos3 ? "SHIFT" : string.Empty);
+
+            string temp = CurrentKeyB.ToString();
+            string Right = (temp.Length == 2 && temp[0] == 'D') ? temp[1].ToString() : ((temp == "None") ? string.Empty : temp);
+
+            Text = Left + ((string.IsNullOrEmpty(Left) || string.IsNullOrEmpty(Right)) ? string.Empty : ConnectText) + Right;
         }
 
         public virtual void RemoveSame()

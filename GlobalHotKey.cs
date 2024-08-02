@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace FastHotKeyForWPF
@@ -50,7 +51,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 保护名单
         /// </summary>
-        public static List<Tuple<ModelKeys, NormalKeys>>? ProtectedHotKeys
+        public static List<Tuple<uint, NormalKeys>>? ProtectedHotKeys
         {
             get
             {
@@ -120,6 +121,30 @@ namespace FastHotKeyForWPF
             }
             return -1;
         }
+        /// <summary>
+        /// 添加一个热键
+        /// </summary>
+        /// <returns>元组，Item1表示是否成功注册热键，Item2表示注册ID</returns>
+        public static int Add(ICollection<ModelKeys> modes, NormalKeys key, HotKeyEventHandler handler)
+        {
+            if (Instance != null && modes.Count > 0)
+            {
+                return Instance.AddHotKey(modes, key, handler);
+            }
+            return -1;
+        }
+        /// <summary>
+        /// 添加一个热键
+        /// </summary>
+        /// <returns>元组，Item1表示是否成功注册热键，Item2表示注册ID</returns>
+        public static int Add(uint modes, NormalKeys key, HotKeyEventHandler handler)
+        {
+            if (Instance != null)
+            {
+                return Instance.AddHotKey(modes, key, handler);
+            }
+            return -1;
+        }
 
         /// <summary>
         /// 修改热键的处理函数
@@ -132,6 +157,26 @@ namespace FastHotKeyForWPF
             }
         }
         /// <summary>
+        /// 修改热键的处理函数
+        /// </summary>
+        public static void EditHandler(ICollection<ModelKeys> modes, NormalKeys key, HotKeyEventHandler handler)
+        {
+            if (Instance != null && modes.Count > 0)
+            {
+                Instance.EditExistHandler(modes, key, handler);
+            }
+        }
+        /// <summary>
+        /// 修改热键的处理函数
+        /// </summary>
+        public static void EditHandler(uint modes, NormalKeys key, HotKeyEventHandler handler)
+        {
+            if (Instance != null)
+            {
+                Instance.EditExistHandler(modes, key, handler);
+            }
+        }
+        /// <summary>
         /// 修改热键的热键组合
         /// </summary>
         public static void EditKeys(HotKeyEventHandler handler, ModelKeys mode, NormalKeys key)
@@ -139,6 +184,26 @@ namespace FastHotKeyForWPF
             if (Instance != null)
             {
                 Instance.EditExistKeys(handler, mode, key);
+            }
+        }
+        /// <summary>
+        /// 修改热键的热键组合
+        /// </summary>
+        public static void EditKeys(HotKeyEventHandler handler, ICollection<ModelKeys> modes, NormalKeys key)
+        {
+            if (Instance != null && modes.Count > 0)
+            {
+                Instance.EditExistKeys(handler, modes, key);
+            }
+        }
+        /// <summary>
+        /// 修改热键的热键组合
+        /// </summary>
+        public static void EditKeys(HotKeyEventHandler handler, uint modes, NormalKeys key)
+        {
+            if (Instance != null)
+            {
+                Instance.EditExistKeys(handler, modes, key);
             }
         }
 
@@ -182,6 +247,26 @@ namespace FastHotKeyForWPF
                 Instance.RemoveExistRegisterByKeys(modelKeys, normalKeys);
             }
         }
+        /// <summary>
+        /// 清除与指定热键组合关联的热键
+        /// </summary>
+        public static void DeleteByKeys(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            if (Instance != null && modelKeys.Count > 0)
+            {
+                Instance.RemoveExistRegisterByKeys(modelKeys, normalKey);
+            }
+        }
+        /// <summary>
+        /// 清除与指定热键组合关联的热键
+        /// </summary>
+        public static void DeleteByKeys(uint modelKeys, NormalKeys normalKey)
+        {
+            if (Instance != null)
+            {
+                Instance.RemoveExistRegisterByKeys(modelKeys, normalKey);
+            }
+        }
 
         /// <summary>
         /// 依据热键组合，增加受保护的热键
@@ -189,6 +274,21 @@ namespace FastHotKeyForWPF
         public static void ProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)
         {
             Instance?.AddProtectedHotKey(modelKeys, normalKeys);
+        }
+        /// <summary>
+        /// 依据热键组合，增加受保护的热键
+        /// </summary>
+        public static void ProtectHotKeyByKeys(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            if (modelKeys.Count < 1) { return; }
+            Instance?.AddProtectedHotKey(modelKeys, normalKey);
+        }
+        /// <summary>
+        /// 依据热键组合，增加受保护的热键
+        /// </summary>
+        public static void ProtectHotKeyByKeys(uint modelKeys, NormalKeys normalKey)
+        {
+            Instance?.AddProtectedHotKey(modelKeys, normalKey);
         }
         /// <summary>
         /// 依据注册ID，增加受保护的热键
@@ -200,14 +300,29 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
-        /// 依据热键组合，解除热键的保护态
+        /// 解除热键的保护态
         /// </summary>
-        public static void UnProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKeys)
+        public static void UnProtectHotKeyByKeys(ModelKeys modelKeys, NormalKeys normalKey)
         {
-            Instance?.RemoveProtectedHotKey(modelKeys, normalKeys);
+            Instance?.RemoveProtectedHotKey(modelKeys, normalKey);
         }
         /// <summary>
-        /// 依据注册ID，解除热键的保护态
+        /// 解除热键的保护态
+        /// </summary>
+        public static void UnProtectHotKeyByKeys(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            if (modelKeys.Count < 1) { return; }
+            Instance?.RemoveProtectedHotKey(modelKeys, normalKey);
+        }
+        /// <summary>
+        /// 解除热键的保护态
+        /// </summary>
+        public static void UnProtectHotKeyByKeys(uint modelKeys, NormalKeys normalKey)
+        {
+            Instance?.RemoveProtectedHotKey(modelKeys, normalKey);
+        }
+        /// <summary>
+        /// 解除热键的保护态
         /// </summary>
         public static void UnProtectHotKeyById(int id)
         {
@@ -215,21 +330,49 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
-        /// 检查热键组合是否处于保护态
+        /// 检查热键是否处于保护态
         /// </summary>
-        public static bool IsHotKeyProtected(ModelKeys modelKeys, NormalKeys normalKeys)
+        public static bool IsHotKeyProtected(ModelKeys modelKeys, NormalKeys normalKey)
         {
             bool result = false;
 
             if (Instance != null)
             {
-                result = Instance.CheckInProtectList(modelKeys, normalKeys);
+                result = Instance.CheckInProtectList(modelKeys, normalKey);
             }
 
             return result;
         }
         /// <summary>
-        /// 检查指定ID的热键是否处于保护态
+        /// 检查热键是否处于保护态
+        /// </summary>
+        public static bool IsHotKeyProtected(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            bool result = false;
+
+            if (Instance != null && modelKeys.Count > 0)
+            {
+                result = Instance.CheckInProtectList(modelKeys, normalKey);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 检查热键是否处于保护态
+        /// </summary>
+        public static bool IsHotKeyProtected(uint modelKeys, NormalKeys normalKey)
+        {
+            bool result = false;
+
+            if (Instance != null)
+            {
+                result = Instance.CheckInProtectList(modelKeys, normalKey);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 检查热键是否处于保护态
         /// </summary>
         public static bool IsHotKeyProtected(int id)
         {
@@ -254,7 +397,7 @@ namespace FastHotKeyForWPF
 
         private RegisterCollection RegisterList = new RegisterCollection();
 
-        private List<Tuple<ModelKeys, NormalKeys>> ProtectList = new List<Tuple<ModelKeys, NormalKeys>>();
+        private List<Tuple<uint, NormalKeys>> ProtectList = new List<Tuple<uint, NormalKeys>>();
 
         private IntPtr WhileKeyInvoked(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
@@ -309,6 +452,44 @@ namespace FastHotKeyForWPF
             }
             return -1;
         }
+        private int AddHotKey(ICollection<ModelKeys> modes, NormalKeys key, HotKeyEventHandler handler)
+        {
+            uint target = (uint)modes.Aggregate((current, next) => current | next);
+
+            if (CheckInProtectList(target, key)) { return -1; }
+            int id = HOTKEY_ID + Counter;
+            RemoveExistRegisterByID(id);
+            RemoveExistRegisterByKeys(target, key);
+            bool result;
+            result = RegisterHotKey(WindowhWnd, id, target, (uint)key);
+            if (result)
+            {
+                Handlers.Add(id, handler);
+                RegisterInfo info = new RegisterInfo(id, target, key, handler);
+                RegisterList.Add(info);
+                Counter++;
+                return info.RegisterID;
+            }
+            return -1;
+        }
+        private int AddHotKey(uint mode, NormalKeys key, HotKeyEventHandler handler)
+        {
+            if (CheckInProtectList(mode, key)) { return -1; }
+            int id = HOTKEY_ID + Counter;
+            RemoveExistRegisterByID(id);
+            RemoveExistRegisterByKeys(mode, key);
+            bool result;
+            result = RegisterHotKey(WindowhWnd, id, mode, (uint)key);
+            if (result)
+            {
+                Handlers.Add(id, handler);
+                RegisterInfo info = new RegisterInfo(id, mode, key, handler);
+                RegisterList.Add(info);
+                Counter++;
+                return info.RegisterID;
+            }
+            return -1;
+        }
 
         private void EditExistKeys(HotKeyEventHandler handler, ModelKeys mode, NormalKeys key)
         {
@@ -327,7 +508,79 @@ namespace FastHotKeyForWPF
                 }
             }
         }
+        private void EditExistKeys(HotKeyEventHandler handler, ICollection<ModelKeys> modes, NormalKeys key)
+        {
+            uint target = (uint)modes.Aggregate((current, next) => current | next);
+
+            if (CheckInProtectList(target, key)) { return; }
+
+            foreach (RegisterInfo info in RegisterList.RegisterList)
+            {
+                if (info.Handler == handler)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    RegisterHotKey(WindowhWnd, info.RegisterID, target, (uint)key);
+                    RegisterInfo result = new RegisterInfo(info.RegisterID, target, key, handler);
+                    RegisterList.Add(result);
+                    Handlers.Add(result.RegisterID, handler);
+                    break;
+                }
+            }
+        }
+        private void EditExistKeys(HotKeyEventHandler handler, uint mode, NormalKeys key)
+        {
+            if (CheckInProtectList(mode, key)) { return; }
+
+            foreach (RegisterInfo info in RegisterList.RegisterList)
+            {
+                if (info.Handler == handler)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    RegisterHotKey(WindowhWnd, info.RegisterID, mode, (uint)key);
+                    RegisterInfo result = new RegisterInfo(info.RegisterID, mode, key, handler);
+                    RegisterList.Add(result);
+                    Handlers.Add(result.RegisterID, handler);
+                    break;
+                }
+            }
+        }
         private void EditExistHandler(ModelKeys mode, NormalKeys key, HotKeyEventHandler handler)
+        {
+            if (CheckInProtectList(mode, key)) { return; }
+
+            foreach (RegisterInfo info in RegisterList.RegisterList)
+            {
+                if (info.ModelKey == (uint)mode && info.NormalKey == key)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    RegisterHotKey(WindowhWnd, info.RegisterID, (uint)mode, (uint)key);
+                    RegisterInfo result = new RegisterInfo(info.RegisterID, mode, key, handler);
+                    RegisterList.Add(result);
+                    Handlers.Add(result.RegisterID, handler);
+                    break;
+                }
+            }
+        }
+        private void EditExistHandler(ICollection<ModelKeys> modes, NormalKeys key, HotKeyEventHandler handler)
+        {
+            uint target = (uint)modes.Aggregate((current, next) => current | next);
+
+            if (CheckInProtectList(target, key)) { return; }
+
+            foreach (RegisterInfo info in RegisterList.RegisterList)
+            {
+                if (info.ModelKey == target && info.NormalKey == key)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    RegisterHotKey(WindowhWnd, info.RegisterID, target, (uint)key);
+                    RegisterInfo result = new RegisterInfo(info.RegisterID, target, key, handler);
+                    RegisterList.Add(result);
+                    Handlers.Add(result.RegisterID, handler);
+                    break;
+                }
+            }
+        }
+        private void EditExistHandler(uint mode, NormalKeys key, HotKeyEventHandler handler)
         {
             if (CheckInProtectList(mode, key)) { return; }
 
@@ -336,7 +589,7 @@ namespace FastHotKeyForWPF
                 if (info.ModelKey == mode && info.NormalKey == key)
                 {
                     RemoveExistRegisterByID(info.RegisterID);
-                    RegisterHotKey(WindowhWnd, info.RegisterID, (uint)mode, (uint)key);
+                    RegisterHotKey(WindowhWnd, info.RegisterID, mode, (uint)key);
                     RegisterInfo result = new RegisterInfo(info.RegisterID, mode, key, handler);
                     RegisterList.Add(result);
                     Handlers.Add(result.RegisterID, handler);
@@ -374,12 +627,40 @@ namespace FastHotKeyForWPF
                 if (target != null) RegisterList.Remove(target.RegisterID);
             }
         }
-        private int RemoveExistRegisterByKeys(ModelKeys mode, NormalKeys key)
+        private int RemoveExistRegisterByKeys(uint mode, NormalKeys key)
         {
             if (CheckInProtectList(mode, key)) { return -1; }
             foreach (RegisterInfo info in RegisterList.RegisterList)
             {
                 if (info.ModelKey == mode && info.NormalKey == key)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    return info.RegisterID;
+                }
+            }
+            return -1;
+        }
+        private int RemoveExistRegisterByKeys(ModelKeys mode, NormalKeys key)
+        {
+            if (CheckInProtectList(mode, key)) { return -1; }
+            foreach (RegisterInfo info in RegisterList.RegisterList)
+            {
+                if (info.ModelKey == (uint)mode && info.NormalKey == key)
+                {
+                    RemoveExistRegisterByID(info.RegisterID);
+                    return info.RegisterID;
+                }
+            }
+            return -1;
+        }
+        private int RemoveExistRegisterByKeys(ICollection<ModelKeys> modes, NormalKeys key)
+        {
+            uint target = (uint)modes.Aggregate((current, next) => current | next);
+            if (CheckInProtectList(target, key)) { return -1; }
+
+            foreach (RegisterInfo info in RegisterList.RegisterList)
+            {
+                if (info.ModelKey == target && info.NormalKey == key)
                 {
                     RemoveExistRegisterByID(info.RegisterID);
                     return info.RegisterID;
@@ -407,6 +688,29 @@ namespace FastHotKeyForWPF
         {
             foreach (var item in ProtectList)
             {
+                if (item.Item1 == (uint)modelKey && item.Item2 == normalKey)
+                {
+                    return;
+                }
+            }
+            ProtectList.Add(Tuple.Create((uint)modelKey, normalKey));
+        }
+        private void AddProtectedHotKey(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            uint target = (uint)modelKeys.Aggregate((current, next) => current | next);
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == target && item.Item2 == normalKey)
+                {
+                    return;
+                }
+            }
+            ProtectList.Add(Tuple.Create(target, normalKey));
+        }
+        private void AddProtectedHotKey(uint modelKey, NormalKeys normalKey)
+        {
+            foreach (var item in ProtectList)
+            {
                 if (item.Item1 == modelKey && item.Item2 == normalKey)
                 {
                     return;
@@ -430,6 +734,30 @@ namespace FastHotKeyForWPF
         {
             foreach (var item in ProtectList)
             {
+                if (item.Item1 == (uint)modelKey && item.Item2 == normalKey)
+                {
+                    ProtectList.Remove(item);
+                    return;
+                }
+            }
+        }
+        private void RemoveProtectedHotKey(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            uint target = (uint)modelKeys.Aggregate((current, next) => current | next);
+
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == target && item.Item2 == normalKey)
+                {
+                    ProtectList.Remove(item);
+                    return;
+                }
+            }
+        }
+        private void RemoveProtectedHotKey(uint modelKey, NormalKeys normalKey)
+        {
+            foreach (var item in ProtectList)
+            {
                 if (item.Item1 == modelKey && item.Item2 == normalKey)
                 {
                     ProtectList.Remove(item);
@@ -450,6 +778,37 @@ namespace FastHotKeyForWPF
         }
 
         private bool CheckInProtectList(ModelKeys modelKey, NormalKeys normalKey)
+        {
+            bool result = false;
+
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == (uint)modelKey && item.Item2 == normalKey)
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+        private bool CheckInProtectList(ICollection<ModelKeys> modelKeys, NormalKeys normalKey)
+        {
+            bool result = false;
+            uint target = (uint)modelKeys.Aggregate((current, next) => current | next);
+
+            foreach (var item in ProtectList)
+            {
+                if (item.Item1 == target && item.Item2 == normalKey)
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+        private bool CheckInProtectList(uint modelKey, NormalKeys normalKey)
         {
             bool result = false;
 

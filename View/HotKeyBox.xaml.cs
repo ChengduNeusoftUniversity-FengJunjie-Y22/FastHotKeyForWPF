@@ -24,9 +24,9 @@ namespace FastHotKeyForWPF
 
         public int PoolID { get; set; } = 0;
 
-        public Key CurrentKeyA
+        public uint CurrentKeyA
         {
-            get { return (Key)GetValue(CurrentKeyAProperty); }
+            get { return (uint)GetValue(CurrentKeyAProperty); }
             set { SetValue(CurrentKeyAProperty, value); }
         }
         public Key CurrentKeyB
@@ -95,7 +95,7 @@ namespace FastHotKeyForWPF
         #region 依赖属性注册
 
         public static readonly DependencyProperty CurrentKeyAProperty =
-            DependencyProperty.Register(nameof(CurrentKeyA), typeof(Key), typeof(HotKeyBox), new PropertyMetadata(Key.None, OnKeyAChanged));
+            DependencyProperty.Register(nameof(CurrentKeyA), typeof(uint), typeof(HotKeyBox), new PropertyMetadata(new uint(), OnKeyAChanged));
         public static readonly DependencyProperty CurrentKeyBProperty =
             DependencyProperty.Register(nameof(CurrentKeyB), typeof(Key), typeof(HotKeyBox), new PropertyMetadata(Key.None, OnKeyBChanged));
         public static readonly DependencyProperty HandlerProperty =
@@ -122,7 +122,7 @@ namespace FastHotKeyForWPF
         private static void OnKeyAChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var target = (HotKeyBox)d;
-            target.ViewModel.CurrentKeyA = (Key)e.NewValue;
+            target.ViewModel.CurrentKeyA = (uint)e.NewValue;
         }
         private static void OnKeyBChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -139,11 +139,13 @@ namespace FastHotKeyForWPF
         {
             var target = (HotKeyBox)d;
             target.ViewModel.ErrorText = (string)e.NewValue;
+            target.ViewModel.UpdateText();
         }
         private static void OnConnectTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var target = (HotKeyBox)d;
             target.ViewModel.ConnectText = (string)e.NewValue;
+            target.ViewModel.UpdateText();
         }
         private static void OnCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -203,21 +205,7 @@ namespace FastHotKeyForWPF
         {
             ViewModel.UpdateText();
 
-            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
-
-            var result = KeyHelper.IsKeyValid(key);
-
-            if (result.Item1)
-            {
-                if (result.Item2 == KeyTypes.ModelKey)
-                {
-                    CurrentKeyA = key;
-                }
-                if (result.Item2 == KeyTypes.NormalKey)
-                {
-                    CurrentKeyB = key;
-                }
-            }
+            KeyHelper.KeyParse(this, e);
 
             e.Handled = true;
         }

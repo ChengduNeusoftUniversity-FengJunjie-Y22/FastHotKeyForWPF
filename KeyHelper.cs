@@ -76,6 +76,7 @@ public enum ModelKeys : uint
 {
     ALT = 0x0001,
     CTRL = 0x0002,
+    SHIFT = 0x0004
 }
 
 /// <summary>
@@ -103,6 +104,7 @@ namespace FastHotKeyForWPF
 
         { Key.LeftCtrl, (uint)ModelKeys.CTRL },
         { Key.LeftAlt, (uint)ModelKeys.ALT },
+        { Key.LeftShift, (uint)ModelKeys.SHIFT },
 
         { Key.Space,(uint)NormalKeys.SPACE},
 
@@ -242,6 +244,7 @@ namespace FastHotKeyForWPF
         {
         { Key.LeftCtrl, ModelKeys.CTRL },
         { Key.LeftAlt, ModelKeys.ALT },
+        { Key.LeftShift, ModelKeys.SHIFT }
         };
 
         /// <summary>
@@ -271,22 +274,68 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
-        /// 尝试从目标元素抓取出有序的Key
+        /// 将若干ModelKeys合并为uint
         /// </summary>
-        public static (bool, ModelKeys, NormalKeys) GetKeysFrom(IAutoHotKeyProperty target)
+        public static uint UintCalculate(ICollection<ModelKeys> keys)
         {
-            var resultA = IsKeyValid(target.CurrentKeyA);
-            var resultB = IsKeyValid(target.CurrentKeyB);
+            return keys.Count == 0 ? 0x0000 : (uint)keys.Aggregate((current, next) => current | next);
+        }
 
-            if ((resultA.Item1 && resultB.Item1) &&
-                (resultA.Item2 != resultB.Item2))
+        /// <summary>
+        /// 将uint解析为若干ModelKeys
+        /// </summary>
+        public static List<ModelKeys> UintParse(uint key)
+        {
+            List<ModelKeys> result = new List<ModelKeys>();
+
+            foreach (ModelKeys value in Enum.GetValues(typeof(ModelKeys)))
             {
-                Key key1 = resultA.Item2 == KeyTypes.ModelKey ? target.CurrentKeyA : target.CurrentKeyB;
-                Key key2 = resultB.Item2 == KeyTypes.NormalKey ? target.CurrentKeyB : target.CurrentKeyA;
-                return (true, KeyToModelKeys[key1], KeyToNormalKeys[key2]);
+                if ((key & (uint)value) == (uint)value)
+                {
+                    result.Add(value);
+                }
             }
 
-            return (false, new ModelKeys(), new NormalKeys());
+            return result;
+        }
+
+        /// <summary>
+        /// 将接收到的Key转换,并传递给相应的属性
+        /// </summary>
+        public static void KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)
+        {
+            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
+
+            var result = IsKeyValid(key);
+
+            if (!result.Item1) { return; }
+
+            if (result.Item2 == KeyTypes.ModelKey)
+            {
+                List<ModelKeys> original = UintParse(item.CurrentKeyA);
+                ModelKeys model = KeyToModelKeys[key];
+
+                if (original.Contains(model))
+                {
+                    original.Remove(model);
+                }
+                else
+                {
+                    original.Add(model);
+                }
+
+                uint newValue = UintCalculate(original);
+                item.CurrentKeyA = newValue;
+
+                return;
+            }
+
+            if (result.Item2 == KeyTypes.NormalKey)
+            {
+                item.CurrentKeyB = key;
+
+                return;
+            }
         }
     }
 }

@@ -11,50 +11,22 @@
 
 ---
 
-## 更新进度
-[Bilibili合集][4]
+## 更新
+[Bilibili][4]
 
 [4]: https://www.bilibili.com/video/BV1WTbReZEZU
 
 <details>
-<summary>Version 1.1.6 已上线 ( 使用 PrefabComponent 的最后一个版本 ) </summary>
+<summary>Version 2.1.0 已上线</summary>
 
-#### (1)提供开箱即用的圆角组件
-#### (2)默认不使用变色效果,需要用户自定义对应函数
-#### (3)非DeBug模式下再无注册成功与否的提示,需要用户自定义对应函数
-#### (4)新增一个保护名单,名单中的任何热键不允许被增删改,即便这个热键没有被注册过
-#### (5)新增静态属性,用于获取注册信息和保护名单
+### 新增
+- 对 [ SHIFT ] 的支持
+- 对 [ 多个ModelKey ] 的支持
+- 对 [ uint转换 ] 的支持
 
-</details>
-
-<details>
-<summary>Version 1.2.3 已上线（ 使用 非MVVM 的最后一个版本 ） </summary>
-
-### 修复 HotKeysBox 在 手动设置热键 时，部分情况下文本显示异常的问题 (即手动设置初始热键后，文本显示None+None而不是初始设置的热键,但鼠标进入一下框体就恢复了正常)
-### 优化了用户控件的圆角效果，新增ActualBackground可选项
-</details>
-
-<details>
-<summary>Version 2.0.0 已上线 ( 2.0.1 尝试支持 .NET6.0 )</summary>
-
-## 变更
-#### 1.GlobalHotKey.Add() 返回( bool,int ) => 返回注册编号 int , -1表示失败的操作
-#### 2.GlobalHotKey.EditHotKey_Keys() => GlobalHotKey.EditKeys()
-#### 3.GlobalHotKey.EditHotKey_Function() => GlobalHotKey.EditHandler()
-#### 4.GlobalHotKey.DeleteByFunction() => GlobalHotKey.DeleteByHandler()
-#### 5.[delegate KeyInvoke_Void & delegate KeyInvoke_Return] => [ delegate HotKeyEventHandler & HotKeyEventArgs ]
-#### 6.[HotKeyBox & HotKeysBox] => [HotKeyBox]
-## 新增
-#### 1.RegisterCollection[ModelKey,NormalKey] => RegisterInfo
-#### 2.RegisterCollection[HotKeyEventHandler] => List< RegisterInfo >
-#### 3.[接口]IAutoHotKeyProperty 约束 Model、View、ViewModel
-#### 4.[接口]IAutoHotKeyUpdate   约束 ViewModel
-#### 5.[抽象基类]HotKeyModelBase     快速实现用于热键注册的UserControl的Model
-#### 6.[抽象基类]HotKeyViewModelBase 快速实现用于热键注册的UserControl的ViewModel
-## 相比于旧版本
-#### 1.对XAML更友好
-#### 2.事件书写更符合WPF的习惯
-#### 3.更好的可拓展性
+### 修改
+- IAutoHotKeyProperty 中的 CurrentKeyA [ 由 Key 变为 uint ]
+- HotKeyViewModelBase 提供 [ 更好的 UpdateHotKey() 与 UpdateText() ]
 
 </details>
 
@@ -94,7 +66,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅲ 使用 GlobalHotKey ，注册热键
-#### 情景. 假设你定义了以下HandlerA , 并希望用户按下 [ Ctrl + F1 ] 时执行它
+#### 情景. 假设你定义了以下HandlerA , 并希望用户触发热键时执行它
 ```csharp
         private void HandlerA(object sender, HotKeyEventArgs e)
         {
@@ -103,16 +75,68 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             MessageBox.Show($"A HotKey Has Been Invoked Whose ID is {ID}");
         }
 ```
-#### 示例. 使用 GlobalHotKey.Add 注册热键 [ Ctrl + F1 ] => [ HandlerA ]
+#### 示例1. 注册热键 [ Ctrl + F1 ] => [ HandlerA ]
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-
             GlobalHotKey.Awake();
-            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
+
+            GlobalHotKey.Add(ModelKeys.CTRL, TestA);
         }
 ```
+#### 示例2. 注册热键 [ Alt + Ctrl + F1 ] => [ HandlerA ]
+```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            GlobalHotKey.Add(ModelKeys.CTRL | ModelKeys.ALT, TestA);
+        }
+```
+#### 示例3. 注册热键 [ Alt + Ctrl + Shift + F1 ] => [ HandlerA ]
+```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            GlobalHotKey.Add(ModelKeys.CTRL | ModelKeys.ALT | ModelKeys.SHIFT, NormalKeys.F1, TestA);
+        }
+```
+#### 拓展1. 使用集合表示 ModelKeys , 注册热键 [ Alt + Ctrl + Shift + F1 ] => [ HandlerA ]
+```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            List<ModelKeys> list = new List<ModelKeys>()
+            {
+                ModelKeys.CTRL,
+                ModelKeys.ALT,
+                ModelKeys.SHIFT
+            };
+            GlobalHotKey.Add(list, NormalKeys.F1, TestA);
+        }
+```
+#### 拓展2. 使用uint表示 ModelKeys , 注册热键 [ Alt + Ctrl + Shift + F1 ] => [ HandlerA ]
+```csharp
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            GlobalHotKey.Awake();
+
+            uint target = (uint)(ModelKeys.CTRL | ModelKeys.ALT | ModelKeys.SHIFT);
+            GlobalHotKey.Add(target, NormalKeys.F1, TestA);
+        }
+```
+#### 注意
+- 若使用 ICollection 表示多个 ModelKeys , 该集合的元素个数应该 >0
+- GlobalHotKey 对 uint ICollection 实现了重载 , 接下来只以使用 ModelKeys 为例
+- RegisterInfoCollection 对 uint ICollection 实现了重载 , 接下来只以使用 ModelKeys 为例
+
 ###### 恭喜，你已经掌握了该库最核心的功能！
 
 ---
@@ -151,7 +175,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅴ 使用 GlobalHotKey ，删除热键
-#### 示例1.
+#### 示例1. 删除所有
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -166,7 +190,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             //删除所有热键
         }
 ```
-#### 示例2.
+#### 示例2. 条件删除
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -193,8 +217,8 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |属性                   |类型                        |含义        |
 |-----------------------|----------------------------|------------|
 |RegisterID             |int                         |注册id，-1表示无效的注册信息 |
-|ModelKey               |ModelKeys                   |触发Key之一，支持 CTRL/ALT |
-|NormalKey              |NormalKeys                  |触发Key之一，支持 数字/字母/Fx键/方向箭头|
+|ModelKey               |uint                        |触发Key之一，支持 CTRL/ALT/SHIFT 中的若干|
+|NormalKey              |NormalKeys                  |触发Key之一，支持 数字/字母/Fx键/方向箭头 中的一个|
 |Handler                |delegate HotKeyEventHandler?|处理函数|
 
 #### 示例1. 根据 ID 查询注册信息 
@@ -211,16 +235,34 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
 ---
 
-## Ⅶ 使用库提供的UserControl搭建您的热键设置界面
+## Ⅶ 使用 KeyHelper 提供的静态工具
+|方法                   |返回                        |作用        |
+|-----------------------|----------------------------|------------|
+|UintParse(uint key)    |List< ModelKeys >           |解算一个uint由哪些ModelKeys构成 |
+|UintCalculate(ICollection< ModelKeys > keys) |uint|将ICollection中的ModelKeys合并成一个uint|
+|KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)||处理接收到的用户输入Key|
+
+---
+
+## Ⅷ 使用库提供的UserControl搭建您的热键设置界面
 #### 引入库
 ```xaml
 xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
 #### 使用库中控件
+- 数字以D开头 , 范围 0~9
+- ModelKey在XAML中需要以 uint 书写
+
+|ModelKey   |uint        |
+|-----------|------------|
+|ALT        |0x0001|
+|CTRL       |0x0002|
+|SHIFT      |0x0004|
+
 ```xaml
-            <!--类库控件,注意ErrorText与ConnectText不是依赖属性-->
+            <!--类库控件,初始注册 [ CTRL + Q ] => [ HandlerA ]-->
             <hk:HotKeyBox x:Name="KeyBoxA"
-                          CurrentKeyA="LeftCtrl"
+                          CurrentKeyA="0x0002"
                           CurrentKeyB="Q"
                           Handler="HandlerA"
                           CornerRadius="15"
@@ -245,200 +287,19 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 ---
 
-## Ⅷ 使用库提供的抽象基类或接口,实现属于您自己的UserControl
-### 介绍1.接口的使用规范
-#### IAutoHotKeyProperty接口必须在View与ViewModel实现
-#### IAutoHotKeyUpdate接口必须在ViewModel实现
+## Ⅸ 使用库提供的抽象基类或接口,在MVVM下实现属于您自己的UserControl
+#### 引导. 接口与抽象类
+|接口                       |在哪些层实现它           |
+|---------------------------|-------------------------|
+|IAutoHotKeyProperty        |Model & ViewModel & View |
+|IAutoHotKeyUpdate          |ViewModel                |
 
-### 示例1.您对于Model层没有定制需求 ( 1次接口的手动实现 )
-##### ViewModel
-```csharp
-    /// <summary>
-    /// 基于抽象基类设计 ViewModel 层 , 要求使用统一的 HotKeyBoxModel 作为 Model ( 已在基类中定义_model )
-    /// </summary>
-    public class MyHotKeyBoxViewModelA : HotKeyViewModelBase
-    {
-        public MyHotKeyBoxViewModelA()
-        {
-            _model = new HotKeyBoxModel();
-        }
+|抽象基类                   |说明/注意                    |
+|---------------------------|-----------------------------|
+|ViewModelBase              |实现ViewModel层的简单基类    |
+|HotKeyViewModelBase        |使用此基类将采用固定的Model  |
+|HotKeyModelBase            |实现Model层的简单基类        |
 
-        private SolidColorBrush _fixedtransparent = Brushes.Transparent;
-        public SolidColorBrush FixedTransparent
-        {
-            get => _fixedtransparent;
-            set
-            {
-                if (_fixedtransparent != value)
-                {
-                    OnPropertyChanged(nameof(FixedTransparent));
-                }
-            }
-        }
-        //…
-        //拓展属性,它们不存在于Model,只负责逻辑数据的处理
-        //例如,将【UserControl的Background】与【FixedTransparent】做【TwoWay绑定】,即可永远保持为透明
+#### 示例. 一个注册成功会播放动画的UserControl ( 非常用功能，示例会延后在github补全 )
 
-
-        //…
-        //重写属性,多数情况并不需要这一步
-
-
-        public override void UpdateText()
-        {
-            string? PossibilityA = (CurrentKeyA == Key.LeftCtrl || CurrentKeyA == Key.RightCtrl) ? "CTRL" : null;
-            string? PossibilityB = (CurrentKeyA == Key.LeftAlt || CurrentKeyA == Key.RightAlt) ? "ALT" : null;
-
-            string Left = (PossibilityA == null ? string.Empty : PossibilityA) + (PossibilityB == null ? string.Empty : PossibilityB);
-
-            Text = Left + " + " + CurrentKeyB.ToString();
-        }
-        //…
-        //重写方法
-        //例如,您希望不再区分 CTRL/ALT的左右,那么您可以重写UpdateText()
-    }
-```
-##### View
-```xaml
-<UserControl x:Class="Sample.MyHotKeyBoxA"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Sample"
-             mc:Ignorable="d" 
-             Height="50" 
-             Width="300"
-             Background="{Binding FixedTransparent,Mode=TwoWay}"
-             MouseEnter="UserControl_MouseEnter"
-             MouseLeave="UserControl_MouseLeave">
-    <!--经过拓展的ViewModel-->
-    <UserControl.DataContext>
-        <local:MyHotKeyBoxViewModelA x:Name="ViewModel"/>
-    </UserControl.DataContext>
-    
-    <Grid>
-        <TextBox x:Name="KeyGet"
-                 Background="{Binding FixedTransparent}"
-                 IsReadOnly="True"
-                 PreviewKeyDown="KeyGet_PreviewKeyDown"/>
-        <TextBox x:Name="ActualText"
-                 Text="{Binding Text}"
-                 Background="{Binding FixedTransparent}"
-                 FontSize="30"
-                 Foreground="White"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 BorderBrush="Transparent"/>
-    </Grid>
-</UserControl>
-```
-```csharp
-    public partial class MyHotKeyBoxA : UserControl, IAutoHotKeyProperty
-    {
-        public MyHotKeyBoxA()
-        {
-            InitializeComponent();
-
-            BoxPool.Add(this, ViewModel);
-            //必须执行这句话才可以参与库提供的唯一热键的实现流程
-        }
-
-
-        #region 接口实现
-
-        public int PoolID { get; set; } = 0;
-
-        public Key CurrentKeyA
-        {
-            get { return (Key)GetValue(CurrentKeyAProperty); }
-            set { SetValue(CurrentKeyAProperty, value); }
-        }
-        public Key CurrentKeyB
-        {
-            get { return (Key)GetValue(CurrentKeyBProperty); }
-            set { SetValue(CurrentKeyBProperty, value); }
-        }
-
-        public HotKeyEventHandler? HandlerData { get; set; }
-        public event HotKeyEventHandler? Handler
-        {
-            add { SetValue(HandlerProperty, value); }
-            remove { SetValue(HandlerProperty, null); }
-        }
-
-        #endregion
-
-
-        #region 依赖属性定义
-
-        public static readonly DependencyProperty CurrentKeyAProperty =
-            DependencyProperty.Register(nameof(CurrentKeyA), typeof(Key), typeof(MyHotKeyBoxA), new PropertyMetadata(Key.None, OnKeyAChanged));
-        public static readonly DependencyProperty CurrentKeyBProperty =
-            DependencyProperty.Register(nameof(CurrentKeyB), typeof(Key), typeof(MyHotKeyBoxA), new PropertyMetadata(Key.None, OnKeyBChanged));
-        public static readonly DependencyProperty HandlerProperty =
-            DependencyProperty.Register(nameof(Handler), typeof(HotKeyEventHandler), typeof(MyHotKeyBoxA), new PropertyMetadata(null, OnHandlerChanged));
-
-        private static void OnKeyAChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var target = (MyHotKeyBoxA)d;
-            target.ViewModel.CurrentKeyA = (Key)e.NewValue;
-        }
-        private static void OnKeyBChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var target = (MyHotKeyBoxA)d;
-            target.ViewModel.CurrentKeyB = (Key)e.NewValue;
-        }
-        private static void OnHandlerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var target = (MyHotKeyBoxA)d;
-            target.HandlerData = (HotKeyEventHandler)e.NewValue;
-            target.ViewModel.HandlerData = (HotKeyEventHandler)e.NewValue;
-        }
-
-        #endregion
-
-
-        #region 事件
-
-        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            KeyGet.Focus();
-        }
-
-        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Keyboard.ClearFocus();
-        }
-
-        private void KeyGet_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            ViewModel.UpdateText();
-
-            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
-
-            var result = KeyHelper.IsKeyValid(key);
-            //KeyHelper提供Key合法性检查,以确保是一个受库支持的Key
-            if (result.Item1)
-            {
-                if (result.Item2 == KeyTypes.ModelKey)
-                {
-                    CurrentKeyA = key;
-                    //注意这里应该向依赖属性通知更改,直接通知ViewModel会导致BoxPool功能异常
-                }
-                else if (result.Item2 == KeyTypes.NormalKey)
-                {
-                    CurrentKeyB = key;
-                }
-            }
-
-            e.Handled = true;
-        }
-
-        #endregion
-    }
-```
-
-### 示例2.您需要定制Model层 ( 3~4次接口的手动实现 )
-#### 需求场景过少,示例代码将延后提交
 ---

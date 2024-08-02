@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:FastHotKeyForWPF"
              mc:Ignorable="d" 
              Height="50"
-             Width="320" 
+             Width="440" 
              x:Name="Total"
              MouseEnter="UserControl_MouseEnter" 
              MouseLeave="UserControl_MouseLeave">

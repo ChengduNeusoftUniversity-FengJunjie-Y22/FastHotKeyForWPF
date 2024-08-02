@@ -15,7 +15,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 热键的触发Key之一 , 可以是 CTRL / ALT
         /// </summary>
-        Key CurrentKeyA { get; set; }
+        uint CurrentKeyA { get; set; }
 
         /// <summary>
         /// 热键的触发Key之一 , 可以是 数字 / 字母 / 方向键 / Fx键
