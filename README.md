@@ -240,7 +240,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |-----------------------|----------------------------|------------|
 |UintParse(uint key)    |List< ModelKeys >           |解算一个uint由哪些ModelKeys构成 |
 |UintCalculate(ICollection< ModelKeys > keys) |uint|将ICollection中的ModelKeys合并成一个uint|
-|KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)||处理接收到的用户输入Key|
+|KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)||在View层处理接收到的用户输入Key|
 
 ---
 
@@ -249,9 +249,9 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```xaml
 xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
-#### 使用库中控件
-- 数字以D开头 , 范围 0~9
-- ModelKey在XAML中需要以 uint 书写
+#### XAML使用库中控件
+- 数字以D开头 , 范围 D0~D9
+- ModelKey以 uint 书写
 
 |ModelKey   |uint        |
 |-----------|------------|
@@ -260,10 +260,10 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |SHIFT      |0x0004|
 
 ```xaml
-            <!--类库控件,初始注册 [ CTRL + Q ] => [ HandlerA ]-->
+            <!--类库控件,初始注册 [ CTRL + 1 ] => [ HandlerA ]-->
             <hk:HotKeyBox x:Name="KeyBoxA"
                           CurrentKeyA="0x0002"
-                          CurrentKeyB="Q"
+                          CurrentKeyB="D1"
                           Handler="HandlerA"
                           CornerRadius="15"
                           ActualBackground="#1e1e1e"
