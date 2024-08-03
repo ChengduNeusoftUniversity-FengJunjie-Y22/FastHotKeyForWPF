@@ -12,7 +12,7 @@ namespace FastHotKeyForWPF
     /// <summary>
     /// 若控件用于处理热键增删改,可使用这个数据模型基类
     /// </summary>
-    public abstract class HotKeyModelBase : IAutoHotKey, IAutoHotKeyProperty
+    public abstract class HotKeyModelBase : IAutoHotKeyProperty
     {
         public int PoolID { get; set; } = 0;
 
