@@ -14,7 +14,7 @@
 ## 更新
 [Bilibili][4]
 
-[4]: https://www.bilibili.com/video/BV1WTbReZEZU
+[4]: https://www.bilibili.com/video/BV1rRi3eHEes
 
 <details>
 <summary>Version 2.1.0 已上线</summary>
