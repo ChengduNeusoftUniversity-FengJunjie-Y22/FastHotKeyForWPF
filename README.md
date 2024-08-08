@@ -15,7 +15,7 @@
 ---
 
 <details>
-<summary>Documentation [ Chinese ]</summary>
+<summary>文档 [ 中文 ]</summary>
 
 ## 功能概述
 - [ GlobalHotKey ] 允许你 注册/修改/删除/锁定 全局热键
@@ -305,25 +305,29 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 <summary>Documentation [ English ]</summary>
 
 ## Feature Overview
-- [ GlobalHotKey ] Allows you to register, modify, and delete global hotkeys
-- [  ]
+- [ GlobalHotKey ] Allows you to register/modify/delete/LOCK global hotkeys
+- [ RegisterCollection ] Allows you to find registration information using an index [RegisterInfo]
+- [ KeyHelper ] Provides you with a powerful Key value conversion tool
+- [ HotKeyBox ] Is a control provided by the class library to automate the management of hotkeys
+- In addition, the library provides an [interface] [abstract class] to the hotkey-related functionality of the control, which you can use to customize the control with a richer appearance
 
 ---
 
-## Ⅰ 引入命名空间
-#### C#
+## Ⅰ Introducing namespaces
+- The document examples have been included as follows
+- C#
 ```csharp
 using FastHotKeyForWPF;
 ```
-#### XAML
+- XAML
 ```xaml
 xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```
 
 ---
 
-## Ⅱ 激活与销毁
-#### 示例. GlobalHotKey
+## Ⅱ [Register] feature provided by GlobalHotKey
+- Example 1. ☆ Activate/Destroy [It is recommended to do the following on MainWindow]
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -339,12 +343,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             base.OnClosed(e);
         }
 ```
-###### 重写MainWindow的OnSourceInitialized与OnClosed是推荐的做法，当然，你可以选择其它时刻激活，只要你能确保Awake()时窗口句柄已存在
-
----
-
-## Ⅲ 使用 GlobalHotKey ，注册热键
-#### 情景. 假设你定义了以下HandlerA , 并希望用户触发热键时执行它
+- Example 2. Hotkey handler event definition [e.RegisterInfo for detailed hotkey information]
 ```csharp
         private void HandlerA(object sender, HotKeyEventArgs e)
         {
@@ -353,7 +352,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             MessageBox.Show($"A HotKey Has Been Invoked Whose ID is {ID}");
         }
 ```
-#### 示例1. 注册热键 [ Ctrl + F1 ] => [ HandlerA ]
+- Example 3. Registering hotkeys [Ctrl + F1] => [HandlerA]
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -363,7 +362,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             GlobalHotKey.Add(ModelKeys.CTRL, TestA);
         }
 ```
-#### 示例2. 注册热键 [ Alt + Ctrl + F1 ] => [ HandlerA ]
+- Example 4. Registering hotkeys [Alt + Ctrl + F1] => [HandlerA]
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -373,17 +372,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             GlobalHotKey.Add(ModelKeys.CTRL | ModelKeys.ALT, TestA);
         }
 ```
-#### 示例3. 注册热键 [ Alt + Ctrl + Shift + F1 ] => [ HandlerA ]
-```csharp
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-            GlobalHotKey.Awake();
-
-            GlobalHotKey.Add(ModelKeys.CTRL | ModelKeys.ALT | ModelKeys.SHIFT, NormalKeys.F1, TestA);
-        }
-```
-#### 拓展1. 使用集合表示 ModelKeys , 注册热键 [ Alt + Ctrl + Shift + F1 ] => [ HandlerA ]
+- Example 5. Using collections to represent ModelKeys
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -399,7 +388,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             GlobalHotKey.Add(list, NormalKeys.F1, TestA);
         }
 ```
-#### 拓展2. 使用uint表示 ModelKeys , 注册热键 [ Alt + Ctrl + Shift + F1 ] => [ HandlerA ]
+- Example 6. ModelKeys using uint
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -410,17 +399,13 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             GlobalHotKey.Add(target, NormalKeys.F1, TestA);
         }
 ```
-#### 注意
-- 若使用 ICollection 表示多个 ModelKeys , 该集合的元素个数应该 >0
-- GlobalHotKey 对 uint ICollection 实现了重载 , 接下来只以使用 ModelKeys 为例
-- RegisterInfoCollection 对 uint ICollection 实现了重载 , 接下来只以使用 ModelKeys 为例
-
-###### 恭喜，你已经掌握了该库最核心的功能！
+- Note that.add has an int return value that indicates the ID number at registration, which defaults to 2004 and -1 indicates a failed registration operation
+- Note that when using /uint to represent Keys,[ModelKeys] can be multiple and [Normalkeys] can only be one
 
 ---
 
-## Ⅳ 使用 GlobalHotKey ，修改热键
-#### 示例1. 已知触发Keys ,修改其对应的处理函数HotKeyEventHandler
+## Ⅲ [Modify] feature provided by GlobalHotKey
+- Example 1. Given the hotkey [CTRL + F1] => [HandlerA], perform the [HandlerA] => [HandlerB] modification
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -428,13 +413,11 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
             GlobalHotKey.Awake();
             GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
-            //初始热键为 [ CTRL + F1 => HandlerA ]
 
             GlobalHotKey.EditHandler(ModelKeys.CTRL,NormalKeys.F1, HandlerB);
-            //由 [ CTRL + F1 => HandlerA ] 变为 [ CTRL + F1 => HandlerB ];
         }
 ```
-#### 示例2. 已知处理函数HotKeyEventHandler ，修改其对应的触发Keys
+- Example 2. Given the hotkey [CTRL + F1] => [HandlerA], perform [CTRL + F1] => [CTRL + Q] modification
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -442,18 +425,16 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
             GlobalHotKey.Awake();
             GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
-            //初始热键为 [ CTRL + F1 => HandlerA ]
 
             GlobalHotKey.EditKeys(HandlerA, ModelKeys.CTRL, NormalKeys.Q);
-            //由 [ CTRL + F1 => HandlerA ] 变为 [ CTRL + Q => HandlerA ];
-            //注意:通常情况下,即便允许多个组合键指向同一Handler,也不建议您这么做,类库默认只修改第一个找到的Handler,意外的情况需要您手动查询并修改热键
         }
 ```
+- Note: In general, even if you allow multiple keys to point to the same Handler, this is not recommended; by default, the library only modifies the first Handler it finds, requiring you to manually look up and change the hotkey
 
 ---
 
-## Ⅴ 使用 GlobalHotKey ，删除热键
-#### 示例1. 删除所有
+## Ⅳ [Delete] feature provided by GlobalHotKey
+- Example 1. Delete all
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -461,14 +442,11 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
             GlobalHotKey.Awake();
             int ID = GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
-            //初始热键为 [ CTRL + F1 => HandlerA ]
-            //注册成功将返回注册ID，否则返回-1
 
             GlobalHotKey.Clear();
-            //删除所有热键
         }
 ```
-#### 示例2. 条件删除
+- Example 2. Conditional deletion
 ```csharp
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -476,60 +454,89 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
             GlobalHotKey.Awake();
             int ID = GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F1, HandlerA);
-            //初始热键为 [ CTRL + F1 => HandlerA ]
-            //注册成功将返回注册ID，否则返回-1
 
             GlobalHotKey.DeleteById(ID);
             GlobalHotKey.DeleteByKeys(ModelKeys.CTRL, NormalKeys.F1);
             GlobalHotKey.DeleteByHandler(HandlerA);
-            //删除指定热键(三种方案选一个即可)
-            //注意:DeleteByHandler与EditKeys特性不同,它会删除所有注册了指定Handler的热键,而不是只针对第一个
+            //Delete the specified hotkey (one of three options based on known registration information)
         }
 ```
+- Note that the.deleteByHandler feature is different from the EditKeys feature in that it deletes all hotkeys registered with a given Handler, not just the first one
 
 ---
 
-## Ⅵ 使用 RegisterCollection ，索引式地查询注册在列的热键信息 （ RegisterInfo 对象 ）
-
-#### 介绍. RegisterInfo 包含的信息
-|属性                   |类型                        |含义        |
-|-----------------------|----------------------------|------------|
-|RegisterID             |int                         |注册id，-1表示无效的注册信息 |
-|ModelKey               |uint                        |触发Key之一，支持 CTRL/ALT/SHIFT 中的若干|
-|NormalKey              |NormalKeys                  |触发Key之一，支持 数字/字母/Fx键/方向箭头 中的一个|
-|Handler                |delegate HotKeyEventHandler?|处理函数|
-
-#### 示例1. 根据 ID 查询注册信息 
+## Ⅴ [Indexed query] functionality provided by RegisterCollection (RegisterInfo object)
+- Example 1. Querying for registration information based on ID
 ```csharp
         RegisterInfo Info = GlobalHotKey.Registers[2004];
 ```
-#### 示例2. 根据 Keys 查询注册信息 
+- Example 2. Searching for registration information based on Keys
 ```csharp
         RegisterInfo Info = GlobalHotKey.Registers[ModelKeys.CTRL,NormalKeys.F1];
 ```
-#### 示例3. 根据 Handler 查询注册信息 
+- Example 3. Looking up registration information from the Handler
 ```csharp
         List<RegisterInfo> Infos = GlobalHotKey.Registers[HandlerA];
 ```
----
-
-## Ⅶ 使用 KeyHelper 提供的静态工具
-|方法                   |返回                        |作用        |
+#### RegisterInfo contains specific information
+|Attribute              |Type                        |Meaning     |
 |-----------------------|----------------------------|------------|
-|UintParse(uint key)    |List< ModelKeys >           |解算一个uint由哪些ModelKeys构成 |
-|UintCalculate(ICollection< ModelKeys > keys) |uint|将ICollection中的ModelKeys合并成一个uint|
-|KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)||在View层处理接收到的用户输入Key|
+|RegisterID             |int                         |Registration ID|
+|ModelKey               |uint                        |Support [several] of [CTRL/ALT/SHIFT]|
+|NormalKey              |NormalKeys                  |Support [one] of [numbers/letters /Fx keys/directional arrows]|
+|Handler                |delegate HotKeyEventHandler?|Handling events|
 
 ---
 
-## Ⅷ 使用库提供的UserControl搭建您的热键设置界面
-#### 引入库
-```xaml
-xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+## Ⅵ [Key value conversion] functionality provided by KeyHelper
+- Example 1. Combining multiple Keys of different types but supported by GlobalHotKey into a unified uint value
+```csharp
+            ModelKeys[] modelKeys = new ModelKeys[] { ModelKeys.SHIFT };
+            uint result = KeyHelper.UintSum(0x0001, ModelKeys.CTRL, modelKeys));
 ```
-#### XAML使用库中控件
-- 数字以D开头 , 范围 D0~D9
-- ModelKey以 uint 书写
+- Example 2. Converting an object to a potentially supported uint value
+```csharp
+            KeyHelper.ValueToUint(ModelKeys.SHIFT)
+```
+- Example 3. Converting a uint value to [one] possible enumeration value
+```csharp
+            bool result1 = KeyHelper.UintToEnum<ModelKeys>(0x0002) == ModelKeys.CTRL ? true : false;
+            bool result2 = KeyHelper.UintToEnum<Key>(0x0002) == Key.LeftCtrl ? true : false;
+```
+- Example 4. Converting a uint value to [several] possible ModelKeys enum values
+```csharp
+            List<ModelKeys> result1 = KeyHelper.UintSplit<List<ModelKeys>>(0x0006);
+```
+- Example 5. Checking if a [System.Window.Input.Key] is supported by GlobalHotKey
+```csharp
+            var result = KeyHelper.IsKeyValid(key);
+            if (result.Item1)
+            {
+                MessageBox.Show($"合法,类型为{result.Item2}");
+            }
+            else
+            {
+                MessageBox.Show($"非法");
+            }
+```
+- Example 6. When making a user control, quickly process a Key pressed by the user
+```csharp
+        private void FocusGet_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            ViewModel.UpdateText();
+
+            KeyHelper.KeyParse(this, e);
+
+            e.Handled = true;
+        }
+```
+- Note that if the control wants to use the input processing provided by KeyHelper, it must implement the IAutoHotKey interface and then use keyHelp.keyParse (this, e) in the control's KeyDown event to complete the input processing
+
+---
+
+## Ⅶ HotKeyBox is based on the hotkey automatic management function provided by the control
+#### Numbers start with D and range from D0 to D9
+#### ModelKey is written in uint and can directly write the bit or the result of the operation, such as 0x0006 for [CTRL + SHIFT].
 
 |ModelKey   |uint        |
 |-----------|------------|
@@ -538,7 +545,6 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |SHIFT      |0x0004|
 
 ```xaml
-            <!--类库控件,初始注册 [ CTRL + 1 ] => [ HandlerA ]-->
             <hk:HotKeyBox x:Name="KeyBoxA"
                           CurrentKeyA="0x0002"
                           CurrentKeyB="D1"
@@ -553,32 +559,24 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
                           ConnectText=" + "
                           ErrorText="Failed"/>
 ```
-```csharp
-        private void HandlerA(object sender, HotKeyEventArgs e)
-        {
-            int ID = e.RegisterInfo.RegisterID;
-            //此处可获取热键的具体信息
-
-            MessageBox.Show($"A HotKey Has Been Invoked Whose ID is {ID}");
-        }
-```
 
 ---
 
-## Ⅸ 使用库提供的抽象基类或接口,在MVVM下实现属于您自己的UserControl
-#### 引导. 接口与抽象类
-|接口                       |在哪些层实现它           |
+## Ⅷ Implement your own UserControl under MVVM using the [abstract base class] or [interface] provided by the library
+- Effect: Automatically register/modify hotKEYS and automatically remove the duplicate contents of your own Keys in other controls, while the appearance of the control will be completely customized by you
+- Note that when the control is initialized, you must call the BoxPool.Add method and pass in a reference to the control itself and a reference to the ViewModel
+
+#### 规范
+|Interface                  |Which layers to implement it at  |
 |---------------------------|-------------------------|
 |IAutoHotKeyProperty        |Model & ViewModel & View |
 |IAutoHotKeyUpdate          |ViewModel                |
 
-|抽象基类                   |说明/注意                    |
+|Abstract base class        |Notes/Notes                  |
 |---------------------------|-----------------------------|
 |ViewModelBase              |实现ViewModel层的简单基类    |
 |HotKeyViewModelBase        |使用此基类将采用固定的Model  |
 |HotKeyModelBase            |实现Model层的简单基类        |
-
-#### 示例. 一个注册成功会播放动画的UserControl ( 非常用功能，示例会延后在github补全 )
 
 </details>
 
