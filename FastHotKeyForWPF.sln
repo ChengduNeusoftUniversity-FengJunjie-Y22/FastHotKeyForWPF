@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastHotKeyForWPF", "FastHot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastHotKeyForWPFTests", "..\FastHotKeyForWPFTests\FastHotKeyForWPFTests.csproj", "{F2CA4666-5973-40AE-B052-67288FDB67E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp1", "..\WpfApp1\WpfApp1.csproj", "{AFFA56F1-7D83-4BB4-BDB3-64AB7E54F039}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{F2CA4666-5973-40AE-B052-67288FDB67E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2CA4666-5973-40AE-B052-67288FDB67E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2CA4666-5973-40AE-B052-67288FDB67E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFFA56F1-7D83-4BB4-BDB3-64AB7E54F039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFFA56F1-7D83-4BB4-BDB3-64AB7E54F039}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFFA56F1-7D83-4BB4-BDB3-64AB7E54F039}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFFA56F1-7D83-4BB4-BDB3-64AB7E54F039}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

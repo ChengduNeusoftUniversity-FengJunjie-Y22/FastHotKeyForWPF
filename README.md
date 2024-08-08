@@ -1,9 +1,9 @@
 ﻿# FastHotKeyForWPF
 ## Quickly build global hotkeys in WPF programs
 ## Supported [ .NET6.0 ] [ .NET8.0 ]
-- [github][1]
+- [☆ github - The best document reading experience][1]
+- [☆ Bilibili - Learn about updates from the video][3]
 - [nuget][2]
-- [Bilibili][3]
 - [gitee][4]
 
 
@@ -15,7 +15,7 @@
 ---
 
 <details>
-<summary>文档 [ 中文 ]</summary>
+<summary>文档 [ Chinese documentation ]</summary>
 
 ## 功能概述
 - [ GlobalHotKey ] 允许你 注册/修改/删除/锁定 全局热键
@@ -260,6 +260,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 |ModelKey   |uint        |
 |-----------|------------|
+|无         |0x0000|
 |ALT        |0x0001|
 |CTRL       |0x0002|
 |SHIFT      |0x0004|
@@ -302,7 +303,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 </details>
 
 <details>
-<summary>Documentation [ English ]</summary>
+<summary>Documentation [ 英语文档 ]</summary>
 
 ## Feature Overview
 - [ GlobalHotKey ] Allows you to register/modify/delete/LOCK global hotkeys
@@ -512,11 +513,11 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
             var result = KeyHelper.IsKeyValid(key);
             if (result.Item1)
             {
-                MessageBox.Show($"合法,类型为{result.Item2}");
+                MessageBox.Show($"Legal, of type{result.Item2}");
             }
             else
             {
-                MessageBox.Show($"非法");
+                MessageBox.Show($"illegal");
             }
 ```
 - Example 6. When making a user control, quickly process a Key pressed by the user
@@ -540,6 +541,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 |ModelKey   |uint        |
 |-----------|------------|
+|Null       |0x0000|
 |ALT        |0x0001|
 |CTRL       |0x0002|
 |SHIFT      |0x0004|
@@ -566,7 +568,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 - Effect: Automatically register/modify hotKEYS and automatically remove the duplicate contents of your own Keys in other controls, while the appearance of the control will be completely customized by you
 - Note that when the control is initialized, you must call the BoxPool.Add method and pass in a reference to the control itself and a reference to the ViewModel
 
-#### 规范
+#### Specification
 |Interface                  |Which layers to implement it at  |
 |---------------------------|-------------------------|
 |IAutoHotKeyProperty        |Model & ViewModel & View |
@@ -574,9 +576,9 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 |Abstract base class        |Notes/Notes                  |
 |---------------------------|-----------------------------|
-|ViewModelBase              |实现ViewModel层的简单基类    |
-|HotKeyViewModelBase        |使用此基类将采用固定的Model  |
-|HotKeyModelBase            |实现Model层的简单基类        |
+|ViewModelBase              |A simple base class that implements the ViewModel layer    |
+|HotKeyViewModelBase        |Using this base class will take a fixed Model  |
+|HotKeyModelBase            |A simple base class that implements the Model layer        |
 
 </details>
 

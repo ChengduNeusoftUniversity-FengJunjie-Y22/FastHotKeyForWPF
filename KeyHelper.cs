@@ -307,6 +307,7 @@ namespace FastHotKeyForWPF
             return value switch
             {
                 uint => (uint)value,
+                Int32 value32 => (uint)value32,
                 ModelKeys => (uint)value,
                 NormalKeys => (uint)value,
                 ICollection<ModelKeys> keys => keys.Count == 0 ? 0x0000 : (uint)keys.Aggregate((current, next) => current | next),
