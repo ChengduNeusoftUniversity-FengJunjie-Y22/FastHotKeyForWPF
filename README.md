@@ -15,7 +15,7 @@
 ---
 
 <details>
-<summary>Documentation => Chinese</summary>
+<summary>Documentation [ Chinese ]</summary>
 
 ## 功能概述
 - [ GlobalHotKey ] 允许你 注册/修改/删除/锁定 全局热键
@@ -209,17 +209,55 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅵ KeyHelper提供的 [ Key值转换 ] 功能
-|方法                   |返回                        |作用        |
-|-----------------------|----------------------------|------------|
-|UintParse(uint key)    |List< ModelKeys >           |解算一个uint由哪些ModelKeys构成 |
-|UintCalculate(ICollection< ModelKeys > keys) |uint|将ICollection中的ModelKeys合并成一个uint|
-|KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)||在View层处理接收到的用户输入Key|
+- 示例1. 将多个类型不同但受GlobalHotKey支持的Keys合并为统一的uint值
+```csharp
+            ModelKeys[] modelKeys = new ModelKeys[] { ModelKeys.SHIFT };
+            uint result = KeyHelper.UintSum(0x0001, ModelKeys.CTRL, modelKeys));
+```
+- 示例2. 将一个object转为可能受支持的uint值
+```csharp
+            KeyHelper.ValueToUint(ModelKeys.SHIFT)
+```
+- 示例3. 将一个uint值转为[一个]可能的枚举值
+```csharp
+            bool result1 = KeyHelper.UintToEnum<ModelKeys>(0x0002) == ModelKeys.CTRL ? true : false;
+            bool result2 = KeyHelper.UintToEnum<Key>(0x0002) == Key.LeftCtrl ? true : false;
+```
+- 示例4. 将一个uint值转为[若干]可能的ModelKeys枚举值
+```csharp
+            List<ModelKeys> result1 = KeyHelper.UintSplit<List<ModelKeys>>(0x0006);
+```
+- 示例5. 检测一个[ System.Window.Input.Key ]是否受到GlobalHotKey支持
+```csharp
+            var result = KeyHelper.IsKeyValid(key);
+            if (result.Item1)
+            {
+                MessageBox.Show($"合法,类型为{result.Item2}");
+            }
+            else
+            {
+                MessageBox.Show($"非法");
+            }
+```
+- 示例6. 制作用户控件时,快速处理用户按下的Key
+```csharp
+        private void FocusGet_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            ViewModel.UpdateText();
+
+            KeyHelper.KeyParse(this, e);
+
+            e.Handled = true;
+        }
+```
+- 注意. 若控件需要使用KeyHelper提供的输入处理,必须实现IAutoHotKey接口,然后在控件内的KeyDown事件中使用 KeyHelper.KeyParse(this, e)完成输入处理;
 
 ---
 
 ## Ⅶ HotKeyBox基于控件提供的 [ 热键自动管理 ] 功能
-- 数字以D开头 , 范围 D0~D9
-- ModelKey以 uint 书写 , 可以直接书写位或运算的结果 , 例如 0x0006 表示 [ CTRL + SHIFT ]
+#### 数字以D开头 , 范围 D0~D9
+#### ModelKey以 uint 书写 , 可以直接书写位或运算的结果 , 例如 0x0006 表示 [ CTRL + SHIFT ]
+
 |ModelKey   |uint        |
 |-----------|------------|
 |ALT        |0x0001|
@@ -264,7 +302,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 </details>
 
 <details>
-<summary>Documentation => English</summary>
+<summary>Documentation [ English ]</summary>
 
 ## Feature Overview
 - [ GlobalHotKey ] Allows you to register, modify, and delete global hotkeys
