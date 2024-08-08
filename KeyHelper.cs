@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -99,7 +100,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// Key => Uint
         /// </summary>
-        public static readonly Dictionary<Key, uint> KeyToUint = new Dictionary<Key, uint>()
+        public static readonly Dictionary<Key, uint> KeyToUints = new Dictionary<Key, uint>()
         {
 
         { Key.LeftCtrl, (uint)ModelKeys.CTRL },
@@ -250,17 +251,98 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// Uint => Key
         /// </summary>
-        public static readonly Dictionary<uint, Key> UintToKey = KeyToUint.ToDictionary(kv => kv.Value, kv => kv.Key);
+        public static readonly Dictionary<uint, Key> UintToKeys = KeyToUints.ToDictionary(kv => kv.Value, kv => kv.Key);
 
         /// <summary>
         /// NormalKey => Key
         /// </summary>
-        public static readonly Dictionary<NormalKeys, Key> NormalKeysToKey = KeyToNormalKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
+        public static readonly Dictionary<NormalKeys, Key> NormalKeysToKeys = KeyToNormalKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
 
         /// <summary>
         /// ModelKey => Key
         /// </summary>
-        public static readonly Dictionary<ModelKeys, Key> ModelKeysToKey = KeyToModelKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
+        public static readonly Dictionary<ModelKeys, Key> ModelKeysToKeys = KeyToModelKeys.ToDictionary(kv => kv.Value, kv => kv.Key);
+
+        /// <summary>
+        /// 将若干ModelKeys合并为uint
+        /// </summary>
+        public static uint UintSum(params object[] keys)
+        {
+            uint[] temp = new uint[keys.Length];
+            for (int i = 0; i < temp.Length; i++)
+            {
+                temp[i] = ValueToUint(keys[i]);
+            }
+            return temp.Length == 0 ? 0x0000 : temp.Aggregate((current, next) => current | next);
+        }
+
+        /// <summary>
+        /// 解算一个 uint 具体由哪些 ModelKeys 构成
+        /// </summary>
+        /// <typeparam name="T">目标集合类型</typeparam>
+        /// <param name="value">待转换的 uint值</param>
+        /// <returns>uint 拆分为多个 ModelKeys 的结果集合</returns>
+        public static T UintSplit<T>(uint value) where T : ICollection<ModelKeys>, new()
+        {
+            T result = new T();
+
+            foreach (ModelKeys item in Enum.GetValues(typeof(ModelKeys)))
+            {
+                if ((value & (uint)item) == (uint)item)
+                {
+                    result.Add(item);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 判断一个object是否为 ModelKeys、NormalKeys、ICollection 中的一种 ，然后转换为对应的 uint 值
+        /// </summary>
+        /// <param name="value">待转换对象</param>
+        /// <returns>uint 转换结果 ，默认 0x0000</returns>
+        public static uint ValueToUint(object value)
+        {
+            return value switch
+            {
+                uint => (uint)value,
+                ModelKeys => (uint)value,
+                NormalKeys => (uint)value,
+                ICollection<ModelKeys> keys => keys.Count == 0 ? 0x0000 : (uint)keys.Aggregate((current, next) => current | next),
+
+                _ => 0x0000
+            };
+        }
+
+        /// <summary>
+        /// 将 uint值 转换为 enum值
+        /// </summary>
+        /// <typeparam name="T">目标枚举类型</typeparam>
+        /// <param name="value">待转换的 uint 值</param>
+        /// <returns>enum</returns>
+        public static T UintToEnum<T>(uint value) where T : Enum, new()
+        {
+            if (typeof(T) == typeof(Key))
+            {
+                if (!UintToKeys.ContainsKey(value))
+                {
+                    return new T();
+                }
+
+                Key temp = UintToKeys[value];
+                return (T)(object)temp;
+            }
+            else
+            {
+                if (!Enum.IsDefined(typeof(T), value))
+                {
+                    return new T();
+                }
+
+                return (T)Enum.ToObject(typeof(T), value);
+            }
+        }
 
         /// <summary>
         /// 检查键是否合法,以及它的所属类型
@@ -274,45 +356,21 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
-        /// 将若干ModelKeys合并为uint
+        /// 为WPF的 [KeyDown事件] 提供 [Key值处理] 逻辑
         /// </summary>
-        public static uint UintCalculate(ICollection<ModelKeys> keys)
-        {
-            return keys.Count == 0 ? 0x0000 : (uint)keys.Aggregate((current, next) => current | next);
-        }
-
-        /// <summary>
-        /// 将uint解析为若干ModelKeys
-        /// </summary>
-        public static List<ModelKeys> UintParse(uint key)
-        {
-            List<ModelKeys> result = new List<ModelKeys>();
-
-            foreach (ModelKeys value in Enum.GetValues(typeof(ModelKeys)))
-            {
-                if ((key & (uint)value) == (uint)value)
-                {
-                    result.Add(value);
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 将接收到的Key转换,并传递给相应的属性
-        /// </summary>
-        public static void KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)
+        /// <param name="item">实现了IAutoHotKeyProperty接口的View层，通常是一个用户控件</param>
+        /// <param name="e">KeyDown事件中的 KeyEventArgs e</param>
+        public static Key KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
 
             var result = IsKeyValid(key);
 
-            if (!result.Item1) { return; }
+            if (!result.Item1) { return key; }
 
             if (result.Item2 == KeyTypes.ModelKey)
             {
-                List<ModelKeys> original = UintParse(item.CurrentKeyA);
+                List<ModelKeys> original = UintSplit<List<ModelKeys>>(item.CurrentKeyA);
                 ModelKeys model = KeyToModelKeys[key];
 
                 if (original.Contains(model))
@@ -324,18 +382,20 @@ namespace FastHotKeyForWPF
                     original.Add(model);
                 }
 
-                uint newValue = UintCalculate(original);
+                uint newValue = UintSum(original);
                 item.CurrentKeyA = newValue;
 
-                return;
+                return key;
             }
 
             if (result.Item2 == KeyTypes.NormalKey)
             {
                 item.CurrentKeyB = key;
 
-                return;
+                return key;
             }
+
+            return key;
         }
     }
 }

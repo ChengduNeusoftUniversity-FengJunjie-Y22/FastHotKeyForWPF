@@ -8,17 +8,10 @@ namespace FastHotKeyForWPF
     {
         internal RegisterInfo() { }
 
-        public RegisterInfo(int id, ModelKeys model, NormalKeys key, HotKeyEventHandler handler)
+        public RegisterInfo(int id, object model, uint key, HotKeyEventHandler handler)
         {
             RegisterID = id;
-            ModelKey = (uint)model;
-            NormalKey = key;
-            Handler = handler;
-        }
-        public RegisterInfo(int id, uint model, NormalKeys key, HotKeyEventHandler handler)
-        {
-            RegisterID = id;
-            ModelKey = model;
+            ModelKey = KeyHelper.ValueToUint(model);
             NormalKey = key;
             Handler = handler;
         }
@@ -36,7 +29,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 普通按键
         /// </summary>
-        public NormalKeys NormalKey { get; internal set; }
+        public uint NormalKey { get; internal set; }
 
         /// <summary>
         /// 处理事件

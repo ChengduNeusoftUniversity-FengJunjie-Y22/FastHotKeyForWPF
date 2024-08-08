@@ -40,56 +40,17 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 将组合键作为索引,查询注册ID
         /// </summary>
-        public RegisterInfo this[ModelKeys key1, NormalKeys key2]
+        public RegisterInfo this[object model, object normal]
         {
             get
             {
                 foreach (RegisterInfo register in RegisterList)
                 {
-                    if (register.ModelKey == (uint)key1 && register.NormalKey == key2)
+                    if (register.ModelKey == KeyHelper.ValueToUint(model) && register.NormalKey == KeyHelper.ValueToUint(normal))
                     {
                         return register;
                     }
                 }
-                return new RegisterInfo();
-            }
-        }
-
-        /// <summary>
-        /// 将组合键作为索引,查询注册ID
-        /// </summary>
-        public RegisterInfo this[uint key1, NormalKeys key2]
-        {
-            get
-            {
-                foreach (RegisterInfo register in RegisterList)
-                {
-                    if (register.ModelKey == key1 && register.NormalKey == key2)
-                    {
-                        return register;
-                    }
-                }
-                return new RegisterInfo();
-            }
-        }
-
-        /// <summary>
-        /// 将组合键作为索引,查询注册ID
-        /// </summary>
-        public RegisterInfo this[ICollection<ModelKeys> keys1, NormalKeys key2]
-        {
-            get
-            {
-                uint target = (uint)keys1.Aggregate((current, next) => current | next);
-
-                foreach (RegisterInfo register in RegisterList)
-                {
-                    if (register.ModelKey == target && register.NormalKey == key2)
-                    {
-                        return register;
-                    }
-                }
-
                 return new RegisterInfo();
             }
         }

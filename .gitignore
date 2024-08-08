@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# 包含单元测试项目文件
+!**/Tests.csproj
+!**/Tests.cs

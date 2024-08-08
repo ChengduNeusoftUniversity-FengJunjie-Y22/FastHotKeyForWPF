@@ -178,7 +178,7 @@ namespace FastHotKeyForWPF
 
         public virtual void UpdateText()
         {
-            List<ModelKeys> models = KeyHelper.UintParse(CurrentKeyA);
+            List<ModelKeys> models = KeyHelper.UintSplit<List<ModelKeys>>(CurrentKeyA);
             bool pos1 = models.Contains(ModelKeys.ALT);
             bool pos2 = models.Contains(ModelKeys.CTRL);
             bool pos3 = models.Contains(ModelKeys.SHIFT);
