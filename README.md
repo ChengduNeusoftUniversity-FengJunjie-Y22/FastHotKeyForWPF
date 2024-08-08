@@ -198,7 +198,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ```csharp
         List<RegisterInfo> Infos = GlobalHotKey.Registers[HandlerA];
 ```
-- 补充. RegisterInfo 包含的具体信息
+#### RegisterInfo 包含的具体信息
 |属性                   |类型                        |含义        |
 |-----------------------|----------------------------|------------|
 |RegisterID             |int                         |注册ID |
@@ -208,8 +208,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 ---
 
-## Ⅵ KeyHelper提供的 [ Key值转换 ] 工具
-- 方法表
+## Ⅵ KeyHelper提供的 [ Key值转换 ] 功能
 |方法                   |返回                        |作用        |
 |-----------------------|----------------------------|------------|
 |UintParse(uint key)    |List< ModelKeys >           |解算一个uint由哪些ModelKeys构成 |
@@ -218,7 +217,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 
 ---
 
-## Ⅶ HotKeyBox基于控件提供的 [ 热键自动管理 ] 功能 
+## Ⅶ HotKeyBox基于控件提供的 [ 热键自动管理 ] 功能
 - 数字以D开头 , 范围 D0~D9
 - ModelKey以 uint 书写 , 可以直接书写位或运算的结果 , 例如 0x0006 表示 [ CTRL + SHIFT ]
 |ModelKey   |uint        |
@@ -247,7 +246,10 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 ---
 
 ## Ⅷ 使用库提供的 [ 抽象基类 ] 或 [ 接口 ],在MVVM下实现属于您自己的UserControl
-- 规范
+- 效果. 自动注册/修改热键并自动清除其它控件中,与自身Keys重复的内容,同时控件的外观将完全由您定制
+- 注意. 在控件初始化时,必须调用BoxPool.Add方法并依次传入控件自身引用与ViewModel引用
+
+#### 规范
 |接口                       |在哪些层实现它           |
 |---------------------------|-------------------------|
 |IAutoHotKeyProperty        |Model & ViewModel & View |
@@ -258,10 +260,6 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 |ViewModelBase              |实现ViewModel层的简单基类    |
 |HotKeyViewModelBase        |使用此基类将采用固定的Model  |
 |HotKeyModelBase            |实现Model层的简单基类        |
-
-- 效果. 自动注册/修改热键并自动清除其它控件中,与自身Keys重复的内容,同时控件的外观将完全由您定制
-- 注意. 在控件初始化时,必须调用BoxPool.Add方法并依次传入控件自身引用与ViewModel引用
-
 
 </details>
 
