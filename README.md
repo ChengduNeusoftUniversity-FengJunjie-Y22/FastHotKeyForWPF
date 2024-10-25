@@ -77,6 +77,7 @@
   - (5) HotKeyControlBase内置的属性和方法大多是可以重写的 ，例如从Keys变为string的逻辑
 
 ### Ⅲ [ HotKeyBox ] 依据新的定制流程重制 ，依赖属性名变更
+- 注意 [ VerticalAlignment ] 和 [ HorizontalAlignment ] 是必要的 , 缺少这些设置可能导致拖拽后的UI效果异常
 ```xml
         <hk:HotKeyBox CurrentKeyA="0x0003"
                       CurrentKeyB="A"
@@ -87,7 +88,9 @@
                       TextBrush="Violet"
                       HoverEdgeBrush="Violet"
                       HoverTextBrush="Red"
-                      EdgeThickness="6"/>
+                      EdgeThickness="6"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Left"/>
 ```
 
 </details>
