@@ -14,7 +14,7 @@
 <summary>V2.3.0 变更</summary>
 
 ### Ⅰ 修改 [ IAutoHotKeyProperty ] 接口
-- HandlerData 已修改为 Hander 并添加了 event 修饰
+- HandlerData 已修改为 Handler 并添加了 event 修饰
 
 ### Ⅱ 新增 [ HotKeyControlBase ] , 仅一次继承 , 即可实现与类库控件 [ HotKeyBox ] 同款的热键自动管理功能
 - 示例:
