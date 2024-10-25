@@ -357,10 +357,10 @@ namespace FastHotKeyForWPF
         }
 
         /// <summary>
-        /// 为WPF的 [KeyDown事件] 提供 [Key值处理] 逻辑
+        /// 为WPF的 [KeyDown事件] 提供针对热键的 [Key值处理] 流程
         /// </summary>
-        /// <param name="item">实现了IAutoHotKeyProperty接口的View层，通常是一个用户控件</param>
-        /// <param name="e">KeyDown事件中的 KeyEventArgs e</param>
+        /// <param name="item">触发事件的控件实例</param>
+        /// <param name="e">KeyDown事件的传递参数</param>
         public static Key KeyParse(IAutoHotKeyProperty item, KeyEventArgs e)
         {
             Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
