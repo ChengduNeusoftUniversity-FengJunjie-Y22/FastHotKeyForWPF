@@ -25,6 +25,6 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 用于注册热键的委托 , 通常不建议手动修改
         /// </summary>
-        HotKeyEventHandler? HandlerData { get; set; }
+        event HotKeyEventHandler? Handler;
     }
 }

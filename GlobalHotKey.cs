@@ -125,7 +125,7 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 修改热键的处理函数
         /// </summary>
-        public static void EditHandler(object modelKeys, object normalKey, HotKeyEventHandler handler)
+        public static void EditHandler(object modelKeys, object normalKey, HotKeyEventHandler? handler)
         {
             if (Instance != null)
             {
@@ -251,7 +251,7 @@ namespace FastHotKeyForWPF
 
         private int Counter = 0;
 
-        private Dictionary<int, HotKeyEventHandler> Handlers = new Dictionary<int, HotKeyEventHandler>();
+        private Dictionary<int, HotKeyEventHandler?> Handlers = new Dictionary<int, HotKeyEventHandler?>();
 
         private RegisterCollection RegisterList = new RegisterCollection();
 
@@ -267,7 +267,7 @@ namespace FastHotKeyForWPF
                     {
                         HotKeyEventArgs Args = new HotKeyEventArgs();
                         Args.RegisterInfo = RegisterList[id];
-                        Handlers[id].Invoke(this, Args);
+                        Handlers[id]?.Invoke(this, Args);
                     }
                     catch (KeyNotFoundException)
                     {
@@ -330,7 +330,7 @@ namespace FastHotKeyForWPF
             }
         }
 
-        private void EditExistHandler(uint mode, uint key, HotKeyEventHandler handler)
+        private void EditExistHandler(uint mode, uint key, HotKeyEventHandler? handler)
         {
             if (CheckInProtectList(mode, key)) { return; }
 

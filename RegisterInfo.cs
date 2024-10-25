@@ -8,7 +8,7 @@ namespace FastHotKeyForWPF
     {
         internal RegisterInfo() { }
 
-        public RegisterInfo(int id, object model, uint key, HotKeyEventHandler handler)
+        public RegisterInfo(int id, object model, uint key, HotKeyEventHandler? handler)
         {
             RegisterID = id;
             ModelKey = KeyHelper.ValueToUint(model);
@@ -34,6 +34,6 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 处理事件
         /// </summary>
-        public HotKeyEventHandler? Handler { get; internal set; } = null;
+        public HotKeyEventHandler? Handler { get; internal set; }
     }
 }

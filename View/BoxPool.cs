@@ -23,11 +23,14 @@ namespace FastHotKeyForWPF
         /// <summary>
         /// 向控件池添加控件
         /// </summary>
-        /// <param name="prop">控件自身引用</param>
-        /// <param name="model">控件ViewModel</param>
+        /// <param name="item">控件实例</param>
         /// <returns>int 在控件池中的唯一标识ID</returns>
-        public static int Add(IAutoHotKeyProperty prop, IAutoHotKeyUpdate model)
+        public static int Add(object item)
         {
+            var prop = item as IAutoHotKeyProperty;
+            var model = item as IAutoHotKeyUpdate;
+            if (prop == null || model == null) return -1;
+
             ItemID++;
             prop.PoolID = ItemID;
             model.PoolID = ItemID;

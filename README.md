@@ -2,25 +2,91 @@
 ## Quickly build global hotkeys in WPF programs
 ## Supported [ .NET6.0 ] [ .NET8.0 ]
 - [☆ github - The best document reading experience][1]
-- [☆ Bilibili - Learn about updates from the video][3]
 - [nuget][2]
-- [gitee][4]
-
 
 [1]: https://github.com/ChengduNeusoftUniversity-FengJunjie-Y22/FastHotKeyForWPF
 [2]: https://www.nuget.org/packages/FastHotKeyForWPF/
-[3]: https://www.bilibili.com/video/BV1rRi3eHEes
 [4]: https://gitee.com/CNU-FJj-Y22/FastHotKeyForWPF
 
 ---
 
 <details>
-<summary>文档 [ Chinese documentation ]</summary>
+<summary>V2.3.0 变更</summary>
+
+### Ⅰ 修改 [ IAutoHotKeyProperty ] 接口
+- HandlerData 已修改为 Hander 并添加了 event 修饰
+
+### Ⅱ 新增 [ HotKeyControlBase ] , 仅一次继承 , 即可实现与类库控件 [ HotKeyBox ] 同款的热键自动管理功能
+- 示例:
+- 假设已引入命名空间
+  ```xml
+  xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+  ```
+  ```csharp
+  using FastHotKeyForWPF;
+  ```
+- 1.XAML
+  ```xml
+  <hk:HotKeyControlBase x:Class="WpfApp1.MyHotKeyBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp1"
+             mc:Ignorable="d" 
+             Height="50" Width="500"
+             xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
+             MouseEnter="UserControl_MouseEnter" 
+             MouseLeave="UserControl_MouseLeave">
+    <Grid>
+        <TextBox x:Name="FocusGet" PreviewKeyDown="FocusGet_PreviewKeyDown" IsReadOnly="True" Width="500" Height="50"/>
+        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:MyHotKeyBox},Path=HotKeyText}" FontSize="30" Foreground="Violet" Panel.ZIndex="2"/>
+    </Grid>
+  </hk:HotKeyControlBase>
+  ```
+- 2.C#
+  ```csharp
+    public partial class MyHotKeyBox : HotKeyControlBase
+    {
+        public MyHotKeyBox()
+        {
+            InitializeComponent();
+            BoxPool.Add(this);
+        }
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            FocusGet.Focus();
+        }
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Keyboard.ClearFocus();
+        }
+        private void FocusGet_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            UpdateText();
+            KeyHelper.KeyParse(this, e);
+            e.Handled = true;
+        }
+    }
+  ```
+- 3.要点解释
+  - (1) XAML基底元素不再为UserControl , 而是自类库导入的 hk:HotKeyControlBase
+  - (2) XAML需要一个控件接收用户的KeyDown , 这里是用了一个TextBox , 接着在【KeyDown事件】中可使用【KeyHelper.KeyParse(this,e)】完成输入处理
+  - (3) XAML需要一个控件表示当前热键信息 ，这里是用了一个TextBlock , 接着将其【Text属性】与基类提供的【HotKeyText依赖属性】作绑定完成显示效果
+  - (4) BoxPool用于确保控件之间不出现重复热键 , 这里在初始化时调用【BoxPool.Add(this)】即可
+  - (5) HotKeyControlBase内置的属性和方法大多是可以重写的 ，例如从Keys变为string的逻辑
+
+</details>
+
+---
+
+<details>
+<summary>文档</summary>
 
 ## 功能概述
 - [ GlobalHotKey ] 允许你 注册/修改/删除/锁定 全局热键
 - [ RegisterCollection ] 允许你使用索引查找注册信息 [ RegisterInfo ] 
-- [ KeyHelper ] 为您提供强大的Key值转换工具
+- [ KeyHelper ] Key值转换工具,例如将一个uint拆解为多个key
 - [ HotKeyBox ] 是类库为您提供的控件,可自动化热键的管理工作
 - 此外,类库还针对控件的热键相关功能提供了 [ 接口 ] [ 抽象类 ] ，您可在此基础上定制外观更丰富的控件
 
@@ -303,7 +369,7 @@ xmlns:hk="clr-namespace:FastHotKeyForWPF;assembly=FastHotKeyForWPF"
 </details>
 
 <details>
-<summary>Documentation [ 英语文档 ]</summary>
+<summary>Documentation</summary>
 
 ## Feature Overview
 - [ GlobalHotKey ] Allows you to register/modify/delete/LOCK global hotkeys
