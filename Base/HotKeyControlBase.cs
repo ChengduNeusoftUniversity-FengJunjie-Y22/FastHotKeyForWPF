@@ -42,7 +42,7 @@ namespace FastHotKeyForWPF
             set { SetValue(ErrorTextProperty, value); }
         }
         public static readonly DependencyProperty ErrorTextProperty =
-            DependencyProperty.Register("ErrorText", typeof(string), typeof(HotKeyControlBase), new PropertyMetadata("ErrorText"));
+            DependencyProperty.Register("ErrorText", typeof(string), typeof(HotKeyControlBase), new PropertyMetadata("Error"));
 
         /// <summary>
         /// 连接两边Key的文本

@@ -76,6 +76,20 @@
   - (4) BoxPool用于确保控件之间不出现重复热键 , 这里在初始化时调用【BoxPool.Add(this)】即可
   - (5) HotKeyControlBase内置的属性和方法大多是可以重写的 ，例如从Keys变为string的逻辑
 
+### Ⅲ [ HotKeyBox ] 依据新的定制流程重制 ，依赖属性名变更
+```xml
+        <hk:HotKeyBox CurrentKeyA="0x0003"
+                      CurrentKeyB="A"
+                      Handler="HandlerA"
+                      CornerRadius="15"
+                      ActualBackground="White"
+                      EdgeBrush="Red"
+                      TextBrush="Violet"
+                      HoverEdgeBrush="Violet"
+                      HoverTextBrush="Red"
+                      EdgeThickness="6"/>
+```
+
 </details>
 
 ---

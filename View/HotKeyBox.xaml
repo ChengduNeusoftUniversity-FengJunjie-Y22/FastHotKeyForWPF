@@ -7,14 +7,17 @@
              mc:Ignorable="d" 
              Height="50"
              Width="440"
-             BorderBrush="White"
-             BorderThickness="1"
              MouseEnter="UserControl_MouseEnter" 
              MouseLeave="UserControl_MouseLeave">
     <UserControl.Resources>
         <local:DoubleConvertor ConvertRate="0.7" x:Key="HeightToFontSize"/>
     </UserControl.Resources>
-    <Grid x:Name="BackGrid" ClipToBounds="True">
+    <Grid x:Name="BackGrid">
+        <Border x:Name="Edge" 
+                BorderBrush="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=EdgeBrush}"
+                CornerRadius="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=CornerRadius}"
+                BorderThickness="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=EdgeThickness}"
+                Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=ActualBackground}"/>
         <TextBox x:Name="FocusGet" 
                  Background="Transparent" 
                  IsReadOnly="True"
@@ -24,7 +27,7 @@
         <TextBox x:Name="EmptyOne" Width="0" Height="0"/>
         <TextBlock x:Name="ActualText" 
                    Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=HotKeyText}"
-                   Foreground="White"
+                   Foreground="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=TextBrush}"
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center" 
                    FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:HotKeyBox},Path=Height,Converter={StaticResource HeightToFontSize}}"/>
